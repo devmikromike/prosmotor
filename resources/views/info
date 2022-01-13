@@ -1,0 +1,14 @@
+<div class="">
+  @if ($results['Response'])
+    <div class="">
+      huhuu
+    </div>
+    @else
+      @foreach ($results as $result)
+        <div class="mt-4 border border-t border-2 border-gray-500">
+              {{  $result['businessId'] }} <br>
+              {{  $result['name'] }} <br>
+          </div>
+      @endforeach
+  @endif
+</div>
