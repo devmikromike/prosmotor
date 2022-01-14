@@ -13,7 +13,6 @@ class ProsBssLine extends Model
     public function saveBss($businessLines)
     {
         $bssLineEN = array();
-
         foreach ($businessLines as $key => $value) {
           // dump($key, $value);
 
@@ -21,7 +20,7 @@ class ProsBssLine extends Model
           {
             $bssLineEN = $value;
   //          dump ("Save businessLines data EN. "  );
-            SELF::saveBssEN($bssLineEN);
+          $code =  SELF::saveBssEN($bssLineEN);
           }
           if($key == 1)
           {
@@ -35,7 +34,8 @@ class ProsBssLine extends Model
     //        dump ("Save businessLines data SE. "  );
             SELF::saveBssSE($bssLineSE);
           }
-        }        
+        }
+        return $code;
     }
       public function saveBssEN($bssLineEN)
       {
@@ -47,6 +47,8 @@ class ProsBssLine extends Model
           ] ,[
             'nameEN' => $name
           ]);
+
+          return $code;
       }
       public function saveBssSE($bssLineSE)
       {

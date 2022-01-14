@@ -24,15 +24,14 @@ class Prospect extends Model
 
 
     public function scopeSearch($query, $term)
-    {
+    {  /*
       $term = "%$term%";
       $query ->where(function($query) use ($term){
         $query->where('name','like',$term)
-        ->orWhere('vatId','like',$term)
-        );
+        ->orWhere('vatId','like',$term));
 
       }
-
+      */
 
       //return $query ->where('bssCode',$code);
     }
@@ -71,20 +70,23 @@ class Prospect extends Model
    }
    public function bssCode($code, $id)
    {
+     $pros = SELF::where('id', $id)->first();
+     $pros['bssCode'] = $code;
+     $saved =  $pros->save();
 
+   }
+   public function getId($vatId)
+   {
+      $id =  SELF::where('vatId', $vatId )->first();
+      return $id;
    }
    public function saveWww($www_value,$vatId)
    {
-     dump ($vatId);
-       $pros_id = SELF::where('vatId', $vatId)->get('id');
-      $flat =  $pros_id ->flatten();
+     $pros = SELF::getId($vatId);
+     $id = $pros ->id;
+     $pros['www'] = $www_value;
+     $pros->save();
 
-      $pros = SELF::find($vatId, 'vatId');
-       dump($flat, $pros_id);
-      //$pros->www = $www_value;
-      //$pros->save();
-
-
-
+     return $id;
    }
 }

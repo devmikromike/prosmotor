@@ -25,19 +25,22 @@ class Search extends Model
 
     public function perName($name)
     {
-      if($response = Http::get('http://proscore-api.test/SearchByName/'.$name)){
+      if($response = Http::get('http://api.mikromike.fi/SearchByName/'.$name)){
         $results = SELF::statusData($response);
       }
    }
     public function perVatID($vatId)
     {
-      if($response = Http::get('http://api.mikromike.fi/SearchVatID/'.$vatId)){
+
+      // if($response = Http::get('http://ProsCore-api.test/SearchVatID/'.$vatId)){
+         if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
+      //  dump($response->json());
           $results = SELF::statusData($response);
       }
     }
     public function perDates($from, $to)
     {
-      if($response = Http::get('http://proscore-api.test/SearchByDates/'.$from .'/' .$to)){
+      if($response = Http::get('http://api.mikromike.fi/SearchByDates/'.$from .'/' .$to)){
           $results = SELF::statusData($response);
       }
     }
@@ -68,20 +71,29 @@ class Search extends Model
                  $company['vatId'] = $data['businessId'];
                  $uri = $data['detailsUri'];
                  $company['registrationDate'] = $data['registrationDate'];
+
                  if (empty($uri)){
                    $uri === 'not availble';
-                 }
+                 };
                     Prospect::emptyCompanyName($company, $uri);
                       $location = Location::extractLocation($data);
-                     }
-             $businessLines = $data['businessLines'];
-             ProsBssLine::saveBss($businessLines);
 
-               if(!empty($data['contactDetails'])){
-                 $contacts = $data['contactDetails'];
-                  $vatId = $data['businessId'];
-                  Contact::extractContact($contacts, $vatId );
-               }
+                      if(!empty($data['businessLines'])){
+                        $businessLines = $data['businessLines'];
+                        $vatId = $company['vatId'];
+                        $code = ProsBssLine::saveBss($businessLines);
+                        $pros = Prospect::getId($vatId);
+                        $id = $pros->id;
+                      //   $code = $businessLines;
+                        Prospect::bssCode($code, $id);
+                      }
+
+                    if(!empty($data['contactDetails'])){
+                      $contacts = $data['contactDetails'];
+                       $vatId = $data['businessId'];
+                       Contact::extractContact($contacts, $vatId );
+                    }
+                 };
               return 'true';
         } // end of results
     return 'false';
