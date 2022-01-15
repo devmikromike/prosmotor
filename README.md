@@ -6,3 +6,4 @@
 
 
  14.01.2022 -> implemented to cloud server.
+ 15.01.2022 -> layout changed in Welcome Blade.
