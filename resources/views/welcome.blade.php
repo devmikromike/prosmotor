@@ -26,7 +26,7 @@
         <div class="flex flex-col bg-gray-200 dark:bg-gray-900 py-4 sm:pt-0">
           <div class=" bg-blue-500 ">
             <span class="ml-4 mt-2 text-lg text-white">
-              MikroMike ProsMotor v.1 (beta)
+              MikroMike ProspectMotor v.1 (beta)
             </span>
           </div>
           <div class="flex flex-col mt-4">
@@ -56,10 +56,31 @@
                ])
             </div>
           </div>
-            <div class="container mt-4 flex flex-row mx-auto bg-gray-200  ">
-              <div class="flex flex-col mt-4 flex-1">
-                  <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto  " >
+            <div class="container mt-4 flex flex-col mx-auto bg-gray-200  ">
+              <div class="flex mt-4 flex-1 mb-2">
+                  <span class="container  text-center font-semibold text-xl bg-gray-300 mx-auto  " >
                     Search companies from local database by using filters.</span>
+              </div>
+              <div class="flex flex-1 ">
+                 <div class="flex flex-row flex-1 justify-center  bg-blue-300 ">
+                   <div class="ml-6 object-contain w-full">
+                     <x-dropdown>
+                        <select class="" name="cityList">
+                          @foreach(\App\Models\CityList::all() as $city)
+                            <option value="{{ $city->id }}">
+                              {{ $city->name}}
+                            </option>
+                          @endforeach
+                        </select>
+                     </x-dropdown>
+                   </div>
+                   <div class="ml-6 mr-6 object-contain w-full">
+                     Second row and more text
+                   </div>
+                   <div class="mr-6 object-contain w-full">
+                     Thrird
+                   </div>
+                 </div>
               </div>
             </div>
         </div>

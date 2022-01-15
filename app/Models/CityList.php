@@ -10,6 +10,16 @@ class CityList extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function scopeCitySearch($query, $city)
+    {
+      return $query ->where('name','=', $city);
+    }
+    public function scopeCityAll($query)
+    {
+      return $query ->all();
+    }
+
     public function saveCity($city)
     {
 

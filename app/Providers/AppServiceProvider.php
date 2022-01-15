@@ -24,5 +24,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        /*
+        view()->composer('welcome', function($view){
+          $view->with('searchBar', \App\Models\CityList::citySearch($city));
+        }); */
     }
 }
