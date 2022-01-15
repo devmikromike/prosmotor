@@ -30,23 +30,25 @@
             </span>
           </div>
           <div class="flex flex-col mt-4">
-              <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto  " > Search companies.</span>
+              <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto mb-2 " >
+                 Search companies from local database, if it is not exist, it will automatic find from PRH.
+                 <p>You can search only Limited companies (OY).</p>
+               </span>
           </div>
           <div class="container flex flex-row mx-auto bg-gray-200  ">
-
-              <div class="bg-gray-300 flex flex-1  ">
+              <div class="mt-2  flex flex-1  ">
                    @livewire('search-by-vatid',
                    [
                     'placeholder' => 'Search By Vat Id',
                    ])
               </div>
-              <div class="bg-gray-300 flex flex-1  ">
+              <div class="mt-2  flex flex-1  ">
                  @livewire('search-by-name',
                  [
                   'placeholder' => 'Search By name or partial name.',
                  ])
             </div>
-            <div class="bg-gray-300 flex flex-1   ">
+            <div class="mt-2  flex flex-1   ">
                @livewire('search-by-timeframe',
                [
                 'placeholder' => 'Give start date..',
@@ -54,6 +56,12 @@
                ])
             </div>
           </div>
+            <div class="container mt-4 flex flex-row mx-auto bg-gray-200  ">
+              <div class="flex flex-col mt-4 flex-1">
+                  <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto  " >
+                    Search companies from local database by using filters.</span>
+              </div>
+            </div>
         </div>
     <livewire:scripts/>
 </body>

@@ -18,7 +18,7 @@
         </div>
           <button class="mt-4 p-2 bg-blue-300 border rounded border-1 border-gray-600">Send Query</button>
       </div>
-       Current time: {{ now() }}
+       
   </form>
   <br>
    {{ $statusMessage }}
