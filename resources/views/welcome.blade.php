@@ -22,19 +22,36 @@
          <livewire:styles />
           <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     </head>
-    <body class="antialiased">
+    <body class="antialiased border border-2 border-blue-300">
         <div class="flex flex-col bg-gray-200 dark:bg-gray-900 py-4 sm:pt-0">
           <div class=" bg-blue-500 ">
             <span class="ml-4 mt-2 text-lg text-white">
               MikroMike ProsMotor v.1 (beta)
             </span>
           </div>
-          <div class=" container mx-auto bg-gray-200 grid grid-rows-1 grid-cols-2">
-            <div class="bg-gray-300  ">
-              left
+          <div class="flex flex-col mt-4">
+              <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto  " > Search companies.</span>
+          </div>
+          <div class="container flex flex-row mx-auto bg-gray-200  ">
+
+              <div class="bg-gray-300 flex flex-1  ">
+                   @livewire('search-by-vatid',
+                   [
+                    'placeholder' => 'Search By Vat Id',
+                   ])
+              </div>
+              <div class="bg-gray-300 flex flex-1  ">
+                 @livewire('search-by-name',
+                 [
+                  'placeholder' => 'Search By name or partial name.',
+                 ])
             </div>
-            <div class="bg-gray-300">
-              right
+            <div class="bg-gray-300 flex flex-1   ">
+               @livewire('search-by-timeframe',
+               [
+                'placeholder' => 'Give start date..',
+                'placeholder2' => 'Give end date..'
+               ])
             </div>
           </div>
         </div>

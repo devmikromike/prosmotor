@@ -13,6 +13,7 @@ class SearchByTimeframe extends Component
   public $name;
   public $status;
   public $placeholder;
+  public $placeholder2;
   public $results = '';
   public $response;
   public $res;
