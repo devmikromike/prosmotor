@@ -68,7 +68,7 @@
 
                      <x-dropdown cityList =" $cityList ">
                        <p>Pickup City(es) from CityList, Max 5.</p>
-                        @if @endif
+                         
                         <button type="button" name="button">Select</button>
                      </x-dropdown>
                    </div>
