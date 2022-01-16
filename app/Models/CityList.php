@@ -17,18 +17,13 @@ class CityList extends Model
     }
     public function scopeCityAll($query)
     {
-      return $query ->all();
+      return $query ->get()->toArray();
     }
-
     public function saveCity($city)
     {
-
       $c = SELF::firstOrCreate([
         'name' => $city,
-      ]);
-      //  if (SELF::where('name', $city)->exists()) {
-      //  }
-
+      ]);  
       return $c;
     }
 }

@@ -63,15 +63,13 @@
               </div>
               <div class="flex flex-1 ">
                  <div class="flex flex-row flex-1 justify-center  bg-blue-300 ">
-                   <div class="ml-6 object-contain w-full">
-                     <x-dropdown>
-                        <select class="" name="cityList">
-                          @foreach(\App\Models\CityList::all() as $city)
-                            <option value="{{ $city->id }}">
-                              {{ $city->name}}
-                            </option>
-                          @endforeach
-                        </select>
+                   <div class=" object-contain w-full bg-blue-300">
+                     dd($cityList);
+
+                     <x-dropdown cityList =" $cityList ">
+                       <p>Pickup City(es) from CityList, Max 5.</p>
+                        @if @endif
+                        <button type="button" name="button">Select</button>
                      </x-dropdown>
                    </div>
                    <div class="ml-6 mr-6 object-contain w-full">
@@ -80,7 +78,7 @@
                    <div class="mr-6 object-contain w-full">
                      Thrird
                    </div>
-                 </div>
+              </div>
               </div>
             </div>
         </div>
