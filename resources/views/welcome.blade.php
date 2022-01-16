@@ -66,7 +66,7 @@
                    <div class=" object-contain w-full bg-blue-300">
                      dd($cityList);
 
-                     <x-dropdown cityList =" $cityList ">
+                     <x-dropdown :cityList =" $cityList ">
                        <p>Pickup City(es) from CityList, Max 5.</p>
                      </x-dropdown>
                    </div>
