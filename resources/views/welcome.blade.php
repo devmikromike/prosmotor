@@ -68,8 +68,6 @@
 
                      <x-dropdown cityList =" $cityList ">
                        <p>Pickup City(es) from CityList, Max 5.</p>
-                         
-                        <button type="button" name="button">Select</button>
                      </x-dropdown>
                    </div>
                    <div class="ml-6 mr-6 object-contain w-full">
