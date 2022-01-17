@@ -10,7 +10,23 @@ class HomeController extends Controller
 {
  public function index()
  {
-   $cityList = CityList::CityAll();   
-   return view('welcome',['cityList' => $cityList ]);
+   $cityList = CityList::CityAll();
+   $codeList = ProsBssLine::CodeAll();
+  /*
+   foreach($cityList as $city)
+   {
+    $id =   $city['id'];
+    $name =   $city['name'];
+
+     dd($id, $name);
+   }   */
+
+
+
+
+   return view('welcome',
+   ['cityList' => $cityList,
+    'codeList' => $codeList
+  ]);
  }
 }

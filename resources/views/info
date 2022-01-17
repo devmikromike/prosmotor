@@ -18,3 +18,13 @@ dd($cityList);
 <x-dropdown :cityList =" $cityList ">
   <p>Pickup City(es) from CityList, Max 5.</p>
 </x-dropdown>
+************
+<select class="mt-2" name="cityList[]" multiple>
+  @foreach($cityList as $city)
+    <option value="{{ $city['id'] }} " >
+      {{ $city['name'] }}
+    </option>
+  @endforeach
+</select>
+*********
+object-contain w-full

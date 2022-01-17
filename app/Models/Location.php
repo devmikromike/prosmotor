@@ -14,9 +14,18 @@ class Location extends Model
 
     protected $guarded = [];
 
+    public function cities()
+    {
+      return hasMany(CityList::class);
+    }
+
+    public function scopeEndDate($query)
+    { // does not work yet!
+      return $query ->where('endDate','!==', '');
+    }
     public function scopeCity($query, $city)
     {
-      return $query ->where('city', $city);
+      return $query ->where('city', $city)->get();
     }
     public function scopeVisitAddress($query)
     {

@@ -7,6 +7,10 @@ use App\Models\Search;
 
 class SearchController extends Controller
 {
+
+    
+
+
     public function perVatID($vatID)
     {
       if($response = Search::perVatID($vatID)){

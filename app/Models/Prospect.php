@@ -13,6 +13,11 @@ class Prospect extends Model
 
     protected $guarded = [];
 
+    public function scopeHasCity($city)
+    {
+      return $query ->where('bssCode',$code);
+    }
+
     public function scopeWww($query)
     {
       return $query ->where('www','!=', '');

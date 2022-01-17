@@ -62,17 +62,35 @@
                     Search companies from local database by using filters.</span>
               </div>
               <div class="flex flex-1 ">
-                 <div class="flex flex-row flex-1 justify-center  bg-blue-300 ">
-                   <div class=" object-contain w-full bg-blue-300">
-                    First
-                   </div>
-                   <div class="ml-6 mr-6 object-contain w-full">
-                     Second row and more text
-                   </div>
-                   <div class="mr-6 object-contain w-full">
-                     Thrird
-                   </div>
-              </div>
+                 <div class="flex flex-col flex-1  bg-blue-300 ">
+                   <form class=" flex " action="{{ route('public.index') }} " method="post">
+                         @csrf
+
+                     <div class="flex flex-row ml-4 mt-4">
+                       <div class=" flex flex-1 flex-col ml-6 bg-blue-300">
+                         <p class="mb-2">Pickup City(es) from CityList, Max 5.</p>
+                         <select class="mt-2" name="cityList[]" multiple>
+                           @foreach($cityList as $city)
+                             <option value="{{ $city['name'] }} " >
+                               {{ $city['name'] }}
+                             </option>
+                           @endforeach
+                         </select>
+                       </div>
+                       <div class=" flex flex-col ml-6 mr-4 flex-1 ">
+                         <p class="mb-2"  >Pickup Code(es) from CodeList, Max 1.</p>
+                         <select class="mt-2" name="codeList[]" multiple>
+                           @foreach($codeList as $code)
+                             <option value="{{ $code['id'] }} " >
+                               {{ $code['nameFI'] }}
+                             </option>
+                           @endforeach
+                         </select>
+                       </div>
+                     </div>
+                     <button type="submit" name="button">Send query</button>
+                   </form>
+                 </div>
               </div>
             </div>
         </div>
