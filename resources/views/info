@@ -12,3 +12,9 @@
       @endforeach
   @endif
 </div>
+***************
+dd($cityList);
+
+<x-dropdown :cityList =" $cityList ">
+  <p>Pickup City(es) from CityList, Max 5.</p>
+</x-dropdown>

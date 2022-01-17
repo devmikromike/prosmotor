@@ -64,11 +64,7 @@
               <div class="flex flex-1 ">
                  <div class="flex flex-row flex-1 justify-center  bg-blue-300 ">
                    <div class=" object-contain w-full bg-blue-300">
-                     dd($cityList);
-
-                     <x-dropdown :cityList =" $cityList ">
-                       <p>Pickup City(es) from CityList, Max 5.</p>
-                     </x-dropdown>
+                    First
                    </div>
                    <div class="ml-6 mr-6 object-contain w-full">
                      Second row and more text
