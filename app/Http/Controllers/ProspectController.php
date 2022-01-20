@@ -9,9 +9,14 @@ use App\Models\CityList;
 use App\Models\ProsBssLine;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 
 class ProspectController extends Controller
 {
+  public $prospects;
+  public $proslist;
+  public $original = array();
+
     public function index(Request $request)
     {
         $cityList =  Arr::exists($request, 'cityList');
@@ -21,49 +26,34 @@ class ProspectController extends Controller
         {
            $cities = collect($request['cityList']);
            $prosCities = CityList::cityList($cities);
+
+
+           $results = [];
+           $keyIndex = 0;
+          // foreach ($prosCities['proslist'] as $key => $pros)
+          foreach ($prosCities['proslist'] as $pros)
+           {
+             $vatId = $pros['vat_id'];
+             $pros['name'] = Prospect::getName($vatId);
+             $results[ $keyIndex] [] = $pros;
+
+             // Prospect::addName($pros, $key);
+           }
+           dd( $results[0]);
+
            $codes = collect($request['codeList']);
            $prosCodes = ProsBssLine::codeList($codes);
 
-          return view('prospect.index')->with([
-            'cities' => $prosCities,
+           dump('back to controller');
+           dd($pros);
+
+           return view('prospect.index')->with([
+            'proslist' => $prospects,
             'codes' => $prosCodes
-          ]);        
+          ]);
         } else {
           dd('huuhaa false');
         }
-
-/*
-        $cities = collect($request['cityList']);
-        $codes = collect($request['cityList']);
-        $sumCities = $cities->count();
-        $sumCodes = $codes->count();
-        dd($sumCities , $sumCodes);   */
-/*
-        if($sum === 1)
-        {
-
-        }
-/*
-
-
-
-/*
-        if ($request->hasCities() > 0  &&  $request->hasCodes() > 0)
-        {
-            dd($request);
-        } */
-
-
-    //    dd(  $cityList, $codeList, $request);
-
-
-      //$cityList = $request ->cityList;
-
-      /*
-      if ($request->hasCities() > 0  &&  $request->hasCodes() > 0)
-      {
-          dd($request);
-      } */
 
         dd($request);
 

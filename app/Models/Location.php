@@ -18,14 +18,16 @@ class Location extends Model
     {
       return hasMany(CityList::class);
     }
-
     public function scopeEndDate($query)
-    { // does not work yet!
-      return $query ->where('endDate','!==', '');
+    {
+      // return only EndDates
+      //      return $query ->where('endDate','>', 0);
+
+      return $query ->where('endDate',NULL);
     }
     public function scopeCity($query, $city)
     {
-      return $query ->where('city', $city)->get();
+      return $query ->where('city', $city);
     }
     public function scopeVisitAddress($query)
     {
