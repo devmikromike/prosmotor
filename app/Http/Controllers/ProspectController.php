@@ -39,17 +39,17 @@ class ProspectController extends Controller
 
              // Prospect::addName($pros, $key);
            }
-           dd( $results[0]);
+           // dd( $results[0]);
 
-           $codes = collect($request['codeList']);
-           $prosCodes = ProsBssLine::codeList($codes);
+      //     $codes = collect($request['codeList']);
+      //     $prosCodes = ProsBssLine::codeList($codes);
 
-           dump('back to controller');
-           dd($pros);
+    //       dump('back to controller');
+    //       dd($pros);
 
            return view('prospect.index')->with([
-            'proslist' => $prospects,
-            'codes' => $prosCodes
+            'proslist' => $results[0],
+      //      'codes' => $prosCodes
           ]);
         } else {
           dd('huuhaa false');
