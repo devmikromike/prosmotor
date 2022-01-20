@@ -48,7 +48,7 @@ class ProspectController extends Controller
     //       dd($pros);
 
            return view('prospect.index')->with([
-            'proslist' => $results[0],
+            'proslist' => $results,
       //      'codes' => $prosCodes
           ]);
         } else {
