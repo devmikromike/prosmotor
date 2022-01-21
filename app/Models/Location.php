@@ -47,15 +47,15 @@ class Location extends Model
     }
     public function extractLocation($data)
     {
-    //   dump ("Extract Location data. "  );
        $id = $data['businessId'];
 
         if(!empty($data['addresses'])){
           $locations = $data['addresses'];
           foreach ($locations as $loc){
-      //  dump ("Creating Location data. "  );
-        SELF::createLocation($id, $loc );
+            SELF::createLocation($id, $loc );
         }
+      }else {
+        $locations = 'Ei osoite tietoja.';
       }
    }
     public function createLocation($id, $loc)
@@ -72,13 +72,10 @@ class Location extends Model
         $address['endDate'] = $loc['endDate'];
 
         $street = $address['street'];
-    //    dump ("Check if Address has Box info or not. "  );
         $avail =  SELF::postBox($street);
 
           if(!empty($street) && $avail == "false"){
-
             $addss =  SELF::saveLocation($address);
-      //      dump( "Return saving Location data.... ");
             return $addss;
       }else {
         $vatId = $address['vat_id'];
@@ -88,35 +85,24 @@ class Location extends Model
     public function saveLocation($address)
     {
       $city = $address['city'];
-//      dump( "Saving city to citylist .... ");
       CityList::saveCity($city);
-
-  //    dump( "Saving Location .... ");
       $addss = SELF::updateOrCreate($address);
        return $addss;
     }
-
     public function postBox($address)
     {
           if(empty($address)){
-    //          dump("No Addess detail found  .... ");
               return "true";
             }
            if(!empty($address && Str::contains($address,"PL") )){
-      //        dump("Found PL from  Location .... ");
-                return "true";
+              return "true";
             }
             if(!empty($address && Str::contains($address,"PB") )){
-        //         dump("Found PB from  Location .... ");
-                 return "true";
+               return "true";
              }
              if(!empty($address && Str::contains($address,"BOX") )){
-          //      dump("Found BOX from  Location .... ");
-                  return "true";
+                return "true";
              }
-
-  //   dump("Not found BOX info from Address .... Fine to Proceed!");
-
         return "false";
     }
 }
