@@ -34,24 +34,22 @@ class CityList extends Model
     public function cityList($cities)
     { // getting collection $cities
       $sum = $cities->count();
+      $response = array();
+      $results = [];
 
-        $response = array();
         foreach ($cities as $city)
         {
           $res  = Location::city($city)
           ->endDate()
           ->VisitAddress()
           ->get();
+
+          $results[] = $res;
         }
-        // dd($res->toArray());
-//   $reponse['prospects'] = $res ->toArray();
-        $reponse['prospects'] = $res;
-        $reponse['counts'] = $res->count();
+       $reponse['prospects'] = $results;
 
       return $response = array(
           'proslist' => $reponse['prospects'],
-          'counts' => $reponse['counts']
         );
-
     }
 }

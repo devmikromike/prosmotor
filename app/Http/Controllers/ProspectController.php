@@ -26,20 +26,17 @@ class ProspectController extends Controller
         {
            $cities = collect($request['cityList']);
            $prosCities = CityList::cityList($cities);
-
-
-           $results = [];
-           $keyIndex = 0;
-          // foreach ($prosCities['proslist'] as $key => $pros)
-          foreach ($prosCities['proslist'] as $pros)
+           $results = [];        
+          foreach ($prosCities['proslist'] as $prospects)
            {
-             $vatId = $pros['vat_id'];
-             $pros['name'] = Prospect::getName($vatId);
-             $results[ $keyIndex] [] = $pros;
-
-             // Prospect::addName($pros, $key);
+             foreach ($prospects as $pros)
+             {
+               $vatId = $pros['vat_id'];
+               $pros['name'] = Prospect::getNames($vatId);
+               $results[] = $pros;
+             }
            }
-           // dd( $results[0]);
+
 
       //     $codes = collect($request['codeList']);
       //     $prosCodes = ProsBssLine::codeList($codes);

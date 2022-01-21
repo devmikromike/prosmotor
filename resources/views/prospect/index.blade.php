@@ -1,7 +1,8 @@
 @extends('parts.app')
 @section('body')
-  @foreach($proslist as $reponse)
-    @foreach($reponse  as $pros)    
+
+    @foreach($proslist  as $pros)
+   
    <ul>
       <li>
           {{ $pros['vat_id'] }}
@@ -14,5 +15,5 @@
       </li>
     </ul>
     @endforeach
-  @endforeach
+
 @endsection

@@ -114,6 +114,14 @@ class Prospect extends Model
       $id =  SELF::where('vatId', $vatId )->first();
       return $id;
    }
+   public function getNames($vatId)
+   {
+      $pros =  SELF::where('vatId', $vatId )->first();
+      if(!empty($pros['name'])){
+        $name = $pros['name'];
+        return $name;
+      }
+   }
    public function getName($vatId)
    {
       $pros =  SELF::where('vatId', $vatId )->first();
