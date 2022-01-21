@@ -59,9 +59,7 @@ class Contact extends Model
                   }else {
                     $mobile_value ='0';
                   }
-              }
-
-             
+              }            
 
               $contact = array(
                 'phone' => $phone_value,

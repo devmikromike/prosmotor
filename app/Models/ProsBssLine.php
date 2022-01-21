@@ -13,9 +13,6 @@ class ProsBssLine extends Model
     public function codeList($codes)
     {
       $sum = $codes->count();
-
-   
-
         foreach ($codes as $code)
         {
 
@@ -41,24 +38,20 @@ class ProsBssLine extends Model
     {
         $bssLineEN = array();
         foreach ($businessLines as $key => $value) {
-          // dump($key, $value);
 
           if($key == 0)
           {
             $bssLineEN = $value;
-  //          dump ("Save businessLines data EN. "  );
           $code =  SELF::saveBssEN($bssLineEN);
           }
           if($key == 1)
           {
             $bssLineFI = $value;
-  //          dump ("Save businessLines data FI. "  );
             SELF::saveBssFI($bssLineFI);
           }
           if($key == 2)
           {
             $bssLineSE = $value;
-    //        dump ("Save businessLines data SE. "  );
             SELF::saveBssSE($bssLineSE);
           }
         }
