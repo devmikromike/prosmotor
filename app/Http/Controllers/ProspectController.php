@@ -19,28 +19,37 @@ class ProspectController extends Controller
 
     public function index(Request $request)
     {
-        $cityList =  Arr::exists($request, 'cityList');
-        $codeList =  Arr::exists($request, 'codeList');
+  //dd($request);
 
-        if ($cityList == 'true' && $codeList == 'true')
+        $cityList =  Arr::exists($request, 'cityList');
+        $idsList =  Arr::exists($request, 'idsList');
+
+        if ($cityList == 'true' && $idsList == 'true')
         {
+           $results = [];
+           $prosCodes =[];
            $cities = collect($request['cityList']);
            $prosCities = CityList::cityList($cities);
-           $results = [];
+
           foreach ($prosCities['proslist'] as $prospects)
-           {
+           { // for 'totalproslist' 
              foreach ($prospects as $pros)
              {
                $vatId = $pros['vat_id'];
-               $pros['name'] = Prospect::getNames($vatId);
+               $pros['name'] = Prospect::getName($vatId);
+               // return code and nameFI in Array!
+               $pros['bssCode'] = Prospect::getBssCode($vatId);
                $results[] = $pros;
              }
            }
-        $codes = collect($request['codeList']);
-        $prosCodes = ProsBssLine::codeList($codes);
-
-           return view('prospect.index')->with([
-            'proslist' => $results,
+           $idsCodes  = collect($request['idsList']);
+           $codes = ProsBssLine::codeList($idsCodes);
+           $proslist  = Prospect::bsslineCodes($codes);
+           dump($proslist);
+          return view('prospect.index')->with([
+            'totalproslist' => $results,
+            'proslist' => $proslist,
+            'bsscodes' => $codes
           ]);
         } else {
           dd('huuhaa false');

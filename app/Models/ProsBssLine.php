@@ -10,30 +10,34 @@ class ProsBssLine extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function codeList($codes)
+    public function codeList($idsCodes)
     {
-      $sum = $codes->count();
-        foreach ($codes as $code)
+      $results = [];
+
+        foreach ($idsCodes as $id)
         {
-
+          $data  = SELF::bss( $id)->get();
+          $name = $data[0]['nameFI'];
+          $code = $data[0]['code'];
+          $field['nameFI'] = $name;
+          $field['code'] = $code;
+          $results[] = $field;
         }
-        return $code;
 
+      return $results;
     }
     public function scopeCodeAll($query)
     {
       return $query ->get()->toArray();
     }
-
-    public function scopeBss($query, $code)
+    public function scopeBss($query, $id)
     {
-      return $query ->where('nameFI','=', $code);
+      return $query ->where('id','=', $id);
     }
     public function scopeBssCodes($query, $codes)
     {
       return $query ->where('name','=', $city);
     }
-
     public function saveBss($businessLines)
     {
         $bssLineEN = array();

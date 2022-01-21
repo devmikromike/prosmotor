@@ -26,9 +26,19 @@ class Prospect extends Model
     }
     public function scopeCode($query, $code)
     {
-      return $query ->where('bssCode',$code);
+      $results = $query ->where('bssCode',$code);
+      return $results;
     }
-
+    public function bsslineCodes($codes)
+    {
+      $prosList = [];
+      foreach($codes as $code)
+      {
+        $results = SELF::Code($code['code'])->get();
+        $prosList[] = $results;
+      }
+      return $prosList;
+    }
 
     public function scopeSearch($query, $term)
     {  /*
@@ -113,6 +123,14 @@ class Prospect extends Model
    {
       $id =  SELF::where('vatId', $vatId )->first();
       return $id;
+   }
+   public function getBssCode($vatId)
+   {
+      $pros =  SELF::where('vatId', $vatId )->first();
+      $save = $pros->toArray();
+      $bssCode = $save['bssCode'];
+
+      return   $bssCode;
    }
    public function getNames($vatId)
    {

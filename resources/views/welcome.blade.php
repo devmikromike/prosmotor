@@ -1,5 +1,4 @@
  @extends('parts.app')
-
     @section ('body')
           <div class="flex flex-col mt-4">
               <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto mb-2 " >
@@ -51,7 +50,7 @@
                        </div>
                        <div class=" flex flex-col ml-6 mr-4 flex-1 ">
                          <p class="mb-2"  >Pickup Code(es) from CodeList, Max 1.</p>
-                         <select class="mt-2" name="codeList[]" multiple>
+                         <select class="mt-2" name="idsList[]" multiple>
                            @foreach($codeList as $code)
                              <option value="{{ $code['id'] }} " >
                                {{ $code['nameFI'] }}
