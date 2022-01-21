@@ -26,7 +26,7 @@ class ProspectController extends Controller
         {
            $cities = collect($request['cityList']);
            $prosCities = CityList::cityList($cities);
-           $results = [];        
+           $results = [];
           foreach ($prosCities['proslist'] as $prospects)
            {
              foreach ($prospects as $pros)
@@ -36,13 +36,11 @@ class ProspectController extends Controller
                $results[] = $pros;
              }
            }
+        $codes = collect($request['codeList']);
+        $prosCodes = ProsBssLine::codeList($codes);
 
-
-      //     $codes = collect($request['codeList']);
-      //     $prosCodes = ProsBssLine::codeList($codes);
-
-    //       dump('back to controller');
-    //       dd($pros);
+    //       dump('$prosCodes');
+        dd($prosCodes);
 
            return view('prospect.index')->with([
             'proslist' => $results,

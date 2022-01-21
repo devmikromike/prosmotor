@@ -13,14 +13,15 @@ class ProsBssLine extends Model
     public function codeList($codes)
     {
       $sum = $codes->count();
-      if($sum === 1)
-      {
+
+      dd($codes);
+      
         foreach ($codes as $code)
         {
-          
+
         }
         return $code;
-      }
+
     }
     public function scopeCodeAll($query)
     {

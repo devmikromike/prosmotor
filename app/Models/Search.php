@@ -25,22 +25,21 @@ class Search extends Model
 
     public function perName($name)
     {
-      if($response = Http::get('http://api.mikromike.fi/SearchByName/'.$name)){
+      if($response = Http::get('http://api.mikromike.fi/api/SearchByName/'.$name)){
         $results = SELF::statusData($response);
       }
    }
     public function perVatID($vatId)
     {
-
       // if($response = Http::get('http://ProsCore-api.test/SearchVatID/'.$vatId)){
          if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
       //  dump($response->json());
           $results = SELF::statusData($response);
-      }
+        }
     }
     public function perDates($from, $to)
     {
-      if($response = Http::get('http://api.mikromike.fi/SearchByDates/'.$from .'/' .$to)){
+      if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
           $results = SELF::statusData($response);
       }
     }
