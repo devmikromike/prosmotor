@@ -39,7 +39,7 @@ class ProspectController extends Controller
         $codes = collect($request['codeList']);
         $prosCodes = ProsBssLine::codeList($codes);
 
-        dd($prosCodes);
+         
 
            return view('prospect.index')->with([
             'proslist' => $results,
@@ -48,7 +48,7 @@ class ProspectController extends Controller
           dd('huuhaa false');
         }
 
-        dd($request);
+
 
     }
 

@@ -35,7 +35,7 @@ class Contact extends Model
                      if(!empty($contact['value'])){
                        $phone = 'phone';
                        $phone_value = $contact['value'];
-                       dump($phone_value);
+
                      }else {
                        $phone_value = '0';
                      }
@@ -45,7 +45,7 @@ class Contact extends Model
                    if(!empty($contact['value'])){
                      $www = 'www';
                      $www_value = $contact['value'];
-                     dump($www_value);
+
                    } else {
                      $www_value = '0';
                    }
@@ -55,13 +55,13 @@ class Contact extends Model
                   if(!empty($contact['value'])){
                     $mobile = 'mobile';
                     $mobile_value = $contact['value'];
-                    dump($mobile_value);
+
                   }else {
                     $mobile_value ='0';
                   }
               }
 
-              dump($phone_value,$mobile_value);
+             
 
               $contact = array(
                 'phone' => $phone_value,
