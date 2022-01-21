@@ -21,7 +21,7 @@
               @foreach($proslist  as $pros)
             <tr>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
+                <div class="flex items-le">
                    {{ $pros['vat_id'] }}
                 </div>
               </td>
@@ -32,6 +32,7 @@
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                   {{ $pros['city'] }}
                 </span>
+                <a href="#" class="ml-2 text-indigo-600 hover:text-indigo-900">Edit</a>
               </td>
             </tr>
           @endforeach

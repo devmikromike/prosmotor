@@ -39,17 +39,12 @@ class ProspectController extends Controller
         $codes = collect($request['codeList']);
         $prosCodes = ProsBssLine::codeList($codes);
 
-         
-
            return view('prospect.index')->with([
             'proslist' => $results,
           ]);
         } else {
           dd('huuhaa false');
         }
-
-
-
     }
 
     public function store(Request $request)

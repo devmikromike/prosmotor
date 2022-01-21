@@ -1,5 +1,5 @@
  @extends('parts.app')
-    
+
     @section ('body')
           <div class="flex flex-col mt-4">
               <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto mb-2 " >
@@ -63,7 +63,6 @@
                      <button type="submit" name="button">Send query</button>
                    </form>
                  </div>
-
               </div>
             </div>
         </div>
