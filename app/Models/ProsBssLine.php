@@ -14,8 +14,8 @@ class ProsBssLine extends Model
     {
       $sum = $codes->count();
 
-      dd($codes);
-      
+   
+
         foreach ($codes as $code)
         {
 
