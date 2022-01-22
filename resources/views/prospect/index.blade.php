@@ -1,10 +1,12 @@
 @extends('parts.app')
 @section('body')
 
-  @foreach ($bsscodes as $code)   
-  {{ $code['code'] }}
-  {{ $code['nameFI'] }}
-  @endforeach
-
+<select class="mt-2 mb-4" name="codelist">
+  @foreach ($bsscodes as $code)
+    <option value="{{ $code['nameFI'] }} " >
+      {{ $code['code'] }} ..... {{ $code['nameFI'] }}
+    </option>
+     @endforeach
+</select>
 @include('prospect.table')
 @endsection

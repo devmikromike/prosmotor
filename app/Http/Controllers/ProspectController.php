@@ -36,23 +36,23 @@ class ProspectController extends Controller
                $vatId = $pros['vat_id'];
                $pros['name'] = Prospect::getName($vatId);
                // return code and nameFI in Array!
-               $pros['bssCode'] = Prospect::getBssCode($vatId);
+              (int)$pros['bssCode'] = Prospect::getBssCode($vatId);
                $results[] = $pros;
              }
            }
            $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
            $proslist = [];
-           foreach($codes as $code)
+           foreach($codes as $key => $code)
            {
              $c = $code['code'];
-
              foreach($results as $pros)
              {
-               if ($c == $pros['bssCode'])
+               if ($c == (int)$pros['bssCode'])
                {
                  $proslist[] = $pros;
-               }else {  }
+               }else {              
+                }
              }
            }
           // $prosresult  = Prospect::bsslineCodes($codes);
