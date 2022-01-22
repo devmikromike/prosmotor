@@ -6,6 +6,6 @@
 
 
  14.01.2022 -> implemented to cloud server.
- 15.01.2022 -> layout changed in Welcome Blade.
  16.01.2022 -> layout changed in Welcome Blade.
  21.01.2022 -> route to API fixed.
+ 22.01.2022 -> proslist loop fixed.
