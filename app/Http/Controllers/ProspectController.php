@@ -32,7 +32,7 @@ class ProspectController extends Controller
            $prosCities = CityList::cityList($cities);
 
           foreach ($prosCities['proslist'] as $prospects)
-           { // for 'totalproslist' 
+           { // for 'totalproslist'
              foreach ($prospects as $pros)
              {
                $vatId = $pros['vat_id'];
@@ -42,17 +42,33 @@ class ProspectController extends Controller
                $results[] = $pros;
              }
            }
-           $idsCodes  = collect($request['idsList']);
+           $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
-           $proslist  = Prospect::bsslineCodes($codes);
-           dump($proslist);
+           $prosList = [];
+           foreach($codes as $code)
+           {
+             $c = $code['code'];
+
+             foreach($results as $pros)
+             {
+               if ($c == $pros['bssCode'])
+               {
+                 $proslist[] = $pros;
+               }else
+               {
+
+               }
+             }
+           }
+          // $prosresult  = Prospect::bsslineCodes($codes);
+
           return view('prospect.index')->with([
             'totalproslist' => $results,
             'proslist' => $proslist,
             'bsscodes' => $codes
           ]);
         } else {
-          dd('huuhaa false');
+          dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');
         }
     }
 
