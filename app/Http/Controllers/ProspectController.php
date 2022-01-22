@@ -42,7 +42,7 @@ class ProspectController extends Controller
            }
            $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
-           $prosList = [];
+           $proslist = [];
            foreach($codes as $code)
            {
              $c = $code['code'];
