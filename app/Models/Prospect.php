@@ -20,6 +20,12 @@ class Prospect extends Model
 
     protected $guarded = [];
 
+    public function contacts()
+    {
+      return $this->belongsToMany(Contact::class);
+    }
+
+
     public function scopeWww($query)
     {
       return $query ->where('www','!=', '');

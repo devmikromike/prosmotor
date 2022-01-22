@@ -18,6 +18,11 @@ class Contact extends Model
     public $www_value;
     public $mobile_value;
 
+    public function prospects()
+    {
+      return $this->belongsToMany(Prospect::class);
+    }
+
     public function extractContact($contacts, $vatId)
     {
 
@@ -59,7 +64,7 @@ class Contact extends Model
                   }else {
                     $mobile_value ='0';
                   }
-              }            
+              }
 
               $contact = array(
                 'phone' => $phone_value,
@@ -68,7 +73,9 @@ class Contact extends Model
             }
           }
       }
-      SELF::saveContact($contact);
+      $contacts = SELF::saveContact($contact);
+
+      $contacts->prospects()->attach($contacts->id);
 
        if(!empty($www_value)){
           Prospect::saveWww($www_value, $vatId);
@@ -78,6 +85,7 @@ class Contact extends Model
     }
     public function saveContact($contact)
     {
-      SELF::updateOrCreate($contact);
+      $saved = SELF::updateOrCreate($contact);
+      return $saved;
     }
 }

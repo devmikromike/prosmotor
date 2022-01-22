@@ -52,10 +52,7 @@ class ProspectController extends Controller
                if ($c == $pros['bssCode'])
                {
                  $proslist[] = $pros;
-               }else
-               {
-
-               }
+               }else {  }
              }
            }
           // $prosresult  = Prospect::bsslineCodes($codes);
