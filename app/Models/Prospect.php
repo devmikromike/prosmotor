@@ -24,8 +24,6 @@ class Prospect extends Model
     {
       return $this->belongsToMany(Contact::class);
     }
-
-
     public function scopeWww($query)
     {
       return $query ->where('www','!=', '');
