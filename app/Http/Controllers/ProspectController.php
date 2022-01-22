@@ -19,8 +19,6 @@ class ProspectController extends Controller
 
     public function index(Request $request)
     {
-  //dd($request);
-
         $cityList =  Arr::exists($request, 'cityList');
         $idsList =  Arr::exists($request, 'idsList');
 
