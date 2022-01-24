@@ -43,24 +43,56 @@ class ProspectController extends Controller
            $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
            $proslist = [];
+           $countsum = [];
+           $c;
+           $countsum = array(
+             'code' => $c;
+            );
+        //   $countsum['code'];
+
            foreach($codes as $key => $code)
            {
              $c = $code['code'];
              foreach($results as $pros)
              {
-               if ($c == (int)$pros['bssCode'])
+               if ($c === (int)$pros['bssCode'])
                {
                  $proslist[] = $pros;
-               }else {              
+                 $i;
+
+                 if ($countsum['code'] === $c){
+                   $i++;
+                   $countsum  = array(
+                     'code' => $c,
+                     'total' => count($proslist) +$i,
+                   );
+                   dump($countsum);
+
+                 }else {
+                   $countsum  = array(
+                     'code' => $c,
+                     'total' => count($proslist)
+                   );
+                     dump($countsum);
+                 }
+                   dump($countsum);
+
+            //     $count['code']['total'] = count($proslist);
+
+               }else {
                 }
              }
+              $count = count($proslist);
+
+              dump($count);
            }
           // $prosresult  = Prospect::bsslineCodes($codes);
 
           return view('prospect.index')->with([
             'totalproslist' => $results,
             'proslist' => $proslist,
-            'bsscodes' => $codes
+            'bsscodes' => $codes,
+        //    'totalcount' => $count
           ]);
         } else {
           dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');

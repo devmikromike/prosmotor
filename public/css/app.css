@@ -820,11 +820,14 @@ select {
 .-ml-px {
 	margin-left: -1px;
 }
-.ml-1 {
-	margin-left: 0.25rem;
-}
 .mt-2 {
 	margin-top: 0.5rem;
+}
+.mb-4 {
+	margin-bottom: 1rem;
+}
+.ml-1 {
+	margin-left: 0.25rem;
 }
 .mr-2 {
 	margin-right: 0.5rem;
