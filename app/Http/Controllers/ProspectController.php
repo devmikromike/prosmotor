@@ -42,14 +42,17 @@ class ProspectController extends Controller
            }
            $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
-           $proslist = [];
-           $countsum = [];
-           $c;
-           $countsum = array(
-             'code' => $c;
-            );
-        //   $countsum['code'];
 
+           $total = [];
+           $proslist = [];
+           $countsum = [];  // Counter Array
+           $c = '';
+           $i = 0;
+           $t = 0;
+           $countsum = array( // Counter Array, reset
+             'code' => $c,
+             'total' => $t
+           );
            foreach($codes as $key => $code)
            {
              $c = $code['code'];
@@ -58,41 +61,38 @@ class ProspectController extends Controller
                if ($c === (int)$pros['bssCode'])
                {
                  $proslist[] = $pros;
-                 $i;
-
+                 $counter = array(
+                   'count' => 1
+                 );
                  if ($countsum['code'] === $c){
-                   $i++;
-                   $countsum  = array(
+
+                   $count   = array(
                      'code' => $c,
-                     'total' => count($proslist) +$i,
+                     'total' => count($counter+1),
                    );
-                   dump($countsum);
+                   $total[] = array_merge($countsum, $count);
+              //    dump($total);
 
                  }else {
                    $countsum  = array(
                      'code' => $c,
-                     'total' => count($proslist)
+                     'total' => count($counter)
                    );
-                     dump($countsum);
+                    $total[] = array_merge($countsum, $counter);
+
                  }
-                   dump($countsum);
-
-            //     $count['code']['total'] = count($proslist);
-
-               }else {
-                }
+               }else {}
              }
-              $count = count($proslist);
-
-              dump($count);
            }
+            
+          //      dump($countsum);
           // $prosresult  = Prospect::bsslineCodes($codes);
 
           return view('prospect.index')->with([
             'totalproslist' => $results,
             'proslist' => $proslist,
             'bsscodes' => $codes,
-        //    'totalcount' => $count
+            'totalcount' => $total
           ]);
         } else {
           dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');
