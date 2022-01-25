@@ -84,7 +84,7 @@ class ProspectController extends Controller
                }else {}
              }
            }
-            
+
           //      dump($countsum);
           // $prosresult  = Prospect::bsslineCodes($codes);
 
@@ -106,7 +106,7 @@ class ProspectController extends Controller
 
     public function show($id)
     {
-        //
+      return view('prospect.show');
     }
 
     public function edit($id)

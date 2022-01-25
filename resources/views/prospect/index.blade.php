@@ -7,9 +7,7 @@
             <option value="{{ $code['nameFI'] }} ">
             {{ $code['code'] }} ..... {{ $code['nameFI'] }} ... {{__('Kokonaismäärä')}}
             {{ $count['total'] }}
-      @else
-          @continue
-      @endif
+         @endif
     </option>
     @endforeach
  @endforeach

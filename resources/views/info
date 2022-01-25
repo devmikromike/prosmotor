@@ -32,3 +32,5 @@ object-contain w-full
 ************
 {{ $code['code'] }} ..... {{ $code['nameFI'] }} ... {{__('Kokonaismäärä')}}
 {{ $count['code'] === $code['code'] ?  $count['total']  : @continue  }}
+************
+  {{ route('public.show', $pros['id'])}}">

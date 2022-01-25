@@ -14,6 +14,7 @@ Route::get('/', function () {
 Route::get('/',[HomeController::class, 'index'])->name('public');
 Route::get('/prospect',[ProspectController::class,'list'])->name('public.list');
 Route::post('/prospect',[ProspectController::class,'index'])->name('public.index');
+Route::post('/prospect/{id}',[ProspectController::class,'show'])->name('public.show');
 
 Route::get('/SearchByVatID/{vatID}',[SearchController::class, 'perVatID'])->name('vatid');
 Route::get('/SearchByName/{name}',[SearchController::class, 'perName'])->name('name');
