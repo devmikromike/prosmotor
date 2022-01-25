@@ -4,7 +4,7 @@
   @foreach ($bsscodes as $code)
       @foreach ($totalcount as $count)
           @if ($count['code'] === $code['code'])
-            <option value="{{ $code['nameFI'] }} ">
+            <option class="mr-4" value="{{ $code['nameFI'] }} ">
             {{ $code['code'] }} ..... {{ $code['nameFI'] }} ... {{__('Kokonaismäärä')}}
             {{ $count['total'] }}
          @endif

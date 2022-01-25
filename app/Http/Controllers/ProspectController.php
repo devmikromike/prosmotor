@@ -65,21 +65,17 @@ class ProspectController extends Controller
                    'count' => 1
                  );
                  if ($countsum['code'] === $c){
-
                    $count   = array(
                      'code' => $c,
                      'total' => count($counter+1),
                    );
                    $total[] = array_merge($countsum, $count);
-              //    dump($total);
-
                  }else {
                    $countsum  = array(
                      'code' => $c,
                      'total' => count($counter)
                    );
                     $total[] = array_merge($countsum, $counter);
-
                  }
                }else {}
              }
