@@ -28,3 +28,7 @@ dd($cityList);
 </select>
 *********
 object-contain w-full
+'''''''''''''''
+************
+{{ $code['code'] }} ..... {{ $code['nameFI'] }} ... {{__('Kokonaismäärä')}}
+{{ $count['code'] === $code['code'] ?  $count['total']  : @continue  }}
