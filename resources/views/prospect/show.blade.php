@@ -16,7 +16,7 @@
                                   font-medium text-gray-500 tracking-wider">
                                   {{  url('') }} <br>
                                   {{  url()->full()}} <br>
-                                  {{  $prospect->www }} 
+              <a  href="{{ str_replace(url(''),'X', $prospect->www) }}"  >{{  $prospect->www }} </a>   
              </th>
 
           </thead>
