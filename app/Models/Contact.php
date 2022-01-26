@@ -25,16 +25,14 @@ class Contact extends Model
 
     public function extractContact($contacts, $vatId)
     {
+      $phone_value = '0';
+      $www_value = '0';
+      $mobile_value ='0';
 
       foreach($contacts as $contact)
       {
         if($contact['version']===1){
           if($contact['language']=== 'EN'){
-
-                 $phone_value = '0';
-                 $www_value = '0';
-                 $mobile_value ='0';
-
                 if($contact['type'] === 'Telephone')
                 {
                      if(!empty($contact['value'])){
@@ -66,15 +64,15 @@ class Contact extends Model
                   }
               }
 
-              $contact = array(
-                'phone' => $phone_value,
-                'mobile' => $mobile_value
-              );
             }
           }
+          $contact  = array(
+          'phone' => $phone_value,
+          'mobile' => $mobile_value
+        );
       }
-      $contacts = SELF::saveContact($contact);
 
+      $contacts = SELF::saveContact($contact);
       $contacts->prospects()->attach($contacts->id);
 
        if(!empty($www_value)){

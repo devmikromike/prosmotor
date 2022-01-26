@@ -113,7 +113,7 @@ class Search extends Model
           $r = collect($response['results']);
         $sum = SELF::counter($r);
         if($sum === 1)
-        {      
+        {
             $data = $response;
             SELF::extractJson($data); // single data
           return $results = array(
