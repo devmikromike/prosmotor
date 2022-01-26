@@ -117,7 +117,9 @@ class ProspectController extends Controller
       ->where('endDate', NULL)
       ->get();
       //  Contact Model - Pivot Contact_Prospect
-      $contact = $prospect ->contacts()->get();
+      $contacts = $prospect ->contacts()->get();
+      $contact = $contacts->toArray();     
+
       return view('prospect.show',[
         'prospect' => $prospect,
         'location' => $location,

@@ -9,7 +9,9 @@ use App\Models\Prospect;
 class Contact extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = [
+      'title', 'name', 'email','phone', 'mobile'
+    ];
 
     public $phone;
     public $www;
