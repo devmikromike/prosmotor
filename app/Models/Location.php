@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Models\ProsBlackListed;
 use App\Models\CityList;
+use App\Models\Prospect;
 
 class Location extends Model
 {
@@ -17,6 +18,10 @@ class Location extends Model
     public function cities()
     {
       return hasMany(CityList::class);
+    }
+    public function prospects()
+    {
+      return $this->belongsToMany(Prospect::class);
     }
     public function scopeEndDate($query)
     {

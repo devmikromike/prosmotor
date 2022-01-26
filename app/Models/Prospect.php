@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\ProsBlackListed;
 use App\Models\Contact;
+use App\Models\Location;
 
 class Prospect extends Model
 {
@@ -24,6 +25,13 @@ class Prospect extends Model
     {
       return $this->belongsToMany(Contact::class);
     }
+    public function locations()
+    {
+      return $this->belongsToMany(Location::class);
+    }
+/************
+*  Start Scopes
+*/
     public function scopeWww($query)
     {
       return $query ->where('www','!=', '');
@@ -33,6 +41,10 @@ class Prospect extends Model
       $results = $query ->where('bssCode',$code);
       return $results;
     }
+
+    /************
+    *  End Scopes
+    */
     public function bsslineCodes($codes)
     {
       $prosList = [];

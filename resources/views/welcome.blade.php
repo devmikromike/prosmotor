@@ -1,9 +1,10 @@
  @extends('parts.app')
     @section ('body')
           <div class="flex flex-col mt-4">
-              <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto mb-2 " >
-                 Search companies from local database, if it is not exist, it will automatic find from PRH.
-                 <p>You can search only Limited companies (OY).</p>
+              <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto mb-3 " >
+                {{ __(" Voit hakea yrityksiä , PRH:n - (Patentti- ja rekisterihallitus) rekisteristä.") }} <br>
+                {{ __(" yrtistiedot tallentuvat automaattisesti ProspectMoottoriin.") }}<br>
+                 <p class="mt-2">{{__("Tällä hetkellä voit hakea ainostaan Osakeyhtiöiden tietoja (OY).")}}</p>
                </span>
           </div>
           <div class="container flex flex-row mx-auto bg-gray-200  ">

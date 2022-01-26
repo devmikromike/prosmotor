@@ -10,6 +10,7 @@ use App\Models\ProsBssLine;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use App\Models\Location;
 
 class ProspectController extends Controller
 {
@@ -35,6 +36,8 @@ class ProspectController extends Controller
              {
                $vatId = $pros['vat_id'];
                $pros['name'] = Prospect::getName($vatId);
+               $pros_model = Prospect::getId($vatId);
+               $pros['pros_id'] = $pros_model->id;
                // return code and nameFI in Array!
               (int)$pros['bssCode'] = Prospect::getBssCode($vatId);
                $results[] = $pros;
@@ -81,7 +84,7 @@ class ProspectController extends Controller
              }
            }
 
-          //      dump($countsum);
+             dump($proslist);
           // $prosresult  = Prospect::bsslineCodes($codes);
 
           return view('prospect.index')->with([
@@ -102,7 +105,24 @@ class ProspectController extends Controller
 
     public function show($id)
     {
-      return view('prospect.show');
+      //  Prospect Model
+      $prospect = Prospect::find($id);
+      $vatId = $prospect->vatId;
+    //  $convert = str_replace('-','',$vatId);
+    //  $vatId = (int)$convert;
+    //  dd($vatId);
+    //  Location Model
+      $location = Location::where('vat_id', $vatId)
+      ->where('type', 1)
+      ->where('endDate', NULL)
+      ->get();
+      //  Contact Model - Pivot Contact_Prospect
+      $contact = $prospect ->contacts()->get();
+      return view('prospect.show',[
+        'prospect' => $prospect,
+        'location' => $location,
+        'contacts' => $contact
+      ]);
     }
 
     public function edit($id)

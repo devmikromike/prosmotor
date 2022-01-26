@@ -7,7 +7,7 @@
           <thead class="bg-gray-50">
             <tr>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Vat Id (Y-tunnus)
+            ID / Vat Id (Y-tunnus)
               </th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 
@@ -19,16 +19,15 @@
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             @foreach($proslist as $pros)
-
             <tr>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-le">
-                   {{ $pros['vat_id'] }}
+                ID: {{ $pros['pros_id'] }}  /    {{ $pros['vat_id'] }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">
-                  <a href="{{ route('pros.show', 1) }} ">
+                  <a href="{{ route('pros.show',$pros['pros_id']) }} ">
                   {{ $pros['name'] }}  </a>
                 </div>
               </td>
@@ -43,11 +42,10 @@
               </td>
             </tr>
           @endforeach
+        </tbody>
 
-          </tbody>
-
-        </table>
-      </div>
+      </table>
     </div>
   </div>
+ </div>
 </div>
