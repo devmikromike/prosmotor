@@ -14,11 +14,8 @@
                                   font-medium text-gray-500 tracking-wider">     {{ $prospect->name}}  </th>
               <th scope="col" class=" px-6 py-3 text-left text-md uppercase
                                   font-medium text-gray-500 tracking-wider">
-                                  {{  url('') }} <br>
-                                  {{  url()->full()}} <br>
-              <a  href="{{ str_replace(url(''),'X', $prospect->www) }}"  >{{  $prospect->www }} </a>   
+              <a  href="http://{{ $prospect->www }}"  >{{  $prospect->www }} </a>
              </th>
-
           </thead>
 
           <thead class="flex-row bg-gray-50">
