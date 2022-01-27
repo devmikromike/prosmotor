@@ -70,7 +70,7 @@ class ProspectController extends Controller
                  if ($countsum['code'] === $c){
                    $count   = array(
                      'code' => $c,
-                     'total' => count($counter+1),
+                     'total' => count($counter)+1,
                    );
                    $total[] = array_merge($countsum, $count);
                  }else {
@@ -83,8 +83,6 @@ class ProspectController extends Controller
                }else {}
              }
            }
-
-             dump($proslist);
           // $prosresult  = Prospect::bsslineCodes($codes);
 
           return view('prospect.index')->with([
@@ -118,7 +116,7 @@ class ProspectController extends Controller
       ->get();
       //  Contact Model - Pivot Contact_Prospect
       $contacts = $prospect ->contacts()->get();
-      $contact = $contacts->toArray();     
+      $contact = $contacts->toArray();
 
       return view('prospect.show',[
         'prospect' => $prospect,
