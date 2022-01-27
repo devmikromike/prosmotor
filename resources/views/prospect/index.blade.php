@@ -6,7 +6,7 @@
           @if ($count['code'] === $code['code'])
             <option class="mr-4" value="{{ $code['nameFI'] }} ">
             {{ $code['code'] }} ..... {{ $code['nameFI'] }} ... {{__('Kokonaismäärä')}}
-            {{ $count['total'] }}
+            {{ $count['total'] }} .... Kaupunki: {{ $count['city'] }}
          @endif
     </option>
     @endforeach

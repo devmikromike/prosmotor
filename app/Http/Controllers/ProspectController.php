@@ -38,11 +38,13 @@ class ProspectController extends Controller
                $pros['name'] = Prospect::getName($vatId);
                $pros_model = Prospect::getId($vatId);
                $pros['pros_id'] = $pros_model->id;
+               $pros['www'] = $pros_model->www;
                // return code and nameFI in Array!
               (int)$pros['bssCode'] = Prospect::getBssCode($vatId);
                $results[] = $pros;
              }
            }
+
            $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
 
@@ -67,17 +69,24 @@ class ProspectController extends Controller
                  $counter = array(
                    'count' => 1
                  );
+                 $city  = $pros['city'];
+
                  if ($countsum['code'] === $c){
                    $count   = array(
                      'code' => $c,
                      'total' => count($counter)+1,
+                     'city' => $city
                    );
+
+
                    $total[] = array_merge($countsum, $count);
                  }else {
                    $countsum  = array(
                      'code' => $c,
-                     'total' => count($counter)
+                     'total' => count($counter),
+                     'city' => $city
                    );
+
                     $total[] = array_merge($countsum, $counter);
                  }
                }else {}
@@ -89,7 +98,8 @@ class ProspectController extends Controller
             'totalproslist' => $results,
             'proslist' => $proslist,
             'bsscodes' => $codes,
-            'totalcount' => $total
+            'totalcount' => $total,
+            'citylist' => $request->cityList
           ]);
         } else {
           dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');
