@@ -45,6 +45,16 @@ class Prospect extends Model
     /************
     *  End Scopes
     */
+
+    // rearrange logic for citylist and idsList
+    public function prosCities()
+    { // selected cities for Prospect List
+      // foreach
+      // return single city
+
+    }
+
+
     public function bsslineCodes($codes)
     {
       $prosList = [];

@@ -4,16 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
-
-use App\Models\Location;
-use App\Models\Proslist;
-use App\Models\Proscounter;
 use App\Models\Prospect;
 use App\Models\CityList;
 use App\Models\ProsBssLine;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
+use App\Models\Location;
+use App\Models\Proslist;
 
 class ProspectController extends Controller
 {
@@ -54,9 +52,6 @@ class ProspectController extends Controller
            $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
            // *********
-          //  $perCity = Proscounter::countProsPerCity($results);
-           //************
-
 
            $count = [];
            $total = [];
@@ -95,6 +90,9 @@ class ProspectController extends Controller
 
                       $total[] = array_merge($countsum, $count);
 
+                      dump('add');
+                      dump($citylist);
+                      dump($total);
 
                     }else {$citylist[] = $city;
                       $counter = array(
@@ -112,7 +110,8 @@ class ProspectController extends Controller
                      'city' => $city,
                    );
               //      $total[] = array_merge($countsum, $counter);
-          
+                    dump('new');
+                  dump($total);
                  }
                }else {}
              }

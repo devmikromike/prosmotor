@@ -11,7 +11,7 @@ class ProsBssLine extends Model
     protected $guarded = [];
 
     public function codeList($idsCodes)
-    {
+    {  // Business line codes
       $results = [];
 
         foreach ($idsCodes as $id)
@@ -23,7 +23,6 @@ class ProsBssLine extends Model
           $field['code'] = $code;
           $results[] = $field;
         }
-
       return $results;
     }
     public function scopeCodeAll($query)

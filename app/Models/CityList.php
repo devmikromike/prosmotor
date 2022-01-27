@@ -11,6 +11,7 @@ class CityList extends Model
     use HasFactory;
 
     protected $guarded = [];
+    // spublic $response = array();
 
     public function locations()
     {
@@ -36,6 +37,7 @@ class CityList extends Model
       $sum = $cities->count();
       $response = array();
       $results = [];
+      $citylist = [];
 
         foreach ($cities as $city)
         {
@@ -44,12 +46,15 @@ class CityList extends Model
           ->VisitAddress()
           ->get();
 
+          $citylist[] = $city;
+          $citylist[$city]['prosCount'] = $res->count();
           $results[] = $res;
         }
-       $reponse['prospects'] = $results;
+       $reponse['prospects'] = $results;  
 
       return $response = array(
           'proslist' => $reponse['prospects'],
+          'citylist' => $citylist
         );
     }
 }
