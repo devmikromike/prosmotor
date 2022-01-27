@@ -47,9 +47,10 @@ class ProspectController extends Controller
 
            $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
-
+           $count = [];
            $total = [];
            $proslist = [];
+           $citylist = [];
            $countsum = [];  // Counter Array
            $c = '';
            $i = 0;
@@ -65,41 +66,57 @@ class ProspectController extends Controller
              {
                if ($c === (int)$pros['bssCode'])
                {
-                 $proslist[] = $pros;
-                 $counter = array(
-                   'count' => 1
-                 );
                  $city  = $pros['city'];
 
+                 $proslist[] = $pros;
+
                  if ($countsum['code'] === $c){
-                   $count   = array(
-                     'code' => $c,
-                     'total' => count($counter)+1,
-                     'city' => $city
-                   );
+                    if(in_array( $pros['city'], $citylist ))
+                    {
+                      $counter = array(
+                        'count' => 1
+                      );
+                      $count   = array(
+                        'code' => $c,
+                        'total' => count($counter)+1
+                      );
+                      $count['city'] = $city;
 
+                      $total[] = array_merge($countsum, $count);
 
-                   $total[] = array_merge($countsum, $count);
+                      dump('add');
+                      dump($citylist);
+                      dump($total);
+
+                    }else {$citylist[] = $city;
+                      $counter = array(
+                        'count' => 1
+                      );
+                    }
+
                  }else {
+                   $counter = array(
+                     'count' => 1
+                   );
                    $countsum  = array(
                      'code' => $c,
                      'total' => count($counter),
-                     'city' => $city
+                     'city' => $city,
                    );
-
-                    $total[] = array_merge($countsum, $counter);
+              //      $total[] = array_merge($countsum, $counter);
+                    dump('new');
+                  dump($total);
                  }
                }else {}
              }
            }
-          // $prosresult  = Prospect::bsslineCodes($codes);
 
           return view('prospect.index')->with([
             'totalproslist' => $results,
             'proslist' => $proslist,
             'bsscodes' => $codes,
             'totalcount' => $total,
-            'citylist' => $request->cityList
+            'citylist' => $request->cityList,
           ]);
         } else {
           dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');
