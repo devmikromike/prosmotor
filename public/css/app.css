@@ -1039,12 +1039,12 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(229, 231, 235, var(--tw-border-opacity));
 }
+.border-transparent {
+	border-color: transparent;
+}
 .border-blue-700 {
 	--tw-border-opacity: 1;
 	border-color: rgba(29, 78, 216, var(--tw-border-opacity));
-}
-.border-transparent {
-	border-color: transparent;
 }
 .bg-white {
 	--tw-bg-opacity: 1;

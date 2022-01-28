@@ -1,16 +1,12 @@
 @extends('parts.app')
 @section('body')
-<select class="mt-2 mb-4" name="codelist">
-  @foreach ($bsscodes as $code)
-      @foreach ($totalcount as $count)
-          @if ($count['code'] === $code['code'])
-            <option class="mr-4" value="{{ $code['nameFI'] }} ">
-            {{ $code['code'] }} ..... {{ $code['nameFI'] }} ... {{__('Kokonaismäärä')}}
-            {{ $count['total'] }} .... Kaupunki: {{ $count['city'] }}
-         @endif
-    </option>
-    @endforeach
- @endforeach
-</select>
-@include('prospect.table')
+  <select class="mt-2 mb-4" name="codelist">
+      @foreach ($bsscodes as $code)
+
+          <option class="mr-4" value="{{ $code['nameFI'] }} ">
+              {{ $code['code'] }} ..... {{ $code['nameFI'] }}
+          </option>
+     @endforeach
+  </select>
+  @include('prospect.table')
 @endsection

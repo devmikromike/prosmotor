@@ -47,10 +47,10 @@ class CityList extends Model
           ->get();
 
           $citylist[] = $city;
-          $citylist[$city]['prosCount'] = $res->count();
+    //      $citylist[$city]['prosCount'] = $res->count();
           $results[] = $res;
         }
-       $reponse['prospects'] = $results;  
+       $reponse['prospects'] = $results;
 
       return $response = array(
           'proslist' => $reponse['prospects'],

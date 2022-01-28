@@ -25,39 +25,36 @@ class ProspectController extends Controller
     {
         $cityList =  Arr::exists($request, 'cityList');
         $idsList =  Arr::exists($request, 'idsList');
+        $results = [];
+        $prosCodes =[];
+        $proslist = [];
+        $total = [];
 
         if ($cityList == 'true' && $idsList == 'true')
         {
-           $results = [];
-           $prosCodes =[];
            $cities = collect($request['cityList']);
            // return proslist per City as collection
            $prosCities = CityList::cityList($cities);
            $results =  Proslist::proscities($prosCities);
-
-/* moved to proslist - model
-          foreach ($prosCities['proslist'] as $prospects)
-           { // for 'totalproslist'
-             foreach ($prospects as $pros)
-             {
-               $vatId = $pros['vat_id'];
-               $pros['name'] = Prospect::getName($vatId);
-               $pros_model = Prospect::getId($vatId);
-               $pros['pros_id'] = $pros_model->id;
-               $pros['www'] = $pros_model->www;
-               // return code and nameFI in Array!
-              (int)$pros['bssCode'] = Prospect::getBssCode($vatId);
-               $results[] = $pros;
-             }
-           }   */
            // Business line codes
            $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
+           $proslist = Proscounter::total($codes, $results, $prosCities);
+
+           return view('prospect.index')->with([
+        //     'totalproslist' => $results,
+             'proslist' => $proslist,    // UI
+             'bsscodes' => $codes,        // UI
+             'totalcount' => $total,     /// UI
+             'citylist' => $request->cityList,
+           ]);
+         } else {
+           dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');
+         }
            // *********
           //  $perCity = Proscounter::countProsPerCity($results);
            //************
-
-
+/*
            $count = [];
            $total = [];
            $proslist = [];
@@ -112,22 +109,13 @@ class ProspectController extends Controller
                      'city' => $city,
                    );
               //      $total[] = array_merge($countsum, $counter);
-          
+
                  }
                }else {}
              }
            }
+*/
 
-          return view('prospect.index')->with([
-            'totalproslist' => $results,
-            'proslist' => $proslist,
-            'bsscodes' => $codes,
-            'totalcount' => $total,
-            'citylist' => $request->cityList,
-          ]);
-        } else {
-          dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');
-        }
     }
 
     public function store(Request $request)
