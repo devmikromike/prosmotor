@@ -34,3 +34,15 @@ object-contain w-full
 {{ $count['code'] === $code['code'] ?  $count['total']  : @continue  }}
 ************
   {{ route('public.show', $pros['id'])}}">
+  ***************
+  <div class="mt-1 mb-4">
+      <select class="" name="codelist" id="codelist">
+          <option class="" value="id">Sort By</option>
+          <option class="" {{ request()->code }} value="code">C0de Name  (asc)</option>
+          <option class="" {{ request()->name }} value="name">Name (desc)</option>
+          <option class="" {{ request()->email }} value="email">email (asc)</option>
+          <option class="" {{ request()->email }} value="email">email (desc)</option>
+      </select>
+  </div>
+  <hr>
+  <br>

@@ -40,7 +40,7 @@ class ProspectController extends Controller
            $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
            $proslist = Proscounter::total($codes, $results, $prosCities);
-
+ 
            return view('prospect.index')->with([
         //     'totalproslist' => $results,
              'proslist' => $proslist,    // UI
