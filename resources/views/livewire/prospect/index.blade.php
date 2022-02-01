@@ -1,16 +1,13 @@
 <div>
     <p> {{__('Potentiaalisten asiakkaiden lista')}}</p>
-
-
-    dd($citylist, $codelist);
-
     <div class="flex flex-1 ">
+
        <div class="flex flex-col flex-1  bg-blue-300 ">
          <form class="" >
            <div class="flex flex-row ml-4 mt-4">
              <div class=" flex flex-1 flex-col ml-6 bg-blue-300">
                <p class="mb-2">{{__('Kaupunki lista: ')}}</p>
-               <select class="mt-2" wire:model ="cityList"  multiple>
+               <select class="mt-2" wire:model ="citynames" multiple  >
                  @foreach($citylist as $city)
                    <option value="{{ $city['name'] }} " >
                      {{ $city['name'] }}
@@ -21,7 +18,7 @@
 
              <div class=" flex flex-col ml-6 mr-4 flex-1 ">
                <p class="mb-2">{{__('Toimiala lista.')}}</p>
-               <select class="mt-2" wire:model ="codeList"   multiple>
+               <select class="mt-2" wire:model ="codeIds" multiple >
                  @foreach($codelist as $code)
                    <option value="{{ $code['id'] }} " >
                      {{ $code['nameFI'] }}
@@ -32,6 +29,13 @@
            </div>
            <button wire:click.prevent= "submit" >{{__('Hae listalta.')}}</button>
         </form>
+       </div>
+       <div class="">
+         <p>huhuuu</p>
+         {{ dd($list); }}
+         @foreach ($list as $pros)
+           {{ $pros }}
+         @endforeach
        </div>
     </div>
 </div>

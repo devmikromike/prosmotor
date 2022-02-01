@@ -14,11 +14,16 @@ use Illuminate\Support\Str;
 class Index extends Component
 {
 
-    public array $cityList = [];
-    public array $citylist;
-  //  public $idsList = array();
-    public array $codeList = [];
-    public array $codelist;
+    public array $citynames = [];
+    public array $codeIds = [];
+    public array $prosCities = [];
+    //public array $citiesforpros = [];
+    public $citiesforpros;
+    public array $cities = [];
+    public $list = array();
+    public $item;
+    public $prospects;
+    public $pros;
 
     protected $rules = [
 
@@ -26,35 +31,42 @@ class Index extends Component
 
     public function submit()
     {
-      dd($cityList, $codeList);
-    }
+      $cities = $this->citynames;
+      $prosCities = CityList::cityList($cities);
 
-    public function mount()
+// dump($prosCities['proslist'] );
+
+   $cp = $prosCities['proslist'] ;
+   
+
+    foreach ($cp as $p)
+    /* $p  is collection
+    *  $cp is multi collections
+    */
     {
-      $this->cityList = CityList::CityAll()->toArray();
-      $this->codeList = ProsBssLine::CodeAll()->toArray();
+      foreach ($p as $a)  // $a single prospect!.
+      {
+      //   dump ($a);
+      //  dump( $a->id);
+      $list[] = $a;
+      }
+    }
+    //  dump($list);
+
+//   return view('livewire.prospect.index');
+
+
+        return view('livewire.prospect.index',
+        ['list' => $prosCities['proslist']]);
     }
 
     public function render()
     {
-    //  $cityList = CityList::CityAll()->toArray();
-    //  $codeList = ProsBssLine::CodeAll()->toArray();
-
-      // dd($cityList, $codeList);
-
-        return view('livewire.prospect.index',
-        ['citylist' => $this->cityList,
-         'codelist' => $this->codeList
+      $citylist = CityList::CityAll()->toArray();
+      $codelist = ProsBssLine::CodeAll()->toArray();
+      return view('livewire.prospect.index',
+        ['citylist' => $citylist,
+         'codelist' => $codelist
        ]);
-        /*
-        [ 'citylist' => CityList::CityAll(),
-          'codelist' => ProsBssLine::CodeAll()
-        ]);
-        */
-        /*
-        ['cityList' => $cityList,
-         'codeList' => $codeList
-       ]); */
-
     }
 }

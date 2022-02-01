@@ -36,10 +36,12 @@ class CityList extends Model
     }
     public function cityList($cities)
     { // getting collection $cities
-      $sum = $cities->count();
+      // $sum = $cities->count();
       $response = array();
       $results = [];
       $citylist = [];
+
+
 
         foreach ($cities as $city)
         {
@@ -52,11 +54,19 @@ class CityList extends Model
     //      $citylist[$city]['prosCount'] = $res->count();
           $results[] = $res;
         }
-       $reponse['prospects'] = $results;
 
+        $response = array(
+            'proslist' => $results,
+        );
+  //     $reponse['prospects'] = $results;
+
+
+         return  $response;
+
+/*
       return $response = array(
           'proslist' => $reponse['prospects'],
           'citylist' => $citylist
-        );
+        ); */
     }
 }
