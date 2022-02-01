@@ -27,7 +27,9 @@ class ProsBssLine extends Model
     }
     public function scopeCodeAll($query)
     {
-      return $query ->get()->toArray();
+      return $query
+      ->orderBy('nameFI')
+      ->get();
     }
     public function scopeBss($query, $id)
     {

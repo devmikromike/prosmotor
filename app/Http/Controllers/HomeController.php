@@ -10,8 +10,8 @@ class HomeController extends Controller
 {
  public function index()
  {
-   $cityList = CityList::CityAll();
-   $codeList = ProsBssLine::CodeAll();
+   $cityList = CityList::CityAll()->toArray();
+   $codeList = ProsBssLine::CodeAll()->toArray();
   /*
    foreach($cityList as $city)
    {

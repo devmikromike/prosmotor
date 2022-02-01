@@ -37,7 +37,6 @@
                  <div class="flex flex-col flex-1  bg-blue-300 ">
                    <form class=" flex " action="{{ route('public.index') }} " method="post">
                          @csrf
-
                      <div class="flex flex-row ml-4 mt-4">
                        <div class=" flex flex-1 flex-col ml-6 bg-blue-300">
                          <p class="mb-2">Pickup City(es) from CityList, Max 5.</p>

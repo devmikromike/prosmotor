@@ -23,7 +23,9 @@ class CityList extends Model
     }
     public function scopeCityAll($query)
     {
-      return $query ->get()->toArray();
+      return $query
+      ->orderBy('name')
+      ->get();
     }
     public function saveCity($city)
     {
