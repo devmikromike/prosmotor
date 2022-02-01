@@ -12,7 +12,7 @@ Route::get('/', function () {
 }); */
 
 Route::get('/',[HomeController::class, 'index'])->name('public');
-Route::get('/prospect',[ProspectController::class,'list'])->name('public.list');
+// Route::get('/prospect',[ProspectController::class,'list'])->name('public.list');
 Route::post('/prospect',[ProspectController::class,'index'])->name('public.index');
 Route::get('/prospect/{id}',[ProspectController::class,'show'])->name('pros.show');
 

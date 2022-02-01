@@ -1,16 +1,14 @@
 <div>
     <p> {{__('Potentiaalisten asiakkaiden lista')}}</p>
-
-
-    dd($citylist, $codelist);
-
+    {{ dd($cityList, $codeList); }}
     <div class="flex flex-1 ">
        <div class="flex flex-col flex-1  bg-blue-300 ">
-         <form class="" >
+         <form class=" flex " action="{{ route('public.index') }} " method="post">
+               @csrf
            <div class="flex flex-row ml-4 mt-4">
              <div class=" flex flex-1 flex-col ml-6 bg-blue-300">
                <p class="mb-2">{{__('Kaupunki lista: ')}}</p>
-               <select class="mt-2" wire:model ="cityList"  multiple>
+               <select class="mt-2" name="cityList[]" multiple>
                  @foreach($citylist as $city)
                    <option value="{{ $city['name'] }} " >
                      {{ $city['name'] }}
@@ -18,11 +16,10 @@
                  @endforeach
                </select>
              </div>
-
              <div class=" flex flex-col ml-6 mr-4 flex-1 ">
                <p class="mb-2">{{__('Toimiala lista.')}}</p>
-               <select class="mt-2" wire:model ="codeList"   multiple>
-                 @foreach($codelist as $code)
+               <select class="mt-2" name="idsList[]" multiple>
+                 @foreach($codeList as $code)
                    <option value="{{ $code['id'] }} " >
                      {{ $code['nameFI'] }}
                    </option>
@@ -30,8 +27,12 @@
                </select>
              </div>
            </div>
-           <button wire:click.prevent= "submit" >{{__('Hae listalta.')}}</button>
-        </form>
+           <button type="submit" name="button">{{__('Hae listalta.')}}</button>
+         </form>
        </div>
+    </div>
+    <div class="">
+        {{ implode(' - ', $cityList) }}
+        {{ implode(' - ', $codeList) }}
     </div>
 </div>

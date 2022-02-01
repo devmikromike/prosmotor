@@ -25,7 +25,7 @@ class ProspectController extends Controller
     {
         $cityList =  Arr::exists($request, 'cityList');
         $idsList =  Arr::exists($request, 'idsList');
-        $results = [];
+    //    $results = [];
         $prosCodes =[];
         $proslist = [];
         $total = [];
@@ -40,8 +40,9 @@ class ProspectController extends Controller
            $idsCodes  = $request['idsList'];
            $codes = ProsBssLine::codeList($idsCodes);
            $proslist = Proscounter::total($codes, $results, $prosCities);
- 
-           return view('prospect.index')->with([
+
+          // return view('prospect.index')->with([
+          return view('welcome')->with([
         //     'totalproslist' => $results,
              'proslist' => $proslist,    // UI
              'bsscodes' => $codes,        // UI
