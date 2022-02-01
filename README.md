@@ -10,3 +10,4 @@
  21.01.2022 -> route to API fixed.
  22.01.2022 -> proslist loop fixed.
  25.01.2022 -> proslist @if loop fixed.
+ 01.02.2022 -> bug: return data from livewire component.
