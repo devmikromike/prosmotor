@@ -30,9 +30,10 @@
            <button wire:click.prevent= "submit" >{{__('Hae listalta.')}}</button>
         </form>
        </div>
+       
        <div class="">
          <p>huhuuu</p>
-         {{ dd($list); }}
+
          @foreach ($list as $pros)
            {{ $pros }}
          @endforeach
