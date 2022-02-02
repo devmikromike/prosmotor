@@ -39,7 +39,6 @@ class SearchByVatid extends Component
       return  $statusMessage = $this->response['Status_message'];
       }
     }
-
       public function mount()
       {
          $this->search = new Search();
@@ -51,11 +50,12 @@ class SearchByVatid extends Component
         //  dump($this->vatId);
 
        $this->validate();
-          Search::perVatID($this->vatId);
+       session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
+      $data= (new Search())->perVatID($this->vatId);
 
     //   $this->statusMessage = SELF::emptyResponse($this->response);
 
-      return view('livewire.search-by-vatid');
+   //    return view('livewire.search-by-vatid');
     }
       public function render()
       {

@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Prospect;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use App\Models\Prospect;
 use App\Models\CityList;
@@ -13,60 +14,76 @@ use Illuminate\Support\Str;
 
 class Index extends Component
 {
+    public array $citynames = [];  // array in UI: index
+    public array $codeIds = [];    // array in UI: index
+    public array $prosList = [];   // return from model ?!?
+    public $message;              // success message to UI
+    public $citylist;    // model
+    public $prosBssLine;  // model
 
-    public array $citynames = [];
-    public array $codeIds = [];
-    public array $prosCities = [];
-    //public array $citiesforpros = [];
-    public $citiesforpros;
-    public array $cities = [];
-    public $list = array();
-    public $item;
-    public $prospects;
-    public $pros;
-
-    protected $rules = [
-
-    ];
+    public function mount()
+    {
+       $this->citylist = new CityList();
+       $this->prosBssLine = new ProsBssLine();
+    }
+     protected function rules()
+     {
+       $array = [
+         'citynames' => ['required',Rule::in($this->citynames)],
+      ];
+      return $array;
+     }
 
     public function submit()
     {
-      $cities = $this->citynames;
-      $prosCities = CityList::cityList($cities);
 
-// dump($prosCities['proslist'] );
+    //  $this->validate();
+    //  dump($this->citynames);
+    //  dump('after validation');
 
-   $cp = $prosCities['proslist'] ;
-   
+     session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
+      $prosList =  (new CityList())->prosCityList($this->citynames);
 
+    //  dump($prosList);
+
+   }
+
+   // $cp = $prosCities['proslist'] ;
+
+/*
     foreach ($cp as $p)
     /* $p  is collection
     *  $cp is multi collections
     */
-    {
+  /*  {
       foreach ($p as $a)  // $a single prospect!.
       {
       //   dump ($a);
       //  dump( $a->id);
       $list[] = $a;
       }
-    }
+    } */
     //  dump($list);
 
-//   return view('livewire.prospect.index');
-
-
-        return view('livewire.prospect.index',
-        ['list' => $prosCities['proslist']]);
+    public function boot()
+    {
+      // dump('booting .... ');
     }
-
+    public function updatingSubmit()
+    {
+        dump('updating .... ');
+    }
+    public function updated()
+    {
+      // dump('updated .... ');
+    }
     public function render()
     {
-      $citylist = CityList::CityAll()->toArray();
-      $codelist = ProsBssLine::CodeAll()->toArray();
+      $citylists = CityList::CityAll()->toArray();
+      $codelists = ProsBssLine::CodeAll()->toArray();
       return view('livewire.prospect.index',
-        ['citylist' => $citylist,
-         'codelist' => $codelist
+        ['citylists' => $citylists,
+         'codelists' => $codelists
        ]);
     }
 }

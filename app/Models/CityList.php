@@ -34,14 +34,15 @@ class CityList extends Model
       ]);
       return $c;
     }
-    public function cityList($cities)
+    public function prosCityList($cities)
     { // getting collection $cities
       // $sum = $cities->count();
+
+
+
       $response = array();
       $results = [];
       $citylist = [];
-
-
 
         foreach ($cities as $city)
         {
