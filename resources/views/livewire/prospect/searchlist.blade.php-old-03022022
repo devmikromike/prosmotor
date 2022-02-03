@@ -1,0 +1,16 @@
+<div>
+    {{--  {{ dd($newproslist);}}  --}}
+    {{--  @foreach($newproslist as $pros) --}}
+    {{--  @endforeach --}}
+    <div wire:loading>
+            {{__('Hetki vielä ...')}}
+    </div>
+    @foreach($newproslist as $prospects)
+        @foreach($prospects as $prospect)
+          @foreach( $prospect as $pros)
+              {{ $pros['vat_id']}}, <br>
+              {{ $pros['city']}},  <br>               
+          @endforeach
+      @endforeach
+    @endforeach
+</div>

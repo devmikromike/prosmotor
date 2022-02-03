@@ -44,3 +44,8 @@
                    {{ $item->id}}
                  @endforeach
                 @endforeach
+****************
+<button wire:click.prefetch="toggleContent">Show Content</button>
+  @if ($contentIsVisible)
+  <span>Some Content...</span>
+ @endif

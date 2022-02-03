@@ -1,6 +1,9 @@
  @extends('parts.app')
     @section ('body')
           <div class="flex flex-col mt-4">
+            <div wire:offline>
+                You are now offline.
+            </div>
               <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto mb-3 " >
                 {{ __(" Voit hakea yrityksiä , PRH:n - (Patentti- ja rekisterihallitus) rekisteristä.") }} <br>
                 {{ __(" yrtistiedot tallentuvat automaattisesti ProspectMoottoriin.") }}<br>
@@ -36,6 +39,7 @@
               <div class="">
                 @livewire('prospect.index')
               </div>
+                @livewire('prospect.searchlist')
             </div>
         </div>
 @endsection

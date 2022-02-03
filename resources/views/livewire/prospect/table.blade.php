@@ -18,22 +18,22 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            @foreach($proslist as $pros)
+            @foreach($prospect as $pros) 
             <tr>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-le">
-                ID: {{ $pros['pros_id'] }}  /    {{ $pros['vat_id'] }}
+                ID: {{ $pros['vat_id'] }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">
-                  <a href="{{ route('pros.show',$pros['pros_id']) }} ">
-                  {{ $pros['name'] }}  </a> / {{ $pros['www'] }}
+                  <a href="# ">
+
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-le">
-                   {{ $pros['bssCode'] }}
+                   business field code
                 </div>
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                   {{  $pros['city']  }}

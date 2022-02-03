@@ -1,0 +1,5 @@
+@foreach( $prospect as $pros)
+
+    {{ $pros['vat_id']}}, <br>
+    {{ $pros['city']}},  <br>
+@endforeach
