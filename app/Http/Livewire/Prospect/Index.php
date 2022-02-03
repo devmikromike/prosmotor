@@ -16,15 +16,22 @@ class Index extends Component
 {
     public array $citynames = [];  // array in UI: index
     public array $codeIds = [];    // array in UI: index
-    public array $prosList = [];   // return from model ?!?
+    // public array $proslist = [];   // return from model ?!?
     public $message;              // success message to UI
     public $citylist;    // model
-    public $prosBssLine;  // model
+    public $codelist;  // model
 
     public function mount()
     {
-       $this->citylist = new CityList();
-       $this->prosBssLine = new ProsBssLine();
+      $this->citylist = new CityList();
+      $this->prosBssLine = new ProsBssLine();
+
+       //$this->$proslist =  $proslist;
+    }
+    public function booting()
+    {
+    //  $citylists = new CityList();
+    //  $codelists = new ProsBssLine();
     }
      protected function rules()
      {
@@ -33,57 +40,21 @@ class Index extends Component
       ];
       return $array;
      }
-
     public function submit()
     {
-
-    //  $this->validate();
-    //  dump($this->citynames);
-    //  dump('after validation');
-
      session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
-      $prosList =  (new CityList())->prosCityList($this->citynames);
-
-    //  dump($prosList);
-
-   }
-
-   // $cp = $prosCities['proslist'] ;
-
-/*
-    foreach ($cp as $p)
-    /* $p  is collection
-    *  $cp is multi collections
-    */
-  /*  {
-      foreach ($p as $a)  // $a single prospect!.
-      {
-      //   dump ($a);
-      //  dump( $a->id);
-      $list[] = $a;
-      }
-    } */
-    //  dump($list);
-
-    public function boot()
-    {
-      // dump('booting .... ');
-    }
-    public function updatingSubmit()
-    {
-        dump('updating .... ');
-    }
-    public function updated()
-    {
-      // dump('updated .... ');
+      $proslist =  (new CityList())->prosCityList($this->citynames);
     }
     public function render()
     {
       $citylists = CityList::CityAll()->toArray();
       $codelists = ProsBssLine::CodeAll()->toArray();
+    //  dd($citylists);
+
       return view('livewire.prospect.index',
         ['citylists' => $citylists,
          'codelists' => $codelists
+        // 'proslist' => $proslist
        ]);
     }
 }

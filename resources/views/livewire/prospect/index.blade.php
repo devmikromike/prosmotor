@@ -14,7 +14,9 @@
              <div class=" flex flex-1 flex-col ml-6 bg-blue-300">
                <p class="mb-2">{{__('Kaupunki lista: ')}}</p>
                <select class="mt-2" wire:model ="citynames" multiple  >
+
                  @foreach($citylists as $city)
+                 
                    <option value="{{ $city['name'] }} " >
                      {{ $city['name'] }}
                    </option>
