@@ -8,20 +8,20 @@
     </div>
     @endif
     @if(!empty($newproslist))
-  {{--    <div class="mt-4 mb-4"> --}}
-  {{--      <select class="mt-2 mb-4" name="codelist"> --}}
-  {{--          @foreach ($bsscodes as $code) --}}
-  {{--              <option class="mr-4" value="{{ $code['code'] }} "> --}}
-  {{--                  {{ $code['code']  }} ..... {{ $code['nameFI'] }} --}}
-  {{--              </option>
-  {{--         @endforeach --}}
-    {{--    </select> --}}
         <div class="flex flex-col bg-gray-200 dark:bg-gray-900 py-4 sm:pt-0 ">
-            @foreach($newproslist as $prospects)
-                @foreach($prospects as $prospect)
-                  @include ('livewire.prospect.table')
-              @endforeach
+          <div class="flex flex-row mt-4 mb-4">
+            <div class="">
+                @include('livewire.prospect.citydropdown')
+            </div>
+            <div class="">
+                @include('livewire.prospect.businessfields')
+            </div>
+          </div>
+
+            @foreach($newproslist['proslist'] as $key => $prospect)
+                    @include ('livewire.prospect.table')
             @endforeach
+
       </div>
     </div>
     @endif

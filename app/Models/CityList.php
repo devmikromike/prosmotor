@@ -35,10 +35,7 @@ class CityList extends Model
       return $c;
     }
     public function prosCityList($cities)
-    { // getting collection $cities
-      // $sum = $cities->count();
-
-
+    { // getting data from prospect.index component with $cities
 
       $response = array();
       $results = [];
@@ -51,23 +48,14 @@ class CityList extends Model
           ->VisitAddress()
           ->get();
 
-          $citylist[] = $city;
-    //      $citylist[$city]['prosCount'] = $res->count();
-          $results[] = $res;
+        $citylist[] = $city;
+        $results[] = $res;
         }
-
         $response = array(
             'proslist' => $results,
+            'citylist' => $citylist,
         );
-  //     $reponse['prospects'] = $results;
-
-
+      //dd($response['citylist']);
          return  $response;
-
-/*
-      return $response = array(
-          'proslist' => $reponse['prospects'],
-          'citylist' => $citylist
-        ); */
     }
 }

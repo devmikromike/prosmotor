@@ -22,6 +22,8 @@ class Index extends Component
     public $citylist;    // model
     public $codelist;  // model
     public $sendproslist;
+    public $codes;
+
 
     public function mount()
     {
@@ -35,24 +37,32 @@ class Index extends Component
       ];
       return $array;
      }
-    public function updatingSubmit($sendproslist)
+    public function updatingSubmit($sendproslist, $codes )
     {
-    //  dump($proslist) ; // data ok.
-
+      // data ok.
+       $sendcodelist = $codes;
+       $sendcitylist = $this->citynames;
+          
        $this->emit('proslistCreated', $sendproslist);  // data ok.
+       $this->emit('codelistCreated', $sendcodelist);
+       $this->emit('citylistCreated', $sendcitylist);
     }
     public function submit()
     {
      session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
       $sendproslist =  (new CityList())->prosCityList($this->citynames);
-      //  dump($sendproslist) ; // data ok.
+      $codes = (new ProsBssLine())->codeList($this->codeIds);
 
-      $this->updatingSubmit($sendproslist);
+      $this->updatingSubmit($sendproslist, $codes);
     }
     public function render()
     {
       $citylists = CityList::CityAll()->toArray();
       $codelists = ProsBssLine::CodeAll()->toArray();
+
+      $this->citylists = $citylists;
+      $this->codelists = $codelists;
+
       return view('livewire.prospect.index',
         ['citylists' => $citylists,
          'codelists' => $codelists,
