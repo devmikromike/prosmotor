@@ -42,7 +42,7 @@ class Index extends Component
       // data ok.
        $sendcodelist = $codes;
        $sendcitylist = $this->citynames;
-          
+
        $this->emit('proslistCreated', $sendproslist);  // data ok.
        $this->emit('codelistCreated', $sendcodelist);
        $this->emit('citylistCreated', $sendcitylist);
@@ -54,6 +54,8 @@ class Index extends Component
       $codes = (new ProsBssLine())->codeList($this->codeIds);
 
       $this->updatingSubmit($sendproslist, $codes);
+      session()->flash('message', '');
+
     }
     public function render()
     {

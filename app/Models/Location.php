@@ -50,14 +50,20 @@ class Location extends Model
     {
       return $query ->where('endDate','!=', '');
     }
-    public function extractLocation($data)
+    public function extractLocation($data, $id)
     {
-       $id = $data['businessId'];
+       // $id = $data['businessId']; // removed.
 
         if(!empty($data['addresses'])){
           $locations = $data['addresses'];
           foreach ($locations as $loc){
-            SELF::createLocation($id, $loc );
+          $location = SELF::createLocation($id, $loc);
+          $isNotNull = SELF::checkIfExistAddress($location);
+          // relation Location and Pros_id
+          if ($isNotNull === true)
+          {
+            $isok = $location->prospects()->attach($id);
+          }
         }
       }else {
         $locations = 'Ei osoite tietoja.';
@@ -65,7 +71,7 @@ class Location extends Model
    }
     public function createLocation($id, $loc)
     {
-        $address['vat_id'] = $id;
+        // $address['vat_id'] = $id; // Removed
         $address['careOf'] = $loc['careOf'];
         $address['street'] = $loc['street'];
         $address['postCode'] = $loc['postCode'];
@@ -80,19 +86,28 @@ class Location extends Model
         $avail =  SELF::postBox($street);
 
           if(!empty($street) && $avail == "false"){
-            $addss =  SELF::saveLocation($address);
+            $addss =  SELF::saveLocation($address, $id);
             return $addss;
-      }else {
-        $vatId = $address['vat_id'];
-        ProsBlackListed::blacklisted($vatId);
-       }
+            }else {
+              $vatId = $address['vat_id'];
+              ProsBlackListed::blacklisted($vatId);
+             }
     }
-    public function saveLocation($address)
+    public function checkIfExistAddress($location)
+    {
+      if ($location->endDate === NULL)
+      {
+        return true;
+      }else {
+        return false;
+      }
+    }
+    public function saveLocation($address, $id)
     {
       $city = $address['city'];
       CityList::saveCity($city);
       $addss = SELF::updateOrCreate($address);
-       return $addss;
+     return $addss;
     }
     public function postBox($address)
     {

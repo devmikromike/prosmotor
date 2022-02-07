@@ -20,7 +20,7 @@
                    @endforeach
                  </select>
                </div>
-
+               
                <div class=" flex flex-col ml-6 mr-4 flex-1 ">
                  <p class="mb-2">{{__('Toimiala lista.')}}</p>
                  <select class="mt-2" wire:model ="codeIds" multiple >
@@ -32,7 +32,7 @@
                  </select>
                </div>
              </div>
-             <button wire:click.prevent= "submit" >{{__('Hae listalta.')}}</button>
+             <button class="mt-4 mb-4 ml-6 p-2 rounded-md border border-2 border-blue-300 bg-gray-300 hover:bg-blue-100" wire:click.prevent= "submit" >{{__('Hae listalta.')}}</button>
           </form>
          </div>
       </div>

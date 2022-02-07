@@ -75,24 +75,27 @@ class Search extends Model
                    $uri === 'not availble';
                  };
                     Prospect::emptyCompanyName($company, $uri);
-                      $location = Location::extractLocation($data);
+                //      $location = Location::extractLocation($data); // moved.
 
                       if(!empty($data['businessLines'])){
                         $businessLines = $data['businessLines'];
                         $vatId = $company['vatId'];
                         $code = ProsBssLine::saveBss($businessLines);
                         $pros = Prospect::getId($vatId);
-                        $id = $pros->id;
+                        $id = $pros->id;                      
+
                       //   $code = $businessLines;
                         Prospect::bssCode($code, $id);
                       }
+
+                      $location = Location::extractLocation($data, $id);
 
                     if(!empty($data['contactDetails'])){
                       $contacts = $data['contactDetails'];
                        $vatId = $data['businessId'];
                        Contact::extractContact($contacts, $vatId );
                     }
-                 };
+                 };    /// end of Else
               return 'true';
         } // end of results
     return 'false';

@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Prospect;
 
 use Livewire\Component;
 use App\Http\Livewire\Prospect\Index;
+use App\Models\Prospect;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -30,14 +31,10 @@ class Searchlist extends Component
     }
     public function codelistCreated($sendcodelist)
     {
-
       $this->newcodelist = $sendcodelist;
-
-   
     }
     public function citylistCreated($sendcitylist)
     {
-
       $this->newcitylist = $sendcitylist;
     }
     public function mount(Index $index)
@@ -46,17 +43,14 @@ class Searchlist extends Component
     }
     public function render( )
     {
-       $newproslist = $this->newproslist;
+       $newproslist = $this->newproslist;  // Total Prospects per city(is) and business field(s)
        $newcodelist = $this->newcodelist;
        $newcitylist = $this->newcitylist;
-
-    //   dump($this->newcodelist);
-
         return view('livewire.prospect.searchlist',
           [
             'proslists' => $newproslist,
             'newcodelist' => $newcodelist,
-             'newcitylist'=> $newcitylist
+            'newcitylist'=> $newcitylist
           ]);
     }
 }
