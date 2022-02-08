@@ -22,7 +22,7 @@ class Contact extends Model
 
     public function prospects()
     {
-      return $this->belongsToMany(Prospect::class);
+      return $this->belongsToMany( Prospect::class);
     }
 
     public function extractContact($contacts, $vatId)
@@ -74,18 +74,18 @@ class Contact extends Model
         );
       }
 
-      $contacts = SELF::saveContact($contact);
+      $contacts = (new SELF())->saveContact($contact);
       $contacts->prospects()->attach($contacts->id);
 
        if(!empty($www_value)){
-          Prospect::saveWww($www_value, $vatId);
+          (new Prospect())->saveWww($www_value, $vatId);
        }
 
-  //     Prospect::saveWww($www_value, $vatId);
+  //     (new Prospect())->saveWww($www_value, $vatId);
     }
     public function saveContact($contact)
     {
-      $saved = SELF::updateOrCreate($contact);
+      $saved = (new SELF())->updateOrCreate($contact);
       return $saved;
     }
 }

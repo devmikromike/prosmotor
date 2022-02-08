@@ -26,7 +26,7 @@ class Search extends Model
     public function perName($name)
     {
       if($response = Http::get('http://api.mikromike.fi/api/SearchByName/'.$name)){
-        $results = SELF::statusData($response);
+        $results = (new SELF())->statusData($response);
       }
    }
     public function perVatID($vatId)
@@ -34,13 +34,14 @@ class Search extends Model
       // if($response = Http::get('http://ProsCore-api.test/SearchVatID/'.$vatId)){
          if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
       //  dump($response->json());
-          $results = SELF::statusData($response);
+          $results = (new SELF())->statusData($response);
+          return $results;
         }
     }
     public function perDates($from, $to)
     {
       if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
-          $results = SELF::statusData($response);
+          $results = (new SELF())->statusData($response);
       }
     }
     public function extractJson($data)
@@ -54,7 +55,11 @@ class Search extends Model
       $results =  Arr::exists($data, 'results');
       $aux =  Arr::exists($data, 'auxiliaryNames');
       $liq =  Arr::exists($data, 'liquidations');
+
       $data = $data['results'][0];
+
+
+
       if ($results == 'true'){
                if(!empty($liquidations)){
                  $status = 'failed';
@@ -63,7 +68,7 @@ class Search extends Model
                  $business['regDate'] = $liquidations[0]['registrationDate'];
                  $business['vatId'] = $data['businessId'];
                  $reason = $liquidations[0]['description'];
-                 $response = ProsBlackListed::createStatus($business, $reason);
+                 $response = (new ProsBlackListed())->createStatus($business, $reason);
                } else {
 
                  $company['name'] = $data['name'];
@@ -73,27 +78,49 @@ class Search extends Model
 
                  if (empty($uri)){
                    $uri === 'not availble';
-                 };
-                    Prospect::emptyCompanyName($company, $uri);
-                //      $location = Location::extractLocation($data); // moved.
+                 }else {
+                //   $prosCreated = Prospect::emptyCompanyName($company, $uri);
+
+                 }
+                  $prosCreated = (new Prospect())->emptyCompanyName($company, $uri);
+
+                  $prosId = $prosCreated['company_id'];
 
                       if(!empty($data['businessLines'])){
                         $businessLines = $data['businessLines'];
-                        $vatId = $company['vatId'];
-                        $code = ProsBssLine::saveBss($businessLines);
-                        $pros = Prospect::getId($vatId);
-                        $id = $pros->id;                      
+                        $code = (new ProsBssLine())->saveBss($businessLines);
+                        (new Prospect())->bssCode($code, $prosId);
+                      }else{
+                        // empty busines field code!
+                        $bssLineEN = array();
+                        $bssLineFI = array();
+                        $bssLineSE = array();
 
-                      //   $code = $businessLines;
-                        Prospect::bssCode($code, $id);
+                        $bssLineEN = array(
+                          'code' => '9999999',
+                          'name' => 'Unknown Business Field name'
+                        );
+                        $bssLineFI = array(
+                          'code' => '9999999',
+                          'name' => 'Toimialaa ei ole ilmoitettu'
+                        );
+                        $bssLineSE = array(
+                          'code' => '9999999',
+                          'name' => 'Unknown Business Field name'
+                        );
+                        $prosline = array($bssLineEN, $bssLineFI,$bssLineSE);
+                      (new ProsBssLine())->saveEmptyBss($prosline);
                       }
 
-                      $location = Location::extractLocation($data, $id);
+                      if(!empty($data['addresses'])){
+
+                      $location = (new Location())->extractLocation($data, $prosId);
+                     }
 
                     if(!empty($data['contactDetails'])){
                       $contacts = $data['contactDetails'];
                        $vatId = $data['businessId'];
-                       Contact::extractContact($contacts, $vatId );
+                       (new Contact())->extractContact($contacts, $vatId );
                     }
                  };    /// end of Else
               return 'true';
@@ -114,11 +141,11 @@ class Search extends Model
       if($resCode === 200){
           $response = $response->json('Response');
           $r = collect($response['results']);
-        $sum = SELF::counter($r);
+        $sum = (new SELF())->counter($r);
         if($sum === 1)
         {
             $data = $response;
-            SELF::extractJson($data); // single data
+            (new SELF())->extractJson($data); // single data
           return $results = array(
             'Status' => $resCode,
             'Status_message' => $statusMsg,
@@ -126,7 +153,7 @@ class Search extends Model
           );
         }else
         { // list mode, more than one company
-          SELF::listSearch($response);
+          (new SELF())->listSearch($response);
         }
       } else {   /// http error code other than 200
          $resCode = $response->json('Status');
@@ -154,7 +181,7 @@ class Search extends Model
    {
      foreach ($response['results'] as $key => $pros){
        $vatId = $pros['businessId'];
-       SELF::perVatID($vatId);
+       (new SELF())->perVatID($vatId);
      }
    }
 }  // End of Class

@@ -4,11 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Prospect;
 
 class ProsBssLine extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function pros()
+    {
+      return $this->belongTo(Prospect::class, 'bssCode');
+    }
 
     public function codeList($idsCodes)
     {  // Business line codes
@@ -16,7 +22,7 @@ class ProsBssLine extends Model
 
         foreach ($idsCodes as $id)
         {
-          $data  = SELF::bss( $id)->get();
+          $data  = (new SELF())->bss( $id)->get();
           $name = $data[0]['nameFI'];
           $code = $data[0]['code'];
           $field['nameFI'] = $name;
@@ -39,6 +45,35 @@ class ProsBssLine extends Model
     {
       return $query ->where('name','=', $city);
     }
+    public function saveEmptyBss($prosline)
+    {
+      $bssLineEN = array();
+      if($prosline[0])
+      {
+      // English
+      $bssLineEN['code']  = $prosline[0]['code'];
+      $bssLineEN['name' ] = $prosline[0]['name'];
+      (new SELF())->saveBssEN($bssLineEN);
+     }
+
+      // Finnish
+      $bssLineFI = array();
+      if($prosline[1])
+      {
+      $bssLineFI['code']  = $prosline[1]['code'];
+      $bssLineFI['name' ] = $prosline[1]['name'];
+      (new SELF())->saveBssFI($bssLineFI);
+     }
+      // Swedish
+      $bssLineSE = array();
+      if($prosline[2])
+      {
+      $bssLineSE['code']  = $prosline[2]['code'];
+      $bssLineSE['name' ] = $prosline[2]['name'];
+      (new SELF())->saveBssSE($bssLineSE);
+     }
+
+    }
     public function saveBss($businessLines)
     {
         $bssLineEN = array();
@@ -47,17 +82,17 @@ class ProsBssLine extends Model
           if($key == 0)
           {
             $bssLineEN = $value;
-          $code =  SELF::saveBssEN($bssLineEN);
+          $code =(new SELF())->saveBssEN($bssLineEN);
           }
           if($key == 1)
           {
             $bssLineFI = $value;
-            SELF::saveBssFI($bssLineFI);
+            (new SELF())->saveBssFI($bssLineFI);
           }
           if($key == 2)
           {
             $bssLineSE = $value;
-            SELF::saveBssSE($bssLineSE);
+            (new SELF())->saveBssSE($bssLineSE);
           }
         }
         return $code;
@@ -67,7 +102,7 @@ class ProsBssLine extends Model
           $code = $bssLineEN['code'];
           $name = $bssLineEN['name'];
 
-          $c = SELF::firstOrCreate([
+          $c = (new SELF())->firstOrCreate([
             'code' => $code,
           ] ,[
             'nameEN' => $name
@@ -80,7 +115,7 @@ class ProsBssLine extends Model
            $code = $bssLineSE['code'];
             $name = $bssLineSE['name'];
 
-            $c = SELF::updateOrCreate([
+            $c = (new SELF())->updateOrCreate([
               'code' => $code,
             ] ,[
               'nameSE' => $name
@@ -91,7 +126,7 @@ class ProsBssLine extends Model
         $code = $bssLineFI['code'];
         $name = $bssLineFI['name'];
 
-         $c = SELF::updateOrCreate([
+         $c = (new SELF())->updateOrCreate([
            'code' => $code,
          ] ,[
            'nameFI' => $name

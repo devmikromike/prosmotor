@@ -31,6 +31,12 @@
                ])
             </div>
           </div>
+          <div class="container mt-4 flex flex-col mx-auto bg-gray-200 ">
+            <div class="flex mt-4 flex-1 mb-2 ml-2 ">
+              @livewire('prospect.show')
+            </div>
+          </div>
+
             <div class="container mt-4 flex flex-col mx-auto bg-gray-200  ">
               <div class="flex mt-4 flex-1 mb-2">
                   <span class="container  text-center font-semibold text-xl bg-gray-300 mx-auto  " >

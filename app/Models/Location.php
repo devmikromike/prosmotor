@@ -17,11 +17,11 @@ class Location extends Model
 
     public function cities()
     {
-      return hasMany(CityList::class);
+      return hasMany((new CityList())->class);
     }
     public function prospects()
     {
-      return $this->belongsToMany(Prospect::class);
+      return $this->belongsToMany((new Prospect())->class);
     }
     public function scopeEndDate($query)
     {
@@ -50,26 +50,27 @@ class Location extends Model
     {
       return $query ->where('endDate','!=', '');
     }
-    public function extractLocation($data, $id)
+    public function extractLocation($data, $prosId)
     {
        // $id = $data['businessId']; // removed.
 
         if(!empty($data['addresses'])){
           $locations = $data['addresses'];
           foreach ($locations as $loc){
-          $location = SELF::createLocation($id, $loc);
-          $isNotNull = SELF::checkIfExistAddress($location);
+          $location = (new SELF())->createLocation($prosId, $loc);
+          $isNotNull = (new SELF())->checkIfExistAddress($location);
+
           // relation Location and Pros_id
-          if ($isNotNull === true)
+          if ($isNotNull === 'true')
           {
-            $isok = $location->prospects()->attach($id);
+            $isok = $location->prospects()->attach($prosId);
           }
         }
       }else {
         $locations = 'Ei osoite tietoja.';
       }
    }
-    public function createLocation($id, $loc)
+    public function createLocation($prosId, $loc)
     {
         // $address['vat_id'] = $id; // Removed
         $address['careOf'] = $loc['careOf'];
@@ -83,30 +84,33 @@ class Location extends Model
         $address['endDate'] = $loc['endDate'];
 
         $street = $address['street'];
-        $avail =  SELF::postBox($street);
+        $avail =  (new SELF())->postBox($street);
 
           if(!empty($street) && $avail == "false"){
-            $addss =  SELF::saveLocation($address, $id);
+            $addss =  (new SELF())->saveLocation($address, $prosId);
             return $addss;
             }else {
-              $vatId = $address['vat_id'];
-              ProsBlackListed::blacklisted($vatId);
+              $vatId= (new Prospect())->getVatId($prosId);
+              (new ProsBlackListed())->blacklisted($vatId);
              }
     }
     public function checkIfExistAddress($location)
     {
-      if ($location->endDate === NULL)
+      // dd($location);
+
+      if (empty($location->endDate))
       {
         return true;
       }else {
         return false;
       }
+      // dd($location);
     }
-    public function saveLocation($address, $id)
+    public function saveLocation($address, $prosId)
     {
       $city = $address['city'];
-      CityList::saveCity($city);
-      $addss = SELF::updateOrCreate($address);
+      (new CityList())->saveCity($city);
+      $addss = (new SELF())->updateOrCreate($address);
      return $addss;
     }
     public function postBox($address)

@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\ProsBlackListed;
+use App\Models\ProsBssLine;
 use App\Models\Contact;
 use App\Models\Location;
 
@@ -19,7 +20,9 @@ class Prospect extends Model
     public $original = array();
     public $latest;
 
-    protected $guarded = [];
+    protected $fillable = [
+      'name', 'vatId', 'bssCode','www','registrationDate'
+    ];
 
     public function contacts()
     {
@@ -28,6 +31,10 @@ class Prospect extends Model
     public function locations()
     {
       return $this->belongsToMany(Location::class);
+    }
+    public function bssCodeField()
+    {
+      return $this->hasOne(ProsBssLine::class, 'code');
     }
 /************
 *  Start Scopes
@@ -60,7 +67,7 @@ class Prospect extends Model
       $prosList = [];
       foreach($codes as $code)
       {
-        $results = SELF::Code($code['code'])->get();
+        $results = (new SELF())->Code($code['code'])->get();
         $prosList[] = $results;
       }
       return $prosList;
@@ -109,11 +116,11 @@ class Prospect extends Model
 
    public function collectCompanyData($company,$uri)
    {
-     $data = Prospect::updateOrCreate($company);
+     $data = (new Prospect())->updateOrCreate($company);
      $id = $data->id;
       if (empty($uri)){
         }else {
-          ProsDetails::saveUri($uri, $id);
+          (new ProsDetails())->saveUri($uri, $id);
         }
      return $data;
    }
@@ -126,33 +133,40 @@ class Prospect extends Model
 
      if (empty($name))
        {
-         $errors = ProsBlackListed::blacklisted($vatId);
+         $errors = (new ProsBlackListed())->blacklisted($vatId);
           return $response = array($errors, [
            'message' => 'Failed'
            ]);
          }else {
-          $pros = Prospect::collectCompanyData($company,$uri);
+          $pros = (new Prospect())->collectCompanyData($company,$uri);
 
-         return $response = array($errors, [
+         return $response = array(
            'message' => 'Success, company Found',
            'company_id' => $pros['id'],
-           ]);
+           );
        };
    }
-   public function bssCode($code, $id)
+   public function bssCode($code, $prosId)
    {
-     $pros = SELF::where('id', $id)->first();
+     $pros = (new SELF())->where('id', $prosId)->first();
      $pros['bssCode'] = $code;
      $saved =  $pros->save();
    }
    public function getId($vatId)
    {
-      $id =  SELF::where('vatId', $vatId )->first();
-      return $id;
+      $pros = (new SELF())->where('vatId', $vatId )->first();
+      $save = $pros;
+
+      return $save;
+   }
+   public function getVatId($prosId)
+   {
+      $vatId =  (new SELF())->where('id', $prosId )->first();
+      return $vatId;
    }
    public function getBssCode($vatId)
    {
-      $pros =  SELF::where('vatId', $vatId )->first();
+      $pros =  (new SELF())->where('vatId', $vatId )->first();
       $save = $pros->toArray();
       $bssCode = $save['bssCode'];
 
@@ -160,7 +174,7 @@ class Prospect extends Model
    }
    public function getNames($vatId)
    {
-      $pros =  SELF::where('vatId', $vatId )->first();
+      $pros =  (new SELF())->where('vatId', $vatId )->first();
       if(!empty($pros['name'])){
         $name = $pros['name'];
         return $name;
@@ -168,7 +182,7 @@ class Prospect extends Model
    }
    public function getName($vatId)
    {
-      $pros =  SELF::where('vatId', $vatId )->first();
+      $pros =  (new SELF())->where('vatId', $vatId )->first();
       if(!empty($pros['name'])){
         $name = $pros['name'];
         return $name;
@@ -176,11 +190,10 @@ class Prospect extends Model
    }
    public function saveWww($www_value,$vatId)
    {
-     $pros = SELF::getId($vatId);
-     $id = $pros ->id;
+     $pros = (new SELF())->getId($vatId);
+     $id = $pros['vatId'];
      $pros['www'] = $www_value;
      $pros->save();
-
      return $id;
    }
 }

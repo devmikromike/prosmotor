@@ -29,7 +29,7 @@ class CityList extends Model
     }
     public function saveCity($city)
     {
-      $c = SELF::firstOrCreate([
+      $c = (new SELF())->firstOrCreate([
         'name' => $city,
       ]);
       return $c;
@@ -43,7 +43,7 @@ class CityList extends Model
 
         foreach ($cities as $city)
         {
-          $res  = Location::city($city)
+          $res  = (new Location())->city($city)
           ->endDate()
           ->VisitAddress()
           ->get();

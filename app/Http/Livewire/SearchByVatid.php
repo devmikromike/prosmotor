@@ -3,7 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use Livewire\Component\InputBox;
+use App\Http\Livewire\Prospect\Show;
 use App\Models\Search;
 use Illuminate\Support\Facades\Http;
 use Guzzle\Http\Exception\ClientErrorResponseException;
@@ -21,7 +21,7 @@ class SearchByVatid extends Component
     public $vatID;
     public $SearchByVatId;
     public $response;
-    public $data;
+    public $data = array();
     public $results = array();
     public $statusMessage;
 
@@ -49,13 +49,13 @@ class SearchByVatid extends Component
         /* vat: 0858510-3   */
         //  dump($this->vatId);
 
-       $this->validate();
+      $this->validate();
+      $data = (new Search())->perVatID($this->vatId);
+      $this->emit('byVatId', $data);
+
+    //  dump($data);
+
        session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
-      $data= (new Search())->perVatID($this->vatId);
-
-    //   $this->statusMessage = SELF::emptyResponse($this->response);
-
-   //    return view('livewire.search-by-vatid');
     }
       public function render()
       {

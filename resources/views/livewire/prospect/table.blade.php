@@ -24,7 +24,7 @@
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-le">
-                    ID: {{ $pros['vat_id'] }}
+                    ID: {{-- $pros['vat_id'] --}}
                     </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
@@ -45,7 +45,7 @@
                 </tr>
                   @endif
           @endforeach
-       
+
         </tbody>
 
       </table>
