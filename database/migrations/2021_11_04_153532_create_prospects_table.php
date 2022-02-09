@@ -12,7 +12,7 @@ class CreateProspectsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('vatId')->unique();
-            $table->string('bssCode')->nullable();
+            $table->unsignedBigInteger('bssCode')->nullable();
             $table->string('www')->nullable();
             $table->string('registrationDate');
             $table->timestamps();

@@ -17,7 +17,6 @@
                 @include('livewire.prospect.businessfields')
             </div>
           </div>
-
             @foreach($newproslist['proslist'] as $key => $prospect)
                     @include ('livewire.prospect.table')
             @endforeach

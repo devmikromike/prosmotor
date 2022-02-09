@@ -49,3 +49,12 @@
   @if ($contentIsVisible)
   <span>Some Content...</span>
  @endif
+ *******************
+ <div class="">
+   <button type="submit" wire:loading.attr="disabled" name="button">Add</button>
+   <div wire:loading class="">
+     hold On ...
+   </div>
+ </div>
+ ***************
+ 

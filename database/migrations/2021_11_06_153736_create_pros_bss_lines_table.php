@@ -15,11 +15,12 @@ class CreateProsBssLinesTable extends Migration
     {
         Schema::create('pros_bss_lines', function (Blueprint $table) {
             $table->id();
-            $table->integer('code')->nullable();
+            $table->unsignedBigInteger('code')->nullable();
             $table->string('nameFI')->nullable();
             $table->string('nameSE')->nullable();
             $table->string('nameEN')->nullable();
             $table->timestamps();
+            $table->foreign('code')->references('bssCode')->on('prospects');
         });
     }
 
