@@ -10,10 +10,11 @@ class ProsBssLine extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $table = 'pros_bss_lines';
 
     public function pros()
     {
-      return $this->belongTo(Prospect::class, 'bssCode');
+      return $this->belongTo(Prospect::class);
     }
 
     public function codeList($idsCodes)

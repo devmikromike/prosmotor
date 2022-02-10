@@ -89,7 +89,7 @@ class Search extends Model
                       if(!empty($data['businessLines'])){
                         $businessLines = $data['businessLines'];
                         $code = (new ProsBssLine())->saveBss($businessLines);
-                        (new Prospect())->bssCode($code, $prosId);
+                    //    (new Prospect())->bssCode($code, $prosId); // Not in use.
                       }else{
                         // empty busines field code!
                         $bssLineEN = array();

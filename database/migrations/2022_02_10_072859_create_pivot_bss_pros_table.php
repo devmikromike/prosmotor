@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProsBssLinesTable extends Migration
+class CreatePivotBssProsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateProsBssLinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pros_bss_lines', function (Blueprint $table) {
+        Schema::create('pivot_bss_pros', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('code');
-            $table->string('nameFI')->nullable();
-            $table->string('nameSE')->nullable();
-            $table->string('nameEN')->nullable();
+            $table->unsignedBigInteger('prospect_id');
+            $table->unsignedBigInteger('pros_bss_lines_id');
             $table->timestamps();
-             
         });
     }
 
@@ -31,6 +28,6 @@ class CreateProsBssLinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pros_bss_lines');
+        Schema::dropIfExists('pivot_bss_pros');
     }
 }
