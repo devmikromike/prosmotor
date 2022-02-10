@@ -20,7 +20,6 @@
             @foreach($newproslist['proslist'] as $key => $prospect)
                     @include ('livewire.prospect.table')
             @endforeach
-
       </div>
     </div>
     @endif

@@ -11,6 +11,7 @@ class CityList extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected  $table = 'city_lists';
     // spublic $response = array();
 
     public function locations()

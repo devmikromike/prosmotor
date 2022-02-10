@@ -23,7 +23,14 @@ class Index extends Component
     public $codelist;  // model
     public $sendproslist;
     public $codes;
+    public $city;
 
+
+/*    protected $listeners =[ 'city_changed' => 'city_changed'];
+    public function city_changed($city)
+    {
+      $this->city = $city;
+    }   */
 
     public function mount()
     {

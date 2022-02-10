@@ -10,17 +10,18 @@ use Illuminate\Support\Str;
 
 class Searchlist extends Component
 {
-
      public array $newproslist = [];
      public array $newcodelist = [];
      public array $newcitylist = [];
      public array $citylists = [];
-     public  array $proslists;
-     public  array $proslist;
+     public array $proslists;
+     public array $proslist;
      private $myindex;
      public $sendproslist;
      public $sendcodelist;
      public $sendcitylist;
+     public $City;
+     public $city;
 
      protected $listeners = [
        'proslistCreated', 'codelistCreated','citylistCreated' ];
@@ -36,6 +37,38 @@ class Searchlist extends Component
     public function citylistCreated($sendcitylist)
     {
       $this->newcitylist = $sendcitylist;
+    }
+    public function updatedCity($value)
+    {
+    //  dump($value);
+      // if(trim($pros['city']) == trim($value))
+      $city = str_replace(' ', '', $value);
+      foreach ($this->newproslist as $proslist) {
+
+          $step1 =  Arr::exists($this->newproslist, 'proslist');
+
+          if($step1 === true)
+         {
+            if(!empty($proslist)){
+
+               foreach($proslist as $prospect)
+               {
+                 if(!empty($prospect))
+                     { session()->flash('message', 'Pieni hetki! ');
+                       foreach ($prospect as $pros)
+                       {
+                         $step2 =  Arr::isNull($prospect);
+                         dd($step2);
+
+                       }
+                      }else {
+                              session()->flash('message', 'Haetussa kaupungissa ei ole vielä yhtään Prospektia! ');
+                            }
+
+               } // end of foreach
+           }
+         }
+        }
     }
     public function mount(Index $index)
     {

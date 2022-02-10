@@ -146,13 +146,14 @@ class Prospect extends Model
            );
        };
    }
+   /*
    public function bssCode($code, $prosId)
    {
-     /*  renew this, no bsscode anymore in Prospect table.
+    //  renew this, no bsscode anymore in Prospect table.
      $pros = (new SELF())->where('id', $prosId)->first();
      $pros['bssCode'] = $code;
-     $saved =  $pros->save();   */
-   }
+     $saved =  $pros->save();
+   } */
    public function getId($vatId)
    {
       $pros = (new SELF())->where('vatId', $vatId )->first();
