@@ -57,13 +57,13 @@ class Searchlist extends Component
 
                foreach($proslist as $key => $prospectarray)
                 {
-                 if(!empty($prospectarray))  /// <- ???
+
+                 if(!empty($prospectarray))  /// <- ??? why is it work?
                      {
-                         dump($prospectarray );
+                       dump($prospectarray);
                        session()->flash('message', 'Pieni hetki! ');
-                       foreach ($prospectarray as $pros) /// <- ?????
+                       foreach ($prospectarray as  $pros) /// ?????
                        {    // " Invalid argument supplied for foreach() "
-                      //   dd($pros );
 
                          if($city === $pros['city'])
                          {
@@ -75,7 +75,7 @@ class Searchlist extends Component
                               $pros = 'Ei yritystietoja';
                               $prospectlist[] = $pros;
                               $newproslist['proslist'] = $prospectlist;
-                        dd($prospectlist);
+                //             dd($prospectlist);
                               session()->flash('message', 'Haetussa kaupungissa ei ole vielä yhtään Prospektia! ');
                     }
                  }  // end of foreach ($proslist as $key => $prospectarray)
