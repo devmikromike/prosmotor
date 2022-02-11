@@ -7,7 +7,7 @@
       {{ session('message') }}
     </div>
     @endif
-     
+    {{-- dd($newproslist); --}}
     @if(!empty($newproslist))
         <div class="flex flex-col bg-gray-200 dark:bg-gray-900 py-4 sm:pt-0 ">
           <div class="flex flex-row mt-4 mb-4">

@@ -57,7 +57,13 @@ class Searchlist extends Component
 
                foreach($proslist as $key => $prospectarray)
                {
-                  
+                 // $count = count($prospect);
+                 //dump($count);
+                 //dd($prospect);
+                 /* if(isset($prospect))
+                 {
+                   dd($proslist);
+                 }  */
                  if(!empty($prospectarray))
                      {
                         dd($prospectarray);
