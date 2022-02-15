@@ -25,9 +25,11 @@ class Searchlist extends Component
      public $sendcitylist;
      public $selectedCity;
      public $city;
+     public $update;
 
      protected $listeners = [
        'proslistCreated', 'codelistCreated','citylistCreated' ];
+       // 'refreshSearchList' => $refresh
 
     public function proslistCreated($sendproslist)
     {
@@ -40,6 +42,10 @@ class Searchlist extends Component
     public function citylistCreated($sendcitylist)
     {
       $this->newcitylist = $sendcitylist;
+    }
+
+    public function refresh() {
+      $this->update = !$this->update;
     }
     public function updatedSelectedCity($value)
     {
@@ -57,34 +63,51 @@ class Searchlist extends Component
 
                foreach($proslist as $key => $prospectarray)
                 {
-                 if(!empty($prospectarray))  /// <- ???
+                //  dd(is_array($prospectarray));
+
+                 if(is_array($prospectarray))
+                  // if(!empty($prospectarray))   /// <- ???
                      {
-                         dump($prospectarray );
+                      //   dump($prospectarray );
                        session()->flash('message', 'Pieni hetki! ');
                        foreach ($prospectarray as $pros) /// <- ?????
                        {    // " Invalid argument supplied for foreach() "
-                      //   dd($pros );
+
 
                          if($city === $pros['city'])
                          {
+                              // dump($pros );
                            $prospectlist[] = $pros; // Works ! -> output
+
 
                          } else { }
                        }
                       }else {
-                              $pros = 'Ei yritystietoja';
+                          /*    $pros = 'Ei yritystietoja';
                               $prospectlist[] = $pros;
-                              $newproslist['proslist'] = $prospectlist;
-                        dd($prospectlist);
+                              $newproslist['proslist'] = $prospectlist;  */
+                        // dd($prospectlist);
                               session()->flash('message', 'Haetussa kaupungissa ei ole vielä yhtään Prospektia! ');
                     }
                  }  // end of foreach ($proslist as $key => $prospectarray)
               } // end of if(!empty($proslist)
             } // end of if($step1 === true)
 
-            $newproslist['proslist'] = $prospectlist;
+            // $newproslist['proslist'] = $prospectlist;
+
+
+
     } // end of first foreach.
+    //  dump($newproslist['proslist']);
      session()->flash('message', 'Lista päivitetty!');
+       $newproslist['proslist'] = $prospectlist;
+       $this->newproslist =  $newproslist;
+  //       dd($newproslist);
+       $this->refresh();
+     // $this-> refreshComponent();
+
+    //  $this->emit('refreshSearchList');
+
      return $newproslist;
   } // end of function
     public function mount(Index $index)
