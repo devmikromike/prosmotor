@@ -4,6 +4,7 @@
     {{ session('message') }}
   </div>
   @endif
+  <p> </p>
     <p> {{__('Potentiaalisten asiakkaiden lista')}}</p>
 
       <div class="flex flex-1 ">
@@ -20,7 +21,7 @@
                    @endforeach
                  </select>
                </div>
-               
+
                <div class=" flex flex-col ml-6 mr-4 flex-1 ">
                  <p class="mb-2">{{__('Toimiala lista.')}}</p>
                  <select class="mt-2" wire:model ="codeIds" multiple >

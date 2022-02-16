@@ -17,7 +17,7 @@ class Index extends Component
 {
     public array $citynames = [];  // array in UI: index
     public array $codeIds = [];    // array in UI: index
-    public array $proslist = [];   // return from model ?!?
+    public $proslist;   // return from model ?!?
     public $message;              // success message to UI
     public $citylist;    // model
     public $codelist;  // model
@@ -25,17 +25,11 @@ class Index extends Component
     public $codes;
     public $city;
 
-
-/*    protected $listeners =[ 'city_changed' => 'city_changed'];
-    public function city_changed($city)
-    {
-      $this->city = $city;
-    }   */
-
     public function mount()
     {
       $this->citylist = new CityList();
       $this->prosBssLine = new ProsBssLine();
+      $this->proslist = new Prospect();
     }
      protected function rules()
      {
@@ -62,19 +56,21 @@ class Index extends Component
 
       $this->updatingSubmit($sendproslist, $codes);
       session()->flash('message', '');
-
     }
     public function render()
     {
       $citylists = CityList::CityAll()->toArray();
       $codelists = ProsBssLine::CodeAll()->toArray();
+      $proslists = Prospect::with('locations')->ProsAll()->toArray();
 
       $this->citylists = $citylists;
       $this->codelists = $codelists;
+      $this->proslists = $proslists;
 
       return view('livewire.prospect.index',
         ['citylists' => $citylists,
          'codelists' => $codelists,
+         'proslists' => $proslists,
        ]);
     }
 }

@@ -26,7 +26,7 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="flex items-le">
 
-                      ID: {{  $key }} {{ (' / ')}} {{ $pros['id'] }}
+                      ID: {{  $key }} {{ (' / ')}} {{ $pros['id'] }}   {{-- Location_id --}}
                       </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">

@@ -39,6 +39,12 @@ class Prospect extends Model
 /************
 *  Start Scopes
 */
+    public function scopeProsAll($query)
+    {
+      return $query
+      ->orderBy('id')
+      ->get();
+    }
     public function scopeWww($query)
     {
       return $query ->where('www','!=', '');
@@ -99,7 +105,7 @@ class Prospect extends Model
            'message' => 'Failed'
            ]);
          }else {
-          $pros = (new Prospect())->collectCompanyData($company,$uri);  
+          $pros = (new Prospect())->collectCompanyData($company,$uri);
           return $pros;  // return Model
        };
    }
