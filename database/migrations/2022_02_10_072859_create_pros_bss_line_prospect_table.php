@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePivotBssProsTable extends Migration
+class CreateProsBssLineProspectTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePivotBssProsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pivot_bss_pros', function (Blueprint $table) {
+        Schema::create('pros_bss_line_prospect', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('prospect_id');
-            $table->unsignedBigInteger('pros_bss_lines_id');
+            $table->unsignedBigInteger('pros_bss_line_id');
             $table->timestamps();
         });
     }

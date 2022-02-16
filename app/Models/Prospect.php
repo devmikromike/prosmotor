@@ -34,7 +34,7 @@ class Prospect extends Model
     }
     public function bssCodeField()
     {
-      return $this->hasOne(ProsBssLine::class);
+      return $this->belongsToMany(ProsBssLine::class);
     }
 /************
 *  Start Scopes
@@ -53,12 +53,15 @@ class Prospect extends Model
     *  End Scopes
     */
 
-    // rearrange logic for citylist and idsList
-    public function prosCities()
-    { // selected cities for Prospect List
-      // foreach
-      // return single city
+    public function saveBssProcpect($propectId, $bssModel)
+    {
+      $pros_bss_line_id = $bssModel;
 
+      dd(($this->bssCodeField())->attach(1));
+
+      $isok = $propectId->bssCodeField()->attach($bssModel->id);
+      // $isok = $location->prospects()->attach($propectId);
+    //    dd($isok);
     }
 
 
@@ -72,48 +75,6 @@ class Prospect extends Model
       }
       return $prosList;
     }
-
-    public function scopeSearch($query, $term)
-    {  /*
-      $term = "%$term%";
-      $query ->where(function($query) use ($term){
-        $query->where('name','like',$term)
-        ->orWhere('vatId','like',$term));
-
-      }
-      */
-
-      //return $query ->where('bssCode',$code);
-    }
-
-  public function addName($pros, $key)
-  {
-    dump($key);
-
-    if ($key == 0)
-    {
-       $original = array($pros);
-    }
-
-    if ($key == 1)
-    {
-      dd($original);
-
-    //  $lst = new Collection($prospects);
-    //  $merged = $original->merge($lst);
-
-    }
-    if ($key > 1)
-    {
-      /*
-      $latest = Collection($prospects);
-      $merged = $original->merge($latest);
-      $merged ->all();
-      dd($merged);   */
-    }
-  }
-
-
    public function collectCompanyData($company,$uri)
    {
      $data = (new Prospect())->updateOrCreate($company);
@@ -138,22 +99,11 @@ class Prospect extends Model
            'message' => 'Failed'
            ]);
          }else {
-          $pros = (new Prospect())->collectCompanyData($company,$uri);
-
-         return $response = array(
-           'message' => 'Success, company Found',
-           'company_id' => $pros['id'],
-           );
+          $pros = (new Prospect())->collectCompanyData($company,$uri);  
+          return $pros;  // return Model
        };
    }
-   /*
-   public function bssCode($code, $prosId)
-   {
-    //  renew this, no bsscode anymore in Prospect table.
-     $pros = (new SELF())->where('id', $prosId)->first();
-     $pros['bssCode'] = $code;
-     $saved =  $pros->save();
-   } */
+
    public function getId($vatId)
    {
       $pros = (new SELF())->where('vatId', $vatId )->first();
@@ -161,19 +111,12 @@ class Prospect extends Model
 
       return $save;
    }
-   public function getVatId($prosId)
+   public function getVatId($propectId)
    {
-      $vatId =  (new SELF())->where('id', $prosId )->first();
+      $vatId =  (new SELF())->where('id', $propectId )->first();
       return $vatId;
    }
-   public function getBssCode($vatId)
-   {/* renew this, no bsscode anymore in Prospect table.
-      $pros =  (new SELF())->where('vatId', $vatId )->first();
-      $save = $pros->toArray();
-      $bssCode = $save['bssCode'];
 
-      return   $bssCode; */
-   }
    public function getNames($vatId)
    {
       $pros =  (new SELF())->where('vatId', $vatId )->first();

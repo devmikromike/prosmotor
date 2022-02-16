@@ -28,7 +28,7 @@ class SearchByTimeframe extends Component
   public function submit( )
   {
     $this->validate();
-    $this->response  =  Search::perDates($this->from, $this->to);
+    $this->response  =  (new Search())->perDates($this->from, $this->to);
 
     return view('livewire.search-by-name');
   }

@@ -847,11 +847,14 @@ select {
 .mt-3 {
 	margin-top: 0.75rem;
 }
+.ml-4 {
+	margin-left: 1rem;
+}
 .ml-1 {
 	margin-left: 0.25rem;
 }
-.ml-4 {
-	margin-left: 1rem;
+.ml-6 {
+	margin-left: 1.5rem;
 }
 .mt-8 {
 	margin-top: 2rem;
@@ -861,9 +864,6 @@ select {
 }
 .-mt-px {
 	margin-top: -1px;
-}
-.ml-6 {
-	margin-left: 1.5rem;
 }
 .block {
 	display: block;
@@ -916,11 +916,11 @@ select {
 .min-w-full {
 	min-width: 100%;
 }
-.max-w-xl {
-	max-width: 36rem;
-}
 .max-w-6xl {
 	max-width: 72rem;
+}
+.max-w-xl {
+	max-width: 36rem;
 }
 .flex-1 {
 	flex: 1 1 0%;
@@ -1020,13 +1020,13 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(107, 114, 128, var(--tw-border-opacity));
 }
-.border-gray-400 {
-	--tw-border-opacity: 1;
-	border-color: rgba(156, 163, 175, var(--tw-border-opacity));
-}
 .border-blue-700 {
 	--tw-border-opacity: 1;
 	border-color: rgba(29, 78, 216, var(--tw-border-opacity));
+}
+.border-gray-400 {
+	--tw-border-opacity: 1;
+	border-color: rgba(156, 163, 175, var(--tw-border-opacity));
 }
 .bg-white {
 	--tw-bg-opacity: 1;
@@ -1052,13 +1052,13 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(209, 250, 229, var(--tw-bg-opacity));
 }
-.bg-gray-100 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
-}
 .bg-blue-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
+}
+.bg-gray-100 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
 }
 .p-2 {
 	padding: 0.5rem;
@@ -1160,6 +1160,14 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(79, 70, 229, var(--tw-text-opacity));
 }
+.text-white {
+	--tw-text-opacity: 1;
+	color: rgba(255, 255, 255, var(--tw-text-opacity));
+}
+.text-black {
+	--tw-text-opacity: 1;
+	color: rgba(0, 0, 0, var(--tw-text-opacity));
+}
 .text-gray-200 {
 	--tw-text-opacity: 1;
 	color: rgba(229, 231, 235, var(--tw-text-opacity));
@@ -1175,14 +1183,6 @@ select {
 .text-gray-600 {
 	--tw-text-opacity: 1;
 	color: rgba(75, 85, 99, var(--tw-text-opacity));
-}
-.text-white {
-	--tw-text-opacity: 1;
-	color: rgba(255, 255, 255, var(--tw-text-opacity));
-}
-.text-black {
-	--tw-text-opacity: 1;
-	color: rgba(0, 0, 0, var(--tw-text-opacity));
 }
 .underline {
 	text-decoration: underline;

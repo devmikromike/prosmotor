@@ -54,34 +54,28 @@ class Searchlist extends Component
       $prospect = [];
       $pros = [];
       $prospectlist = [];
-      foreach ($this->newproslist as $proslist) {
-          $step1 =  Arr::exists($this->newproslist, 'proslist'); //<- input
+
+
+      $step1 =  Arr::exists($this->newproslist, 'proslist'); //<- input
+      foreach ($this->newproslist['proslist'] as $proslist) {
 
           if($step1 === true)
          {
-            if(!empty($proslist)){
-
-               foreach($proslist as $key => $prospectarray)
+            if(is_array($proslist)){
+               foreach($proslist as $key => $pros)
                 {
-                //  dd(is_array($prospectarray));
+                 if(is_array($pros))
 
-                 if(is_array($prospectarray))
-                  // if(!empty($prospectarray))   /// <- ???
                      {
-                      //   dump($prospectarray );
                        session()->flash('message', 'Pieni hetki! ');
-                       foreach ($prospectarray as $pros) /// <- ?????
-                       {    // " Invalid argument supplied for foreach() "
 
+                         // " Invalid argument supplied for foreach() " // FIX: if(is_array)
 
-                         if($city === $pros['city'])
+                           if($city === $pros['city'])
                          {
-                              // dump($pros );
                            $prospectlist[] = $pros; // Works ! -> output
-
-
                          } else { }
-                       }
+
                       }else {
                           /*    $pros = 'Ei yritystietoja';
                               $prospectlist[] = $pros;
@@ -92,22 +86,11 @@ class Searchlist extends Component
                  }  // end of foreach ($proslist as $key => $prospectarray)
               } // end of if(!empty($proslist)
             } // end of if($step1 === true)
-
-            // $newproslist['proslist'] = $prospectlist;
-
-
-
     } // end of first foreach.
-    //  dump($newproslist['proslist']);
      session()->flash('message', 'Lista päivitetty!');
        $newproslist['proslist'] = $prospectlist;
        $this->newproslist =  $newproslist;
-  //       dd($newproslist);
        $this->refresh();
-     // $this-> refreshComponent();
-
-    //  $this->emit('refreshSearchList');
-
      return $newproslist;
   } // end of function
     public function mount(Index $index)

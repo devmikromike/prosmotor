@@ -6,7 +6,6 @@
         <table class="min-w-full divide-y divide-gray-200">
           @if(!empty($prospect))
             @foreach($prospect as $key => $pros)
-                {{--   dd($pros['city']);  --}}
               @if(!empty($pros))
                 <thead class="bg-gray-50">
                   <tr>
@@ -26,7 +25,8 @@
                   <tr>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="flex items-le">
-                      ID: {{-- $pros['vat_id'] --}}
+
+                      ID: {{  $key }} {{ (' / ')}} {{ $pros['id'] }}
                       </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
@@ -40,19 +40,21 @@
                          business field code
                       </div>
                       <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                      {{--  @if(!empty($pros['city'])) --}}
-                        {{    dd($pros['city']);   }}
-                        {{--  $pros['city'] --}}
-                    {{--    @endif --}}
+                       @if(!empty($pros['city']))
+                        {{--     ddd($pros['city']);   --}}
+
+                        {{  $pros['city']  }}
+
+                        {{--     ddd($pros['city']);   --}}
+                         @endif
                       </span>
                       <a href="#" class="ml-2 text-indigo-600 hover:text-indigo-900">Edit</a>
                     </td>
                   </tr>
                     @endif
             @endforeach
-       @endif
+          @endif
         </tbody>
-
       </table>
     </div>
   </div>

@@ -58,8 +58,6 @@ class Search extends Model
 
       $data = $data['results'][0];
 
-
-
       if ($results == 'true'){
                if(!empty($liquidations)){
                  $status = 'failed';
@@ -84,12 +82,13 @@ class Search extends Model
                  }
                   $prosCreated = (new Prospect())->emptyCompanyName($company, $uri);
 
-                  $prosId = $prosCreated['company_id'];
+                  $propectId = $prosCreated->id;
 
                       if(!empty($data['businessLines'])){
                         $businessLines = $data['businessLines'];
-                        $code = (new ProsBssLine())->saveBss($businessLines);
-                    //    (new Prospect())->bssCode($code, $prosId); // Not in use.
+                        $bssModel = (new ProsBssLine())->saveBss($businessLines);
+
+                      $isok = $prosCreated->bssCodeField()->attach($bssModel->id);
                       }else{
                         // empty busines field code!
                         $bssLineEN = array();
@@ -111,15 +110,16 @@ class Search extends Model
                         $prosline = array($bssLineEN, $bssLineFI,$bssLineSE);
                       (new ProsBssLine())->saveEmptyBss($prosline);
                       }
+                      //  if(is_array($data['addresses'])){
+                       if(!empty($data['addresses'])){
 
-                      if(!empty($data['addresses'])){
-
-                      $location = (new Location())->extractLocation($data, $prosId);
+                      $location = (new Location())->extractLocation($data, $propectId);
                      }
 
                     if(!empty($data['contactDetails'])){
                       $contacts = $data['contactDetails'];
                        $vatId = $data['businessId'];
+
                        (new Contact())->extractContact($contacts, $vatId );
                     }
                  };    /// end of Else

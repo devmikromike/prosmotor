@@ -77,44 +77,41 @@ class ProsBssLine extends Model
     }
     public function saveBss($businessLines)
     {
-        $bssLineEN = array();
         foreach ($businessLines as $key => $value) {
-
+          $code = $value['code'];
           if($key == 0)
           {
-            $bssLineEN = $value;
-          $code =(new SELF())->saveBssEN($bssLineEN);
+            $bssLineFI = $value['name'];
+          $bss  =  (new SELF())->saveBssFI($bssLineFI, $code);
           }
           if($key == 1)
           {
-            $bssLineFI = $value;
-            (new SELF())->saveBssFI($bssLineFI);
+            $bssLineSE = $value['name'];
+            (new SELF())->saveBssSE($bssLineSE, $code);
           }
           if($key == 2)
           {
-            $bssLineSE = $value;
-            (new SELF())->saveBssSE($bssLineSE);
+            $bssLineEN = $value['name'];
+
+            (new SELF())->saveBssEN($bssLineEN, $code);
           }
         }
-        return $code;
-    }
-      public function saveBssEN($bssLineEN)
-      {
-          $code = $bssLineEN['code'];
-          $name = $bssLineEN['name'];
 
-          $c = (new SELF())->firstOrCreate([
+        return $bss;
+    }
+      public function saveBssEN($bssLineEN, $code)
+      {
+          $name = $bssLineEN;
+
+          $c = (new SELF())->updateOrCreate([
             'code' => $code,
           ] ,[
             'nameEN' => $name
           ]);
-
-          return $code;
       }
-      public function saveBssSE($bssLineSE)
+      public function saveBssSE($bssLineSE, $code)
       {
-           $code = $bssLineSE['code'];
-            $name = $bssLineSE['name'];
+            $name = $bssLineSE;
 
             $c = (new SELF())->updateOrCreate([
               'code' => $code,
@@ -122,15 +119,16 @@ class ProsBssLine extends Model
               'nameSE' => $name
             ]);
       }
-      public function saveBssFI($bssLineFI)
+      public function saveBssFI($bssLineFI, $code)
       {
-        $code = $bssLineFI['code'];
-        $name = $bssLineFI['name'];
+        $name = $bssLineFI ;
 
          $c = (new SELF())->updateOrCreate([
            'code' => $code,
          ] ,[
            'nameFI' => $name
          ]);
+
+         return $c;
       }
 }

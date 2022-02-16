@@ -18,11 +18,10 @@
                 @include('livewire.prospect.businessfields')
             </div>
           </div>
-            @foreach($newproslist['proslist'] as $key => $prospect)
-
+            @foreach($newproslist['proslist'] as  $prospect)
                     @include ('livewire.prospect.table')
             @endforeach
       </div>
     @endif
-    
+
 </div>
