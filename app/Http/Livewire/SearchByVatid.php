@@ -34,7 +34,7 @@ class SearchByVatid extends Component
       {
         return $statusMessage = '';
       }else {
-    //    dump($this->response);
+ 
          $statusMessage = $this->response['Status_message'];
       return  $statusMessage = $this->response['Status_message'];
       }
@@ -50,12 +50,10 @@ class SearchByVatid extends Component
         //  dump($this->vatId);
 
       $this->validate();
-      $data = (new Search())->perVatID($this->vatId);
-      $this->emit('byVatId', $data);
+      (new Search())->perVatID($this->vatId);
+      $this->emit('byVatId', $this->vatId);
 
-    //  dump($data);
-
-       session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
+     session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
     }
       public function render()
       {

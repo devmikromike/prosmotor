@@ -17,6 +17,9 @@ class CreateProsBlackListedsTable extends Migration
             $table->id();
             $table->string('vatId')->unique();
             $table->string('lastType')->nullable();
+            $table->string('status')->nullable();
+            $table->text('description')->nullable();
+            $table->string('prospect_id')->nullable();
             $table->string('regDate')->nullable();
             $table->timestamps();
         });

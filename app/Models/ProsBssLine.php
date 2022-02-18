@@ -48,6 +48,7 @@ class ProsBssLine extends Model
     }
     public function saveEmptyBss($prosline)
     {
+
       $bssLineEN = array();
       if($prosline[0])
       {
@@ -79,17 +80,17 @@ class ProsBssLine extends Model
     {
         foreach ($businessLines as $key => $value) {
           $code = $value['code'];
-          if($key == 0)
+          if($key == 1)
           {
             $bssLineFI = $value['name'];
           $bss  =  (new SELF())->saveBssFI($bssLineFI, $code);
           }
-          if($key == 1)
+          if($key == 2)
           {
             $bssLineSE = $value['name'];
             (new SELF())->saveBssSE($bssLineSE, $code);
           }
-          if($key == 2)
+          if($key == 0)
           {
             $bssLineEN = $value['name'];
 

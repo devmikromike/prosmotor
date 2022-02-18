@@ -33,7 +33,7 @@ class Search extends Model
     {
       // if($response = Http::get('http://ProsCore-api.test/SearchVatID/'.$vatId)){
          if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
-      //  dump($response->json());
+
           $results = (new SELF())->statusData($response);
           return $results;
         }
@@ -77,8 +77,7 @@ class Search extends Model
                  if (empty($uri)){
                    $uri === 'not availble';
                  }else {
-                //   $prosCreated = Prospect::emptyCompanyName($company, $uri);
-
+                 
                  }
                   $prosCreated = (new Prospect())->emptyCompanyName($company, $uri);
 

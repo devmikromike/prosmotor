@@ -4,21 +4,26 @@
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
           <table class="min-w-full divide-y divide-gray-200 ">
-            @foreach($prospect as $p)
             <thead class="bg-gray-50 mb-4">
-                {{--   dd($pros );  --}}
+              {{--  dd($prosmodel);  --}}
+
               <tr>
                 <th scope="col" class=" px-6 py-3 text-left text-md uppercase
                                     font-medium text-gray-500 tracking-wider ">
-              {{__('Yritys ID: ')}}  {{  $pros->id}} {{'  /  '}}   {{__('Y-tunnus: ')}}{{ $p['businessId'] }}
+              {{__('Yritys ID: ')}} @if(!empty($prosmodel->vatId))  {{ $prosmodel->vatId }} @endif
                 </th>
                 <th scope="col" class=" px-6 py-3 text-left text-md uppercase
                                     font-medium text-gray-500 tracking-wider ">
-                  {{ $p['name'] }} {{'  /  '}}  {{  $pros->www}}
+            @if(!empty($prosmodel->name)) {{$prosmodel->name}} @endif
+            @if(!empty($prosmodel->www)) {{(' / ')}} {{$prosmodel->www}} @endif
                 </th>
                 <th scope="col" class=" px-6 py-3 text-left text-md uppercase
                                     font-medium text-gray-500 tracking-wider ">
-                  {{ $pros->bssCode}}  {{'  /  '}}    {{-- dd($pros->bssCodeField->nameFI); --}}              
+            @if(!empty($prosmodel->bsscode)) {{ $prosmodel->bsscode }}{{(' / ')}} {{$prosmodel->nameFI}} @endif
+                </th>
+                <th scope="col" class=" px-6 py-3 text-left text-md uppercase
+                                    font-medium text-gray-500 tracking-wider ">
+
                 </th>
              </tr>
             </thead>
@@ -26,11 +31,13 @@
               <tr>
                 <th scope="col" class=" px-6 py-3 text-left text-md uppercase
                                     font-medium text-gray-500 tracking-wider ">
-
+                  @if(!empty($prosmodel->street)) {{ $prosmodel->street }}{{('  /  ')}} {{$prosmodel->postCode}} @endif
+                </th>
+                <th>
+                  @if(!empty($prosmodel->city)) {{ $prosmodel->city }} @endif
                 </th>
               </tr>
             </tbody>
-            @endforeach
           </table>
         </div>
      </div>
