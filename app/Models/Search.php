@@ -12,6 +12,7 @@ use App\Models\ProsDetails;
 use App\Models\ProsBlackListed;
 use App\Models\Location;
 use App\Models\Contact;
+use App\Models\Searchlist;
 
 class Search extends Model
 {
@@ -183,7 +184,11 @@ class Search extends Model
    {
      foreach ($response['results'] as $key => $pros){
        $vatId = $pros['businessId'];
+       $name = $pros['name'];
+       $regDate = $pros['registrationDate'];
        (new SELF())->perVatID($vatId);
+       (new Searchlist())->saveList($vatId, $name, $regDate);
+
      }
    }
 }  // End of Class
