@@ -35,15 +35,7 @@ class SearchByName extends Component
   public function submit( )
  {
     $this->validate();
-    $this->response  =  Search::perName($this->name);
-//    $this->statusMessage = SELF::emptyResponse($this->response);
-
-//    dump(  $this->response['Status']);
-  //  dump(  $this->response['Status_message']);  // in Blade   {{ $statusMessage }}
-  //  dump(  $this->response['Response']);
-
-
-    return view('livewire.search-by-name');
+    $this->response  =  (new Search())->perName($this->name);     
  }
   public function render()
   {
