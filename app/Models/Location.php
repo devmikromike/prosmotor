@@ -53,15 +53,19 @@ class Location extends Model
     public function extractLocation($data, $propectId)
     {
 
-        if(!empty($data['addresses'])){
+        if(is_array($data['addresses'])){
+          // if(!empty($data['addresses'])){
           $locations = $data['addresses'];
           foreach ($locations as $loc){
             $location = (new SELF())->createLocation($propectId, $loc);
             $isNotNull = (new SELF())->checkIfExistAddress($location);
           // relation Location and Pros_id
          if ($isNotNull == true)
-         {
-           $isok = $location->prospects()->attach($propectId);
+         {           
+           if(!empty($location && $propectId)){
+             $isok = $location->prospects()->attach($propectId);
+           }
+        //   $isok = $location->prospects()->attach($propectId);
          }
         }
       }else {

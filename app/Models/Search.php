@@ -77,17 +77,20 @@ class Search extends Model
                  if (empty($uri)){
                    $uri === 'not availble';
                  }else {
-                 
+
                  }
                   $prosCreated = (new Prospect())->emptyCompanyName($company, $uri);
 
                   $propectId = $prosCreated->id;
 
-                      if(!empty($data['businessLines'])){
+                    //  if(!empty($data['businessLines'])){
+                      if(is_array($data['businessLines'])){
                         $businessLines = $data['businessLines'];
                         $bssModel = (new ProsBssLine())->saveBss($businessLines);
-
-                      $isok = $prosCreated->bssCodeField()->attach($bssModel->id);
+                        if(!empty($bssModel)){
+                            $isok = $prosCreated->bssCodeField()->attach($bssModel->id);
+                        }
+                  //    $isok = $prosCreated->bssCodeField()->attach($bssModel->id);
                       }else{
                         // empty busines field code!
                         $bssLineEN = array();

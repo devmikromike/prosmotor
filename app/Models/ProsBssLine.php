@@ -78,6 +78,8 @@ class ProsBssLine extends Model
     }
     public function saveBss($businessLines)
     {
+      $bss = '';
+
         foreach ($businessLines as $key => $value) {
           $code = $value['code'];
           if($key == 1)
@@ -98,16 +100,19 @@ class ProsBssLine extends Model
           }
         }
 
-        return $bss;
+      //   dd($bss);
+       return $bss;
     }
       public function saveBssEN($bssLineEN, $code)
       {
-          $name = $bssLineEN;
+       
+
+          // $name = $bssLineEN;
 
           $c = (new SELF())->updateOrCreate([
             'code' => $code,
           ] ,[
-            'nameEN' => $name
+            'nameEN' => $bssLineEN
           ]);
       }
       public function saveBssSE($bssLineSE, $code)
