@@ -21,13 +21,13 @@
                    @endforeach
                  </select>
                </div>
-
+               
                <div class=" flex flex-col ml-6 mr-4 flex-1 ">
                  <p class="mb-2">{{__('messages.field')}}</p>
                  <select class="mt-2" wire:model ="codeIds" multiple >
                    @foreach($codelists as $code)
                      <option value="{{ $code['id'] }} " >
-                       {{ $code['name'.strtoupper(session('applocale'))] }}
+                       {{  $code['name'.strtoupper(session('applocale'))]  }}
                      </option>
                    @endforeach
                  </select>

@@ -24,6 +24,7 @@ class Index extends Component
     public $sendproslist;
     public $codes;
     public $city;
+    public $name;
 
     public function mount()
     {
