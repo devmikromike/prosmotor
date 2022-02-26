@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{App::getLocale() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale())  }}">
     <head>
         @include('parts.head')
         @if(!session()->has('applocale'))
-          {{session()->put('applocale', 'en')}}
+          {{session()->put('applocale', 'fi')}}
        @endif
     </head>
     <body class="antialiased border border-2 border-blue-300 mr-2 ml-2 mt-3 mb-3">

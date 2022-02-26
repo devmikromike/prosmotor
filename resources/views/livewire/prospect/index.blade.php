@@ -4,9 +4,7 @@
     {{ session('message') }}
   </div>
   @endif
-
     <p> {{__('messages.listheader')}}</p>
-
       <div class="flex flex-1 ">
          <div class="flex flex-col flex-1  bg-blue-300 ">
            <form class="" >
@@ -21,14 +19,14 @@
                    @endforeach
                  </select>
                </div>
-
-               @if(session()->has('applocale')) 
+               
+               @if(!empty($value))
                <div class=" flex flex-col ml-6 mr-4 flex-1 ">
                  <p class="mb-2">{{__('messages.field')}}</p>
                  <select class="mt-2" wire:model ="codeIds" multiple >
                    @foreach($codelists as $code)
                      <option value="{{ $code['id'] }} " >
-                       {{  $code['name'.strtoupper(session('applocale'))]  }}
+                       {{  $code['name'.(strtoupper($value))]  }}
                      </option>
                    @endforeach
                  </select>

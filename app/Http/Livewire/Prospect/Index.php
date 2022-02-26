@@ -24,13 +24,17 @@ class Index extends Component
     public $sendproslist;
     public $codes;
     public $city;
-    public $name;
+    public $nameFI, $nameEN, $value;
+    public $applocale;
+
 
     public function mount()
     {
       $this->citylist = new CityList();
       $this->prosBssLine = new ProsBssLine();
       $this->proslist = new Prospect();
+      $value = session('applocale', 'en');
+      $this->value = $value;
     }
      protected function rules()
      {
@@ -67,11 +71,13 @@ class Index extends Component
       $this->citylists = $citylists;
       $this->codelists = $codelists;
       $this->proslists = $proslists;
+      $value = $this->value;
 
       return view('livewire.prospect.index',
         ['citylists' => $citylists,
          'codelists' => $codelists,
          'proslists' => $proslists,
+         'applocale' => $this->value
        ]);
     }
 }

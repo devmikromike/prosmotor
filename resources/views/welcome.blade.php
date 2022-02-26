@@ -2,12 +2,8 @@
     @section ('body')
           <div class="flex flex-col mt-4">
             <div class="flex text-black ml-4 mr-4">
-              @if(!session()->has('applocale'))
-                {{session()->put('applocale', 'fi')}}
-              @endif
               @foreach (Config::get('languages') as $lang => $language)
                 @if ($lang != App::getLocale())
-
                 {{  Config::get('languages')[App::getLocale()]['message']}}
                <div class="mr-4 ml-4  ">
                     <a class="flex" href="{{ route('lang.switch', $lang) }}">
