@@ -21,7 +21,8 @@
                    @endforeach
                  </select>
                </div>
-               
+
+               @if(session()->has('applocale')) 
                <div class=" flex flex-col ml-6 mr-4 flex-1 ">
                  <p class="mb-2">{{__('messages.field')}}</p>
                  <select class="mt-2" wire:model ="codeIds" multiple >
@@ -32,6 +33,7 @@
                    @endforeach
                  </select>
                </div>
+               @endif
              </div>
              <button class="mt-4 mb-4 ml-6 p-2 rounded-md border border-2 border-blue-300 bg-gray-300 hover:bg-blue-100"
              wire:click.prevent= "submit" >{{__('messages.listbutton')}}</button>
