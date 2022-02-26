@@ -12,6 +12,9 @@ Route::get('/', function () {
 }); */
 
 Route::get('/',[HomeController::class, 'index'])->name('public');
+
+Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controllers\LanguageController@switchLang']);
+
 // Route::get('/prospect',[ProspectController::class,'list'])->name('public.list');
 Route::post('/prospect',[ProspectController::class,'index'])->name('public.index');
 Route::get('/prospect/{id}',[ProspectController::class,'show'])->name('pros.show');

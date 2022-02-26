@@ -4,15 +4,15 @@
     {{ session('message') }}
   </div>
   @endif
-  <p> </p>
-    <p> {{__('Potentiaalisten asiakkaiden lista')}}</p>
+
+    <p> {{__('messages.listheader')}}</p>
 
       <div class="flex flex-1 ">
          <div class="flex flex-col flex-1  bg-blue-300 ">
            <form class="" >
              <div class="flex flex-row ml-4 mt-4">
                <div class=" flex flex-1 flex-col ml-6 bg-blue-300">
-                 <p class="mb-2">{{__('Kaupunki lista: ')}}</p>
+                 <p class="mb-2">{{__('messages.city')}}</p>
                  <select class="mt-2" wire:model ="citynames" multiple  >
                    @foreach($citylists as $city)
                      <option value="{{ $city['name'] }} " >
@@ -23,17 +23,18 @@
                </div>
 
                <div class=" flex flex-col ml-6 mr-4 flex-1 ">
-                 <p class="mb-2">{{__('Toimiala lista.')}}</p>
+                 <p class="mb-2">{{__('messages.field')}}</p>
                  <select class="mt-2" wire:model ="codeIds" multiple >
                    @foreach($codelists as $code)
                      <option value="{{ $code['id'] }} " >
-                       {{ $code['nameFI'] }}
+                       {{ $code['name'.strtoupper(session('applocale'))] }}
                      </option>
                    @endforeach
                  </select>
                </div>
              </div>
-             <button class="mt-4 mb-4 ml-6 p-2 rounded-md border border-2 border-blue-300 bg-gray-300 hover:bg-blue-100" wire:click.prevent= "submit" >{{__('Hae listalta.')}}</button>
+             <button class="mt-4 mb-4 ml-6 p-2 rounded-md border border-2 border-blue-300 bg-gray-300 hover:bg-blue-100"
+             wire:click.prevent= "submit" >{{__('messages.listbutton')}}</button>
           </form>
          </div>
       </div>
