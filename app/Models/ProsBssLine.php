@@ -38,6 +38,7 @@ class ProsBssLine extends Model
       ->orderBy('nameFI')
       ->get();
     }
+
     public function scopeBss($query, $id)
     {
       return $query ->where('id','=', $id);
@@ -46,6 +47,12 @@ class ProsBssLine extends Model
     {
       return $query ->where('name','=', $city);
     }
+
+    public function findCode($prospect_id)
+    {
+  //    pros()
+    }
+
     public function saveEmptyBss($prosline)
     {
 
@@ -105,7 +112,7 @@ class ProsBssLine extends Model
     }
       public function saveBssEN($bssLineEN, $code)
       {
-       
+
 
           // $name = $bssLineEN;
 

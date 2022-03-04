@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\ProsBlackListed;
 use App\Models\CityList;
 use App\Models\Prospect;
+use App\Models\ProsBssLine;
 
 class Location extends Model
 {
@@ -22,6 +23,10 @@ class Location extends Model
     public function prospects()
     {
       return $this->belongsToMany(Prospect::class);
+    }
+    public function fields()
+    {
+      return $this->belongsToMany(ProsBssLine::class);
     }
     public function scopeEndDate($query)
     {
@@ -61,7 +66,7 @@ class Location extends Model
             $isNotNull = (new SELF())->checkIfExistAddress($location);
           // relation Location and Pros_id
          if ($isNotNull == true)
-         {           
+         {
            if(!empty($location && $propectId)){
              $isok = $location->prospects()->attach($propectId);
            }

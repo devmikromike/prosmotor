@@ -11,17 +11,18 @@
     @if(!empty($newproslist))
         <div class="flex flex-col bg-gray-200 dark:bg-gray-900 py-4 sm:pt-0 ">
           <div class="flex flex-row mt-4 mb-4">
-            <div class="">
-                @include('livewire.prospect.citydropdown')
+        {{--        <div class="">  --}}
+        {{--            @include('livewire.prospect.citydropdown')  --}}
+        {{--        </div>  --}}
+        {{--        <div class="">  --}}
+      {{--              @include('livewire.prospect.businessfields')  --}}
+    {{--        </div>     --}}
             </div>
-            <div class="">
-                @include('livewire.prospect.businessfields')
-            </div>
-          </div>
-            @foreach($newproslist['proslist'] as  $prospect)
+            @foreach($newproslist['proslist'] as $prospect)
+              @if(!empty($prospect))
                     @include ('livewire.prospect.table')
+              @endif
             @endforeach
       </div>
     @endif
-
 </div>

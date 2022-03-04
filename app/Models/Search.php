@@ -45,6 +45,15 @@ class Search extends Model
           $results = (new SELF())->statusData($response);
       }
     }
+    public function perPostalCode($code)
+    {
+  //    if($response = Http::get('http://ProsCore-api.test/SearchPostalCode/'.$code))   // Test Env. locally!
+    if($response = Http::get('https://api.mikromike.fi/api/SearchByPostalCode/'.$code)){
+          $results = (new SELF())->statusData($response);
+          dd($results);
+      }
+    }
+    //  'totalResults=true&maxResults=1000&resultsFrom=0&streetAddressPostCode=01300&companyForm=OY'
     public function extractJson($data)
     { // single data
 

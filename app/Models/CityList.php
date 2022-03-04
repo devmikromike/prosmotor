@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Location;
+use App\Models\Prospect;
 
 class CityList extends Model
 {
@@ -44,14 +45,17 @@ class CityList extends Model
 
         foreach ($cities as $city)
         {
-          $res  = (new Location())->city($city)
-          ->endDate()
-          ->VisitAddress()
-          ->get();
+           $res = (new Location())
+            ->with('prospects')
+            ->city($city)
+            ->endDate()
+            ->VisitAddress()
+            ->get();
 
-        $citylist[] = $city;
-        $results[] = $res;
+          $citylist[] = $city;
+          $results[] = $res;
         }
+
         $response = array(
             'proslist' => $results,
             'citylist' => $citylist,

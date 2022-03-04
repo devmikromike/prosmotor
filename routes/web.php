@@ -22,3 +22,4 @@ Route::get('/prospect/{id}',[ProspectController::class,'show'])->name('pros.show
 Route::get('/SearchByVatID/{vatID}',[SearchController::class, 'perVatID'])->name('vatid');
 Route::get('/SearchByName/{name}',[SearchController::class, 'perName'])->name('name');
 Route::get('/SearchByDates/{from}/{to}',[SearchController::class, 'perDates'])->name('dates');
+Route::get('/SearchByPostalCode/{code}',[SearchController::class, 'perPostalCode'])->name('postalcode');

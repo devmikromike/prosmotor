@@ -34,6 +34,7 @@ class Searchlist extends Component
     public function proslistCreated($sendproslist)
     {
       $this->newproslist = $sendproslist;
+       
     }
     public function codelistCreated($sendcodelist)
     {
@@ -91,7 +92,7 @@ class Searchlist extends Component
        $newproslist['proslist'] = $prospectlist;
        $this->newproslist =  $newproslist;
        $this->refresh();
-     return $newproslist;
+  //   return $newproslist;
   } // end of function
     public function mount(Index $index)
     {

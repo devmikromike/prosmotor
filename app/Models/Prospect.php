@@ -36,6 +36,11 @@ class Prospect extends Model
     {
       return $this->belongsToMany(ProsBssLine::class);
     }
+    public function codeField($id)
+    {
+      $codeModel = ProsBssLine::find('prospect_id', $id);
+      dd($codeModel);
+    }
 /************
 *  Start Scopes
 */
@@ -59,7 +64,7 @@ class Prospect extends Model
     *  End Scopes
     */
 
-    public function saveBssProcpect($propectId, $bssModel)
+    public function saveBssProspect($propectId, $bssModel)
     {
       $pros_bss_line_id = $bssModel;
 
