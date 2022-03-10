@@ -47,10 +47,10 @@ class Search extends Model
     }
     public function perPostalCode($code)
     {
+      // dump($code);
   //    if($response = Http::get('http://ProsCore-api.test/SearchPostalCode/'.$code))   // Test Env. locally!
-    if($response = Http::get('https://api.mikromike.fi/api/SearchByPostalCode/'.$code)){
+    if($response = Http::get('http://api.mikromike.fi/api/SearchByPostalCode/'.$code)){
           $results = (new SELF())->statusData($response);
-          dd($results);
       }
     }
     //  'totalResults=true&maxResults=1000&resultsFrom=0&streetAddressPostCode=01300&companyForm=OY'
@@ -149,7 +149,8 @@ class Search extends Model
     {
      $statusMsg = $response->json('Status_message');
       // Get status code from Response.
-      $resCode = $response->json('Status');
+      $resCode = $response->json('Status');     
+
       if($resCode === 200){
           $response = $response->json('Response');
           $r = collect($response['results']);
