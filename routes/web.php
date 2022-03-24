@@ -21,7 +21,7 @@ Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controller
 
 // Route::get('/prospect',[ProspectController::class,'list'])->name('public.list');
 Route::post('/prospect',[ProspectController::class,'index'])->name('public.index');
-Route::get('/prospect/{id}',[ProspectController::class,'show'])->name('pros.show');
+Route::post('/prospect/{$id}/show',[ProspectController::class,'show'])->name('pros.show');
 
 Route::get('/SearchByVatID/{vatID}',[SearchController::class, 'perVatID'])->name('vatid');
 Route::get('/SearchByName/{name}',[SearchController::class, 'perName'])->name('name');

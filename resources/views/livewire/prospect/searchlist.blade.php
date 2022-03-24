@@ -15,8 +15,8 @@
         {{--            @include('livewire.prospect.citydropdown')  --}}
         {{--        </div>  --}}
         {{--        <div class="">  --}}
-      {{--              @include('livewire.prospect.businessfields')  --}}
-    {{--        </div>     --}}
+        {{--              @include('livewire.prospect.businessfields')  --}}
+        {{--        </div>     --}}
             </div>
             @foreach($newproslist['proslist'] as $prospect)
               @if(!empty($prospect))

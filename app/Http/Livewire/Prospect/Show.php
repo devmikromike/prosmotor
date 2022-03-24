@@ -43,10 +43,10 @@ class Show extends Component
       $prosmodel['nameFI'] = $bssField->nameFI;
       $prosmodel['bsscode'] = $bssField->code;
       $location = Prospect::find($id)
-      ->locations()
-      ->VisitAddress()
-      ->EndDate()
-      ->first();
+        ->locations()
+        ->VisitAddress()
+        ->EndDate()
+        ->first();
 
       $prosmodel['street'] = $location->street;
       $prosmodel['postCode'] = $location->postCode;

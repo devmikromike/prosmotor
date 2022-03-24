@@ -6,18 +6,18 @@
         <table class="min-w-full divide-y divide-gray-200">
           @if(!empty($prospect))
             @foreach($prospect as $pros)
-            {{--   dd($pros  );  --}}
+            {{  dd($pros  );   }}
               @if(!empty($pros))
                 <thead class="bg-gray-50">
                   <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ID / Vat Id (Y-tunnus)
+                  {{__('prospectlist.vatid')}}
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Yrityksen nimi
+                      {{__('prospectlist.name')}}
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      City (Kaupunki)
+                        {{__('prospectlist.city')}}
                     </th>
                   </tr>
                 </thead>
@@ -32,7 +32,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-sm text-gray-900">
-                        <a href="# ">
+                        <a href="{{ route('pros.show',$pros['prospects'][0]['id'])}}">
                               {{ $pros['prospects'][0]['name']}}
                       </div>
                     </td>
@@ -45,7 +45,7 @@
                         {{  $pros['city']  }}
                        @endif
                       </span>
-                      <a href="#" class="ml-2 text-indigo-600 hover:text-indigo-900">Edit</a>
+
                     </td>
                   </tr>
                   @endif

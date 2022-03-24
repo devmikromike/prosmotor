@@ -124,11 +124,13 @@ class ProspectController extends Controller
         //
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
+      dd($id);
+
       //  Prospect Model
-      $prospect = Prospect::find($id);
-      $vatId = $prospect->vatId;
+    //  $prospect = Prospect::find($id);
+    //  $vatId = $prospect->vatId;
     //  $convert = str_replace('-','',$vatId);
     //  $vatId = (int)$convert;
     //  dd($vatId);
