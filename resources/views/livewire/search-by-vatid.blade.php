@@ -24,6 +24,7 @@
    {{ $statusMessage }}
    <br>
   <div class="">
+   
     @foreach ($results as $result)
         <div class="mt-4 border border-t border-2 border-gray-500">
           {{  $result['businessId'] }} <br>

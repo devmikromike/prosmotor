@@ -31,6 +31,7 @@ class Show extends Component
       $this->myindex =  $searchByVatId;
     } */
 
+  
     public function refresh() {
       $this->update = !$this->update;
     }
