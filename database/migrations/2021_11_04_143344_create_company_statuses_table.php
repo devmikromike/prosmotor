@@ -10,6 +10,14 @@ class CreateCompanyStatusesTable extends Migration
     {
         Schema::create('company_statuses', function (Blueprint $table) {
             $table->id();
+            $table->integer('prospect_id')->nullable();
+            $table->tinyInteger('blacklisted')->default(0);   // Boolean
+            $table->integer('category_id')->nullable();
+            $table->string('default_location_id')->nullable();
+            $table->integer('size_id')->nullable();
+            $table->integer('type_id')->nullable();
+            //$table->string()->nullable();
+
             $table->timestamps();
         });
     }

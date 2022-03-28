@@ -33,5 +33,5 @@ Route::get('/SearchByDates/{from}/{to}',[SearchController::class, 'perDates'])->
 Route::get('/SearchByPostalCode/{code}',[SearchController::class, 'perPostalCode'])->name('postalcode');
 
 /// Livewire component routes /////
-//Route::get('/businesscard/{id}', BusinessCard::class)->name('businesscard');
-Route::get('/businesscard/{pros_id}', \App\Http\Livewire\BusinessCard::class)->name('businesscard');
+
+Route::get('/businesscard/{pros_id}', BusinessCard::class)->name('businesscard');

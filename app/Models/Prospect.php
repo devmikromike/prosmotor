@@ -68,7 +68,7 @@ class Prospect extends Model
     {
       $pros_bss_line_id = $bssModel;
 
-      dd(($this->bssCodeField())->attach(1));
+    //  dd(($this->bssCodeField())->attach(1));
 
       $isok = $propectId->bssCodeField()->attach($bssModel->id);
       // $isok = $location->prospects()->attach($propectId);
@@ -89,30 +89,46 @@ class Prospect extends Model
    public function collectCompanyData($company,$uri)
    {
      $data = (new Prospect())->updateOrCreate($company);
+     
      $id = $data->id;
       if (empty($uri)){
         }else {
           (new ProsDetails())->saveUri($uri, $id);
+        };
+      //  dump($data);
+        if (empty($id)){
+          dump('empty');
+        //  dd($data);
         }
+
      return $data;
    }
    public function emptyCompanyName($company, $uri)
    {
+
      $name = $company['name'];
      $vatId = $company['vatId'];
      $errors = array();
-     $pros = array();
+     $success = array();
 
      if (empty($name))
        {
+         dump('prospect blacklisted');
+
          $errors = (new ProsBlackListed())->blacklisted($vatId);
           return $response = array($errors, [
-           'message' => 'Failed'
+           'message' => 'Failed',
+           'id' => 'failed'
            ]);
          }else {
-          $pros = (new Prospect())->collectCompanyData($company,$uri);
-          return $pros;  // return Model
-       };
+          $prospectModel = (new Prospect())->collectCompanyData($company,$uri);
+
+           //   return $response = array($success, [
+          return array($success, [
+          'message' => 'created propect successfully',
+          'prospect' =>  $prospectModel  // return Model
+          ]);
+       }
    }
 
    public function getId($vatId)

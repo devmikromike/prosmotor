@@ -70,36 +70,68 @@ class Search extends Model
 
       if ($results == 'true'){
                if(!empty($liquidations)){
-                 $status = 'failed';
-                 $details = $data['liquidations'][0];
-                 $business['lastType'] = $liquidations[0]['type'];
-                 $business['regDate'] = $liquidations[0]['registrationDate'];
-                 $business['vatId'] = $data['businessId'];
-                 $reason = $liquidations[0]['description'];
-                 $response = (new ProsBlackListed())->createStatus($business, $reason);
+                  (new Blacklisted())->liquidations($data);
                } else {
 
-                 $company['name'] = $data['name'];
-                 $company['vatId'] = $data['businessId'];
-                 $uri = $data['detailsUri'];
-                 $company['registrationDate'] = $data['registrationDate'];
+                   $company['name'] = $data['name'];
+                   $company['vatId'] = $data['businessId'];
+                   $uri = $data['detailsUri'];
+                   $company['registrationDate'] = $data['registrationDate'];
 
-                 if (empty($uri)){
-                   $uri === 'not availble';
-                 }else {
+
+                   if (empty($uri)){
+                     $uri === 'not availble';
+                   }else {
 
                  }
-                  $prosCreated = (new Prospect())->emptyCompanyName($company, $uri);
 
-                  $propectId = $prosCreated->id;
+               $prosModel = (new Prospect())->emptyCompanyName($company, $uri);
 
-                    //  if(!empty($data['businessLines'])){
-                      if(is_array($data['businessLines'])){
-                        $businessLines = $data['businessLines'];
-                        $bssModel = (new ProsBssLine())->saveBss($businessLines);
-                        if(!empty($bssModel)){
-                            $isok = $prosCreated->bssCodeField()->attach($bssModel->id);
-                        }
+               foreach ($prosModel as $pros)
+               {
+                  $results =  Arr::exists($pros, 'prospect');
+
+                  if ($results)
+                  {
+                    $propectId = $pros['prospect']['id'];
+                   
+                  // end of IF
+                  }
+               }
+               //else {                 }
+
+
+              // dd($results);
+/*
+                if($prosModel){
+                  $prosCreated  = $prosModel->toArray();
+                    if( array_key_exists('id', $prosCreated))
+                    {
+                      $propectId = $prosCreated['id'];
+                        if($prosCreated['id'] == 'failed'){
+                          dump('company blacklisted!');
+                      }else{
+                        dump($prosCreated['id']);
+                      }
+                    }else {
+                      dd(  $prosCreated);
+                    } */
+
+
+
+              //  }
+
+          //      $prosModel = (new Prospect())->emptyCompanyName($company, $uri);
+            //    dd($prosModel);
+
+
+              if(is_array($data['businessLines'])){
+                $businessLines = $data['businessLines'];
+                $bssModel = (new ProsBssLine())->saveBss($businessLines);
+
+                if(!empty($bssModel && $pros['prospect'])){
+                    $isok = $pros['prospect']->bssCodeField()->attach($bssModel->id);
+                }
                   //    $isok = $prosCreated->bssCodeField()->attach($bssModel->id);
                       }else{
                         // empty busines field code!
@@ -149,7 +181,7 @@ class Search extends Model
     {
      $statusMsg = $response->json('Status_message');
       // Get status code from Response.
-      $resCode = $response->json('Status');     
+      $resCode = $response->json('Status');
 
       if($resCode === 200){
           $response = $response->json('Response');
