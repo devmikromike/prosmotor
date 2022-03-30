@@ -88,20 +88,18 @@ class Location extends Model
         $address['regDate'] = $loc['registrationDate'];
         // if endDate is null, it is last one!
         $address['endDate'] = $loc['endDate'];
-
         $street = $address['street'];
         $avail =  (new SELF())->postBox($street);
 
+         $vatId = $propectId;
+
           if(!empty($street) && $avail == "false"){
-            $addss =  (new SELF())->saveLocation($address, $propectId);
-            return   $addss;
-            }else {
+              $addss = (new SELF())->saveLocation($address, $propectId);
+                  return   $addss;
+                }else {
               $vatId = (new Prospect())->getVatId($propectId);
-              if($address['type'] == 1){
                 (new ProsBlackListed())->blacklisted($vatId);
-              }
-          //    (new ProsBlackListed())->blacklisted($vatId);
-             }
+          }
     }
     public function checkIfExistAddress($location)
     {

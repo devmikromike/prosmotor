@@ -18,7 +18,7 @@ class Search extends Model
 {
 
   /* jos ei ole vielä registöröity
-    * 3259987-1
+    *
     *
    */
     use HasFactory;
@@ -60,7 +60,7 @@ class Search extends Model
       $status = '';
       $message = '';
       $vatId = '';
-      $liquidations = array();
+    //  $liquidations = array();
       $businessLines = array();
       $results =  Arr::exists($data, 'results');
       $aux =  Arr::exists($data, 'auxiliaryNames');
@@ -69,8 +69,8 @@ class Search extends Model
       $data = $data['results'][0];
 
       if ($results == 'true'){
-               if(!empty($liquidations)){
-                  (new Blacklisted())->liquidations($data);
+               if($liq){
+                  (new ProsBlackListed())->liquidations($data);
                } else {
 
                    $company['name'] = $data['name'];
@@ -94,7 +94,7 @@ class Search extends Model
                   if ($results)
                   {
                     $propectId = $pros['prospect']['id'];
-                   
+
                   // end of IF
                   }
                }

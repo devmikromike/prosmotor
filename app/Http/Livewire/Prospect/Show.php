@@ -31,7 +31,7 @@ class Show extends Component
       $this->myindex =  $searchByVatId;
     } */
 
-  
+
     public function refresh() {
       $this->update = !$this->update;
     }
@@ -48,13 +48,15 @@ class Show extends Component
         ->VisitAddress()
         ->EndDate()
         ->first();
+      if (!empty($prosmodel['street'])){
+        $prosmodel['street'] = $location->street;
+        $prosmodel['postCode'] = $location->postCode;
+        $prosmodel['city'] = $location->city;
 
-      $prosmodel['street'] = $location->street;
-      $prosmodel['postCode'] = $location->postCode;
-      $prosmodel['city'] = $location->city;
+      }
       $this->prosmodel =  $prosmodel;
       $this->refresh();
-      return $prosmodel;
+      return $prosmodel;         
     }
 
     public function render()
