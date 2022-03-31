@@ -57,71 +57,42 @@ class Location extends Model
         if(is_array($data['addresses'])){
             $locations = $data['addresses'];
             foreach ($locations as $loc){
-              if((new SELF())->checkIfExistAddress($loc) == 'empty'){
+              $type = $loc['type'];
+              if((new SELF())->checkIfExistEndDate($loc) == 'empty'){
                 if($loc['street']!= null)
                 {
                   $street = $loc['street'];
-                  if((new SELF())->postBoxIsNotExist($street)== 'true') {
+                  if((new SELF())->IsStreetExist($street, $type)== 'true') {
                       $location = (new SELF())->createLocation($propectId, $loc);
                        $location->prospects()->attach($propectId);
                    }else {
+                     $reason = 'No address found';
                      $vatId = (new Prospect())->getVatId($propectId);
-                               (new ProsBlackListed())->blacklisted($vatId);
-                   }
-                 }
-               }
-             }
+                               (new ProsBlackListed())->blacklisted($vatId, $reason);
+                   } //  $reason = 'No address found';
+                 } // loc['street']!= null
+               } // checkIfExistEndDate
+             } /// End of Foreach.
            }else {
+            $reason = 'No visit or postal address found';
             $vatId = (new Prospect())->getVatId($propectId);
                       (new ProsBlackListed())->blacklisted($vatId);
          }
-
-
-/*
-            // relation Location and Pros_id
-           if ($isNotNull == true)  // Empty endDate !
-           {
-          //   dump($isNotNull);
-               $location = (new SELF())->createLocation($propectId, $loc);
-                   if(!empty($location && $propectId)){
-                     $isok = $location->prospects()->attach($propectId);
-                   }
-          //   $isok = $location->prospects()->attach($propectId);
-        }else {                                   // end of 2nd IF!
-                 return;
-                            }
-              }                                  // end of Foreach
-          }
-            else {                                // end of 1st IF
-               $locations = 'Ei osoite tietoja.';
-                return;                                   // Return No Address details!
-        }   */
-
-        // $avail =  (new SELF())->postBox($street);
-
-        // dump($avail);
-        //
-        //  $vatId = $propectId;
-        //
-        //   if(!empty($street) && $avail == "false"){
-        //       $addss = (new SELF())->saveLocation($address, $propectId);
-        //           return   $addss;
-        //         }else {
-        //       $vatId = (new Prospect())->getVatId($propectId);
-        //         (new ProsBlackListed())->blacklisted($vatId);
-        //         dump('ProsBlackListed:empty($street) ');
-        //     return;
-        //   }
-
-
-
-
-
-
-
-
-
    }   // End of function
+
+    public function IsStreetExist($street, $type)
+    {
+        if($type == 1)
+        {
+          $visit = SELF::visitAddressIsExist($street);
+          return $visit;
+        }
+        if($type == 2)
+        {
+            $postal = SELF::postalAddressIsNotExist($street);
+           return $postal;
+        }
+    }
     public function createLocation($propectId, $loc)
     {
         $address['careOf'] = $loc['careOf'];
@@ -137,23 +108,8 @@ class Location extends Model
         $addss =  (new SELF())->saveLocation($address, $propectId);
         return   $addss;
 
-        // $avail =  (new SELF())->postBox($street);
-
-        // dump($avail);
-        //
-        //  $vatId = $propectId;
-        //
-        //   if(!empty($street) && $avail == "false"){
-        //       $addss = (new SELF())->saveLocation($address, $propectId);
-        //           return   $addss;
-        //         }else {
-        //       $vatId = (new Prospect())->getVatId($propectId);
-        //         (new ProsBlackListed())->blacklisted($vatId);
-        //         dump('ProsBlackListed:empty($street) ');
-        //     return;
-        //   }
     }
-    public function checkIfExistAddress($location)
+    public function checkIfExistEndDate($location)
     {
       if ($location['endDate'])
       {
@@ -171,15 +127,46 @@ class Location extends Model
     }
     public function postBoxIsNotExist($street)
     {
-           if(Str::contains($street,"PL")){
+      {
+          if(Str::contains($street,"PL")){
+             return "exist";
+           }
+           if(Str::contains($street,"PB")){
               return "exist";
             }
-            if(Str::contains($street,"PB")){
+            if(Str::contains($street,"BOX")){
                return "exist";
-             }
-             if(Str::contains($street,"BOX")){
-                return "exist";
-             }
-        return "true";
+            }
+          return "true";
+      }
+
+    }
+    public function coIsNotExist($street)
+    {
+      if(Str::contains($street,"c/o")){
+         return "exist";
+      }else {
+        return true;
+      }
+    }
+    public function postalAddressIsNotExist($street)
+    {
+        if(SELF::postBoxIsNotExist($street)){
+          if(SELF::coIsNotExist($street)){
+            return true;
+        }else {
+          return false;
+        }
+      }
+    }
+    public function visitAddressIsExist($street)
+    {
+      if(SELF::postBoxIsNotExist($street)== true){
+        if(SELF::coIsNotExist($street)== true){
+          return true;
+        }
+      }else {
+        return false;
+      }
     }
 }

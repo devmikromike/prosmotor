@@ -19,7 +19,7 @@ class ProsBlackListed extends Model
         $business['description'] = $reason;
 
         SELF::createStatus($business);
-        
+
       return $errors = array(
         'message' => 'Company blacklisted',
         'vatId' => $vatId,
@@ -28,7 +28,6 @@ class ProsBlackListed extends Model
     }
     public function createStatus($business)
     {
-
       // $type = $business['lastType'];
       SELF::updateOrCreate($business);
       return $errors = array(
@@ -40,7 +39,7 @@ class ProsBlackListed extends Model
     public function liquidations($data)
     {
       dump('liquidations');
-      dd($data);
+      dump($data);
       $business['status'] = 'failed';
       $details = $data['liquidations'][0];
       $business['lastType'] = $liquidations[0]['type'];
