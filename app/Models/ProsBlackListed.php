@@ -11,39 +11,42 @@ class ProsBlackListed extends Model
 
     protected $guarded = [];
 
-    public function blacklisted($vatId)
+    public function blacklisted($vatId, $reason)
     {
-      SELF::updateOrCreate([
-        'vatId' => $vatId,
-      ]);
+        $business = array();
+        $business['status'] = 'failed';
+        $business['vatId'] = $vatId;
+        $business['description'] = $reason;
+
+        SELF::createStatus($business);
+        
       return $errors = array(
         'message' => 'Company blacklisted',
         'vatId' => $vatId,
         'reason' => 'No Company name on PRH Record for Vatid.'
       );
     }
-    public function createStatus($business, $reason)
+    public function createStatus($business)
     {
-      dd($business);
 
-      $type = $business['lastType'];
+      // $type = $business['lastType'];
       SELF::updateOrCreate($business);
       return $errors = array(
         'message' => 'Company blacklisted',
         'vatId' => $business['vatId'],
-        'reason' => 'Company has' .$reason
+        'reason' => 'Company has' .$business['description']
       );
     }
     public function liquidations($data)
     {
       dump('liquidations');
       dd($data);
-      $status = 'failed';
+      $business['status'] = 'failed';
       $details = $data['liquidations'][0];
       $business['lastType'] = $liquidations[0]['type'];
       $business['regDate'] = $liquidations[0]['registrationDate'];
       $business['vatId'] = $data['businessId'];
-      $reason = $liquidations[0]['description'];
-      $response = (new ProsBlackListed())->createStatus($business, $reason);
+      $business['description'] = $liquidations[0]['description'];
+      $response = (new ProsBlackListed())->createStatus($business);
     }
 }

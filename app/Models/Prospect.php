@@ -89,7 +89,7 @@ class Prospect extends Model
    public function collectCompanyData($company,$uri)
    {
      $data = (new Prospect())->updateOrCreate($company);
-     
+
      $id = $data->id;
       if (empty($uri)){
         }else {
@@ -103,7 +103,7 @@ class Prospect extends Model
 
      return $data;
    }
-   public function emptyCompanyName($company, $uri)
+   public function emptyCompanyName($company, $uri, $businessChanges)
    {
 
      $name = $company['name'];
@@ -113,9 +113,8 @@ class Prospect extends Model
 
      if (empty($name))
        {
-         dump('prospect blacklisted');
-
-         $errors = (new ProsBlackListed())->blacklisted($vatId);
+         $reason = 'No Company name on PRH Record for Vatid.';
+         $errors = (new ProsBlackListed())->blacklisted($vatId, $reason);
           return $response = array($errors, [
            'message' => 'Failed',
            'id' => 'failed'

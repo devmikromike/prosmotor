@@ -10,4 +10,5 @@ return [
     'subheader'  => 'Tällä hetkellä voit hakea ainostaan Osakeyhtiöiden tietoja (OY).',
     'listheader'  => 'Potentiaalisten asiakkaiden lista',
     'listbutton'  => 'Hae listalta.',
+    'propectNotFound' => 'Yritys ei ole enään rekisterissä!'
 ];

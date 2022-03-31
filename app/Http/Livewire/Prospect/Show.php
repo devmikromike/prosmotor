@@ -14,7 +14,7 @@ class Show extends Component
 
   public $businessId;
   public $prosmodel, $bssField, $myindex;
-
+  public $message;
   public $searchById;
   public $update;
   public $vatId, $name, $www;
@@ -36,27 +36,34 @@ class Show extends Component
       $this->update = !$this->update;
     }
 
-    public function byVatId($vatId)
+    public function  byVatId($vatId)
     {
       $prosmodel = (new Prospect())->getId($vatId);
-      $id = $prosmodel->id;
-      $bssField = Prospect::find($id)->bssCodeField()->first();
-      $prosmodel['nameFI'] = $bssField->nameFI;
-      $prosmodel['bsscode'] = $bssField->code;
-      $location = Prospect::find($id)
-        ->locations()
-        ->VisitAddress()
-        ->EndDate()
-        ->first();
-      if (!empty($prosmodel['street'])){
-        $prosmodel['street'] = $location->street;
-        $prosmodel['postCode'] = $location->postCode;
-        $prosmodel['city'] = $location->city;
+      if(!empty($prosmodel)){
+        $id = $prosmodel->id;
+        $bssField = Prospect::find($id)->bssCodeField()->first();
+        $prosmodel['nameFI'] = $bssField->nameFI;
+        $prosmodel['bsscode'] = $bssField->code;
+        $location = Prospect::find($id)
+          ->locations()
+          ->VisitAddress()
+          ->EndDate()
+          ->first();
+        if (!empty($prosmodel['street'])){
+          $prosmodel['street'] = $location->street;
+          $prosmodel['postCode'] = $location->postCode;
+          $prosmodel['city'] = $location->city;
+
+        }
+        $this->prosmodel =  $prosmodel;
+        $this->refresh();
+        return $prosmodel;
+      }else {
+        $this->vatId = $vatId;
+          $this->refresh();
 
       }
-      $this->prosmodel =  $prosmodel;
-      $this->refresh();
-      return $prosmodel;         
+
     }
 
     public function render()

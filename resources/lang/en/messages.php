@@ -9,5 +9,6 @@ return [
     'headerline2'  => 'All comapany information will be save automaticlly ProspectMotor',
     'subheader'  => 'You can search only limited comapnies at this moment (OY / LTD).',
     'listheader'  => 'Prospect list',
-    'listbutton'  => 'Get prospect list'
+    'listbutton'  => 'Get prospect list',
+    'propectNotFound' => 'Prospect not found fron Register'
 ];

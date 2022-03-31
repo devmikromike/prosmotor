@@ -30,9 +30,6 @@ class Location extends Model
     }
     public function scopeEndDate($query)
     {
-      // return only EndDates
-      //      return $query ->where('endDate','>', 0);
-
       return $query ->where('endDate',NULL);
     }
     public function scopeCity($query, $city)
@@ -57,26 +54,74 @@ class Location extends Model
     }
     public function extractLocation($data, $propectId)
     {
-
         if(is_array($data['addresses'])){
-          // if(!empty($data['addresses'])){
-          $locations = $data['addresses'];
-          foreach ($locations as $loc){
-            $location = (new SELF())->createLocation($propectId, $loc);
-            $isNotNull = (new SELF())->checkIfExistAddress($location);
-          // relation Location and Pros_id
-         if ($isNotNull == true)
-         {
-           if(!empty($location && $propectId)){
-             $isok = $location->prospects()->attach($propectId);
-           }
-        //   $isok = $location->prospects()->attach($propectId);
+            $locations = $data['addresses'];
+            foreach ($locations as $loc){
+              if((new SELF())->checkIfExistAddress($loc) == 'empty'){
+                if($loc['street']!= null)
+                {
+                  $street = $loc['street'];
+                  if((new SELF())->postBoxIsNotExist($street)== 'true') {
+                      $location = (new SELF())->createLocation($propectId, $loc);
+                       $location->prospects()->attach($propectId);
+                   }else {
+                     $vatId = (new Prospect())->getVatId($propectId);
+                               (new ProsBlackListed())->blacklisted($vatId);
+                   }
+                 }
+               }
+             }
+           }else {
+            $vatId = (new Prospect())->getVatId($propectId);
+                      (new ProsBlackListed())->blacklisted($vatId);
          }
-        }
-      }else {
-        $locations = 'Ei osoite tietoja.';
-      }
-   }
+
+
+/*
+            // relation Location and Pros_id
+           if ($isNotNull == true)  // Empty endDate !
+           {
+          //   dump($isNotNull);
+               $location = (new SELF())->createLocation($propectId, $loc);
+                   if(!empty($location && $propectId)){
+                     $isok = $location->prospects()->attach($propectId);
+                   }
+          //   $isok = $location->prospects()->attach($propectId);
+        }else {                                   // end of 2nd IF!
+                 return;
+                            }
+              }                                  // end of Foreach
+          }
+            else {                                // end of 1st IF
+               $locations = 'Ei osoite tietoja.';
+                return;                                   // Return No Address details!
+        }   */
+
+        // $avail =  (new SELF())->postBox($street);
+
+        // dump($avail);
+        //
+        //  $vatId = $propectId;
+        //
+        //   if(!empty($street) && $avail == "false"){
+        //       $addss = (new SELF())->saveLocation($address, $propectId);
+        //           return   $addss;
+        //         }else {
+        //       $vatId = (new Prospect())->getVatId($propectId);
+        //         (new ProsBlackListed())->blacklisted($vatId);
+        //         dump('ProsBlackListed:empty($street) ');
+        //     return;
+        //   }
+
+
+
+
+
+
+
+
+
+   }   // End of function
     public function createLocation($propectId, $loc)
     {
         $address['careOf'] = $loc['careOf'];
@@ -89,29 +134,33 @@ class Location extends Model
         // if endDate is null, it is last one!
         $address['endDate'] = $loc['endDate'];
         $street = $address['street'];
-        $avail =  (new SELF())->postBox($street);
+        $addss =  (new SELF())->saveLocation($address, $propectId);
+        return   $addss;
 
-         $vatId = $propectId;
+        // $avail =  (new SELF())->postBox($street);
 
-          if(!empty($street) && $avail == "false"){
-              $addss = (new SELF())->saveLocation($address, $propectId);
-                  return   $addss;
-                }else {
-              $vatId = (new Prospect())->getVatId($propectId);
-                (new ProsBlackListed())->blacklisted($vatId);
-          }
+        // dump($avail);
+        //
+        //  $vatId = $propectId;
+        //
+        //   if(!empty($street) && $avail == "false"){
+        //       $addss = (new SELF())->saveLocation($address, $propectId);
+        //           return   $addss;
+        //         }else {
+        //       $vatId = (new Prospect())->getVatId($propectId);
+        //         (new ProsBlackListed())->blacklisted($vatId);
+        //         dump('ProsBlackListed:empty($street) ');
+        //     return;
+        //   }
     }
     public function checkIfExistAddress($location)
     {
-      // dd($location);
-
-      if (empty($location->endDate))
+      if ($location['endDate'])
       {
-        return true;
+        return 'exist';    // EndDate exist!
       }else {
-        return false;
+        return 'empty';    // EndDate Empty
       }
-      // dd($location);
     }
     public function saveLocation($address, $propectId)
     {
@@ -120,20 +169,17 @@ class Location extends Model
       $addss = (new SELF())->updateOrCreate($address);
      return $addss;
     }
-    public function postBox($address)
+    public function postBoxIsNotExist($street)
     {
-          if(empty($address)){
-              return "true";
+           if(Str::contains($street,"PL")){
+              return "exist";
             }
-           if(!empty($address && Str::contains($address,"PL") )){
-              return "true";
-            }
-            if(!empty($address && Str::contains($address,"PB") )){
-               return "true";
+            if(Str::contains($street,"PB")){
+               return "exist";
              }
-             if(!empty($address && Str::contains($address,"BOX") )){
-                return "true";
+             if(Str::contains($street,"BOX")){
+                return "exist";
              }
-        return "false";
+        return "true";
     }
 }

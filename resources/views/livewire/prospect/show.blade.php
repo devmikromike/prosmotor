@@ -16,7 +16,7 @@
                                         font-medium text-gray-500 tracking-wider
                                         border border-blue-800 border-4 ">
             @if(!empty($prosmodel->name))
-                <a href="businesscard/{{$prosmodel->id}}" class="hover:shadow hover:text-gray-900"> 
+                <a href="businesscard/{{$prosmodel->id}}" class="hover:shadow hover:text-gray-900">
                 {{$prosmodel->name}}</a>
             @endif
             @if(!empty($prosmodel->www)) {{('  /  ')}}
@@ -46,6 +46,9 @@
               </tr>
             </tbody>
           </table>
+          @else
+           @if(!empty($vatId)){{__('Y-tunnus: ')}} {{ $vatId }} @endif
+          <p> {{__('messages.propectNotFound')}}  </p>
           @endif
         </div>
      </div>

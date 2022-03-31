@@ -60,11 +60,14 @@ class Search extends Model
       $status = '';
       $message = '';
       $vatId = '';
-    //  $liquidations = array();
       $businessLines = array();
       $results =  Arr::exists($data, 'results');
-      $aux =  Arr::exists($data, 'auxiliaryNames');
       $liq =  Arr::exists($data, 'liquidations');
+      $aux =  Arr::exists($data, 'auxiliaryNames');
+      $changes =  Arr::exists($data, 'businessIdChanges');
+      $registers =  Arr::exists($data, 'registeredEntries');
+
+
 
       $data = $data['results'][0];
 
@@ -72,21 +75,22 @@ class Search extends Model
                if($liq){
                   (new ProsBlackListed())->liquidations($data);
                } else {
-
                    $company['name'] = $data['name'];
                    $company['vatId'] = $data['businessId'];
                    $uri = $data['detailsUri'];
                    $company['registrationDate'] = $data['registrationDate'];
-
 
                    if (empty($uri)){
                      $uri === 'not availble';
                    }else {
 
                  }
-
-               $prosModel = (new Prospect())->emptyCompanyName($company, $uri);
-
+        if ($registers == 'true'){
+               $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges);
+             }else {
+               $businessChanges = null;
+               $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges );
+             }
                foreach ($prosModel as $pros)
                {
                   $results =  Arr::exists($pros, 'prospect');
