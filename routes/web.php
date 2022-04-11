@@ -14,10 +14,16 @@ Route::get('/', function () {
 
     return view('welcome');
 }); */
-/*
-if (env('APP_ENV') === 'production') {
+ /*
+if (env('APP_ENV') === 'production')  {
     URL::forceSchema('https');
-};  */
+};
+*/
+Route::get('dev-login', function () {
+    abort_unless(app()->environment('local'), 403);
+    auth()->loginUsingId(App\Models\User::first());
+    return redirect()->to('/');
+});
 
 Route::get('/',[HomeController::class, 'index'])->name('public');
 

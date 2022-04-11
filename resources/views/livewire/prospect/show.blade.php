@@ -47,8 +47,9 @@
             </tbody>
           </table>
           @else
-           @if(!empty($vatId)){{__('Y-tunnus: ')}} {{ $vatId }} @endif
-          <p> {{__('messages.propectNotFound')}}  </p>
+             @if(!empty($vatId)){{__('Y-tunnus: ')}} {{ $vatId }}
+                <p> {{__('messages.propectNotFound')}}  </p>
+             @endif         
           @endif
         </div>
      </div>

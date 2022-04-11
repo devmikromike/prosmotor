@@ -1,5 +1,5 @@
 <div>
-  <form action="#" wire:submit.prevent="submit">
+  <form action="#" wire:submit.prevent="subSubmit">
       @csrf
       <div>
         <div class="">
@@ -37,7 +37,6 @@
  <div class="">
 
    {{ $statusMessage }}
-
 
  </div>
 </div>
