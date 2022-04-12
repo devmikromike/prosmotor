@@ -20,6 +20,7 @@ use App\Events\ExtractTimeFrameEvent;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Bus\Batchable;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Search extends Model
@@ -75,16 +76,14 @@ class Search extends Model
     public function runBatchTimeFrame($from, $to )
     {
       $batch = Bus::batch([])
-      ->name('ExtractTimeFrameJob')
+        ->name('ExtractTimeFrameJob')
       ->dispatch();
-
       $batch->add(new TimeFrameJob($from, $to));
-      
-      event(new ExtractTimeFrameEvent());
 
+      $timeFrame = new TimeFrame;
+           event(new ExtractTimeFrameEvent($timeFrame));
       return $batch->id;
     }
-
     public function extractJson($data)
     { // single data
 

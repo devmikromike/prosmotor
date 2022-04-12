@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Carbon\Carbon;
 
 class TimeFrame extends Model
 {
     use HasFactory;
-
+    protected $table = 'time_frames';
     protected $guarded = [];
 
     public $startRangeDate;  // Api format
@@ -30,25 +31,53 @@ class TimeFrame extends Model
     public $carbonEndDate;
     public $carbonFinalEndDate;
     public $carbonNewEndDate;
+    public $firstId;
     public $lastId;
+    public $rowId;
+
+
+    public function scopeRowId($query, $value)
+    {
+        return $query
+        ->where('status', $value)
+        ->get();
+    }
+    public function searchRowId($status)
+    {
+      $model =(SELF())->RowId($status);
+      return $model;
+    }
+
 
     public function betweenDates($startRangeDate, $endRangeDate)
     { //output carbon object:  date: 2022-03-21 00:00:00.0 UTC (+00:00)
         $this->startRangeDate = $startRangeDate;
         $this->freshStartDate = Carbon::parse($startRangeDate);
         $this->carbonStartDate = Carbon::parse($startRangeDate);
-        $this->carbonFinalEndDate =  Carbon::parse($endRangeDate);     //output carbon object
+        $this->carbonFinalEndDate =  Carbon::parse($endRangeDate);
+        $this->carbonEndDate =  Carbon::parse($endRangeDate);     //output carbon object
         $this->diffent = $this->freshStartDate->diffInDays($this->carbonFinalEndDate);  // Carbon::diffInDays -> int()
         $this->firstProcess();
     }
     public function firstProcess()
     {
       $lastId = 0;
-      $this->status = "Start Setup";
-      $this->carbonEndDate = $this->carbonStartDate->addDays((int)$this->rangeDates);
+
+
+      if($this->diffent > $this->rangeDates){
+        $this->status = "Start Setup";
+        $this->carbonEndDate = $this->carbonStartDate->addDays((int)$this->rangeDates);
         $this->newEndDate = $this->carbonToApiFormat($this->carbonEndDate);
         $this->newStartDate   = $this->carbonToApiFormat($this->freshStartDate);
           $this->saveDates();
+      }else{
+          if($this->diffent < $this->rangeDates){
+             $this->newEndDate = $this->carbonToApiFormat($this->carbonEndDate);
+             $this->newStartDate   = $this->carbonToApiFormat($this->freshStartDate);
+               $this->status = 'Final dates';
+               $this->saveDates();
+          }
+      }
     }
     public function saveStartDate()
     {
@@ -68,7 +97,9 @@ class TimeFrame extends Model
          'status' => $this->status
       ]);
       $this->lastId = $timeTable->id;
-        $this->newStartDate();
+      if($this->diffent > $this->rangeDates){
+          $this->newStartDate();
+      }
     }
         public function saveEndDate()
     {
@@ -91,6 +122,7 @@ class TimeFrame extends Model
               $this->saveStartDate();
         return $this->newStartDate;
       }
+      return;   ////????
     }
 // get's date in Carbon format(object), return Carbon format
     public function newEndDate()
