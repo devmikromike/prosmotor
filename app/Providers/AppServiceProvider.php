@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Bus\Queueable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+      /*
+        Queue::failing(function (JobFailed $event) {
+           $event->connectionName
+           $event->job
+           $event->data
+     });    */
+
+
         //
         /*
         view()->composer('welcome', function($view){

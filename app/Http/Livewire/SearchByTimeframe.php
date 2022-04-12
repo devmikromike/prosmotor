@@ -28,9 +28,15 @@ class SearchByTimeframe extends Component
   public function submit( )
   {
     $this->validate();
-    $this->response  =  (new Search())->perDates($this->from, $this->to);
-
-    return view('livewire.search-by-name');
+    //$this->response  =  (new Search())->perDates($this->from, $this->to);
+    $this->response  =  (new Search())->createTimeFrameBatchJob($this->from, $this->to);
+    $this->response = $this->response;
+    if ($this->response)
+    {
+      $this->statusMessage = "Search is in Progress";
+      return view('livewire.search-by-timeframe')->with('statusMessage', $this->statusMessage );
+    }
+    return view('livewire.search-by-timeframe');
   }
   public function render()
   {

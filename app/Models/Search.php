@@ -13,10 +13,17 @@ use App\Models\ProsBlackListed;
 use App\Models\Location;
 use App\Models\Contact;
 use App\Models\Searchlist;
+use App\Models\TimeFrame;
+use App\Jobs\TimeFrameJob;
+use App\Jobs\Step2job;
+use App\Events\ExtractTimeFrameEvent;
+use Illuminate\Bus\Batch;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Bus\Batchable;
+use Throwable;
 
 class Search extends Model
 {
-
   /* jos ei ole vielä registöröity
     *
     *
@@ -34,7 +41,6 @@ class Search extends Model
     {
       // if($response = Http::get('http://ProsCore-api.test/SearchVatID/'.$vatId)){
          if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
-
           $results = (new SELF())->statusData($response);
           return $results;
         }
@@ -53,7 +59,32 @@ class Search extends Model
           $results = (new SELF())->statusData($response);
       }
     }
-    //  'totalResults=true&maxResults=1000&resultsFrom=0&streetAddressPostCode=01300&companyForm=OY'
+    public function createBatchJobByVatID($vatId)
+    {
+
+    }
+    public function createTimeFrameBatchJob($from, $to)
+    {// timeframe as API Format.
+      // create Batch chain and return back to Livewire
+      // trigger Livewire listener
+      // create $event
+
+    $batchId = (new SELF())->runBatchTimeFrame($from, $to );
+    return ($batchId);
+    }
+    public function runBatchTimeFrame($from, $to )
+    {
+      $batch = Bus::batch([])
+      ->name('ExtractTimeFrameJob')
+      ->dispatch();
+
+      $batch->add(new TimeFrameJob($from, $to));
+      
+      event(new ExtractTimeFrameEvent());
+
+      return $batch->id;
+    }
+
     public function extractJson($data)
     { // single data
 
@@ -160,7 +191,6 @@ class Search extends Model
                       }
                       //  if(is_array($data['addresses'])){
                        if(!empty($data['addresses'])){
-
                       $location = (new Location())->extractLocation($data, $propectId);
                      }
 
@@ -234,7 +264,6 @@ class Search extends Model
        $regDate = $pros['registrationDate'];
        (new SELF())->perVatID($vatId);
        (new Searchlist())->saveList($vatId, $name, $regDate);
-
      }
    }
 }  // End of Class

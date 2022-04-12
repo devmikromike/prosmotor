@@ -1,5 +1,5 @@
 <div>
-  <form action="#" wire:submit.prevent="subSubmit">
+  <form action="#" wire:submit.prevent="submit">
       @csrf
       <div>
         <div class="">
