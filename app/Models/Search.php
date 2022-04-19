@@ -97,8 +97,6 @@ class Search extends Model
       $changes =  Arr::exists($data, 'businessIdChanges');
       $registers =  Arr::exists($data, 'registeredEntries');
 
-
-
       $data = $data['results'][0];
 
       if ($results == 'true'){
@@ -132,36 +130,11 @@ class Search extends Model
                   // end of IF
                   }
                }
-               //else {                 }
-
-
-              // dd($results);
-/*
-                if($prosModel){
-                  $prosCreated  = $prosModel->toArray();
-                    if( array_key_exists('id', $prosCreated))
-                    {
-                      $propectId = $prosCreated['id'];
-                        if($prosCreated['id'] == 'failed'){
-                          dump('company blacklisted!');
-                      }else{
-                        dump($prosCreated['id']);
-                      }
-                    }else {
-                      dd(  $prosCreated);
-                    } */
-
-
-
-              //  }
-
-          //      $prosModel = (new Prospect())->emptyCompanyName($company, $uri);
-            //    dd($prosModel);
-
-
               if(is_array($data['businessLines'])){
                 $businessLines = $data['businessLines'];
                 $bssModel = (new ProsBssLine())->saveBss($businessLines);
+
+              //  dd($bssModel);
 
                 if(!empty($bssModel && $pros['prospect'])){
                     $isok = $pros['prospect']->bssCodeField()->attach($bssModel->id);
@@ -185,8 +158,8 @@ class Search extends Model
                           'code' => '9999999',
                           'name' => 'Unknown Business Field name'
                         );
-                        $prosline = array($bssLineEN, $bssLineFI,$bssLineSE);
-                      (new ProsBssLine())->saveEmptyBss($prosline);
+                          $prosline = array($bssLineEN, $bssLineFI,$bssLineSE);
+                          (new ProsBssLine())->saveEmptyBss($prosline);
                       }
                       //  if(is_array($data['addresses'])){
                        if(!empty($data['addresses'])){

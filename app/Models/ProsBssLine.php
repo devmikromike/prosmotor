@@ -86,36 +86,33 @@ class ProsBssLine extends Model
     public function saveBss($businessLines)
     {
       $bss = '';
+      $language;
 
         foreach ($businessLines as $key => $value) {
           $code = $value['code'];
-          if($key == 1)
+          $language = $value['language'];
+
+          if($language == 'FI')
           {
             $bssLineFI = $value['name'];
           $bss  =  (new SELF())->saveBssFI($bssLineFI, $code);
           }
-          if($key == 2)
+          if($language == 'SE')
           {
             $bssLineSE = $value['name'];
             (new SELF())->saveBssSE($bssLineSE, $code);
           }
-          if($key == 0)
+          if($language == 'EN')
           {
             $bssLineEN = $value['name'];
 
             (new SELF())->saveBssEN($bssLineEN, $code);
           }
         }
-
-      //   dd($bss);
        return $bss;
     }
       public function saveBssEN($bssLineEN, $code)
       {
-
-
-          // $name = $bssLineEN;
-
           $c = (new SELF())->updateOrCreate([
             'code' => $code,
           ] ,[
