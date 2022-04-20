@@ -21,6 +21,7 @@ use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\Log;
+
 use Throwable;
 
 class Search extends Model
@@ -31,6 +32,7 @@ class Search extends Model
    */
     use HasFactory;
     protected $guared = [];
+    public $statusMsg, $resCode;
 
     public function perName($name)
     {
@@ -48,8 +50,10 @@ class Search extends Model
     }
     public function perDates($from, $to)
     {
+      Log::info('step 27: Send request to API Bridge');
       if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
-          $results = (new SELF())->statusData($response);
+      Log::info('step 28: get response from API Bridge');
+        $results = (new SELF())->statusData($response);
       }
     }
     public function perPostalCode($code)
@@ -64,24 +68,31 @@ class Search extends Model
     {
 
     }
-    public function createTimeFrameBatchJob($from, $to)
-    {// timeframe as API Format.
-      // create Batch chain and return back to Livewire
-      // trigger Livewire listener
-      // create $event
+    public function createBatchJobBySearchList()
+    {
 
+    }
+    public function createTimeFrameBatchJob($from, $to)
+    {
+      Log::info('Step 2 : Create TimeFrameBatchJob from model-Search');
     $batchId = (new SELF())->runBatchTimeFrame($from, $to );
+    Log::info('Step: 6 return TimeFrameBatchJob - main process Done');
     return ($batchId);
     }
-    public function runBatchTimeFrame($from, $to )
+    public function runBatchTimeFrame($from, $to)
     {
+      Log::info('Step 3: Create Batch');
       $batch = Bus::batch([])
         ->name('ExtractTimeFrameJob')
-      ->dispatch();
+        ->dispatch();
+        Log::info('Step 4: Add Job to Batch');
       $batch->add(new TimeFrameJob($from, $to));
 
+    /*    Log::info('Step: 5 call ExtractTimeFrameEvent');
       $timeFrame = new TimeFrame;
            event(new ExtractTimeFrameEvent($timeFrame));
+             Log::info('Step: 14 return batch info'); */
+     Log::info('Step: 5 return batch info');
       return $batch->id;
     }
     public function extractJson($data)
@@ -185,17 +196,29 @@ class Search extends Model
     }
     public function statusData($response)
     {
+      //  $res = $response->json('Response');
+
      $statusMsg = $response->json('Status_message');
       // Get status code from Response.
       $resCode = $response->json('Status');
 
+      Log::info('step 29: checking response status: '.$resCode);
+
       if($resCode === 200){
+        Log::info('step 29:  response status: [OK]');
+
           $response = $response->json('Response');
           $r = collect($response['results']);
         $sum = (new SELF())->counter($r);
         if($sum === 1)
         {
+            $dataId = $response['results'][0];
+
+          //  dd($dataId);
+
             $data = $response;
+            $id = $dataId['businessId'];
+            Log::info('step 30: handeling single data: '.$id);
             (new SELF())->extractJson($data); // single data
           return $results = array(
             'Status' => $resCode,
@@ -204,12 +227,28 @@ class Search extends Model
           );
         }else
         { // list mode, more than one company
+            Log::info('step 31: List mode detected');
           (new SELF())->listSearch($response);
         }
-      } else {   /// http error code other than 200
+      } else {
+          if($resCode === 404){
+            return $results = array(
+              'Status' => $resCode,
+              'Status_message' => $statusMsg,
+              'Response' => $response
+            );
+          }
+          /// http error code other than 200
          $resCode = $response->json('Status');
          $statusMsg = $response->json('Status_message');
+         $errors =  Arr::exists($response, 'Errors');
          $response = '';
+         if($errors){
+           foreach ($errors as $error)
+           {
+             Log::error('step 31: '.$error);
+           }
+         }
          return $results = array(
            'Status' => $resCode,
            'Status_message' => $statusMsg,
@@ -230,12 +269,26 @@ class Search extends Model
    }
    public function listSearch($response)
    {
+
      foreach ($response['results'] as $key => $pros){
        $vatId = $pros['businessId'];
        $name = $pros['name'];
        $regDate = $pros['registrationDate'];
-       (new SELF())->perVatID($vatId);
-       (new Searchlist())->saveList($vatId, $name, $regDate);
+         Log::info('step 31: Handeling VatId: '.$vatId);
+
+         if (!empty($name))
+           {
+               Log::info('step 32: Sending '.$vatId.' to API Bridge');
+             (new SELF())->perVatID($vatId);
+             Log::info('step 32: Saving '.$vatId.' to locally: Searchlist-table');
+             (new Searchlist())->saveList($vatId, $name, $regDate);
+
+           }else {
+               Log::error('step 33: No Company name on PRH Record for Vatid. '.$vatId).' Company blacklisted!.';
+             $reason = 'No Company name on PRH Record for Vatid.';
+             $errors = (new ProsBlackListed())->blacklisted($vatId, $reason);
+           }
+
      }
    }
 }  // End of Class

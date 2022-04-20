@@ -25,23 +25,26 @@ class TimeFrameBatch
 
     public function handle(ExtractTimeFrameEvent $event)
     {
-        Log::notice('Listeners triggered');
+        Log::notice('step 17: Listeners triggered');
          $batch = Bus::batch([])
           ->name('GetTimeFrame')
         ->dispatch();
         $id = $batch->id;
+        Log::notice('step 18: Second Batch created');
       $rowArray =  (new SELF())->search($batch, $event);
-      dd($rowArray);
         return $batch;
     }
     public function search($batch, $event)
     {
-      if($rowData = $event->searchRowId('Start Setup'))
+        Log::notice('step 19: Listener is calling searchRowId with status:Start Setup ');
+
+      if($rowData = $event->eventRowId('Start Setup'))
           {
             foreach ($rowData as $key => $row)
-            {
+            {              
+              Log::notice('step 19: inside foreach loop ');
               $rowId = $row->id;
-              $this->rowIds[] = $rowId;
+              (new TimeFrame())->retRow($row->id);
 
           }
      }
@@ -49,12 +52,14 @@ class TimeFrameBatch
 
       // $this->batchId = $batch->id;
     //  $job = $batch->add(new Step2Job($batchId));
-    //  return $job;
+        Log::notice('step 28: Listener is returning: rowData ');
+      return $rowData;
     }
 
     public function searchSave($event)
     {
-      if($rowIdSave = $event->searchRowId('save end dates'))
+        Log::notice('step 26: Listener is returning: searchSave ');
+      if($rowIdSave = $event->eventRowId('save end dates'))
           {
             foreach ($rowIdSave as $key => $row)
             {
@@ -69,12 +74,14 @@ class TimeFrameBatch
 
     public function searchFinal($event)
     {
-      if($rowFinal = $event->searchRowId('Final dates'))
+        Log::notice('step 27: Listener is returning: searchFinal ');
+      if($rowFinal = $event->eventRowId('Final dates'))
           {
             foreach($rowFinal as $key => $row)
             {
+              Log::notice('step 27: inside foreach loop ');
               $rowId = $row->id;
-              $this->rowIds[] = $rowId;
+                (new TimeFrame())->retRow($row->id);
             }
        }
        return $this->rowIds;

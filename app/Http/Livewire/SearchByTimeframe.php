@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use App\Models\Search;
 use Illuminate\Support\Facades\Http;
@@ -28,11 +29,16 @@ class SearchByTimeframe extends Component
   public function submit( )
   {
     $this->validate();
+    $startTime = microtime(true);
+    Log::info('Step 1 : Create TimeFrameBatchJob');
     //$this->response  =  (new Search())->perDates($this->from, $this->to);
     $this->response  =  (new Search())->createTimeFrameBatchJob($this->from, $this->to);
     $this->response = $this->response;
     if ($this->response)
     {
+      $seconds = number_format((microtime(true) - $startTime) * 1000, 2);
+      Log::info('Final Response from Search-Model:  ' .$seconds . ' seconds');
+
       $this->statusMessage = "Search is in Progress";
       return view('livewire.search-by-timeframe')->with('statusMessage', $this->statusMessage );
     }

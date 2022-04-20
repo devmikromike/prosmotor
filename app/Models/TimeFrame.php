@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use DB;
+use App\Models\Search;
+
 
 class TimeFrame extends Model
 {
@@ -37,18 +41,47 @@ class TimeFrame extends Model
 
 
     public function scopeRowId($query, $value)
-    {
+    {   Log::notice('step 21: returning scopeRowId from model');
         return $query
         ->where('status', $value)
         ->get();
     }
-    public function searchRowId($status)
-    {
-      $model =(SELF())->RowId($status);
-      return $model;
+    public function retRow($id)
+      {      
+        Log::notice('step 23: search startDate');
+        $startDate = DB::table('time_frames')->where('id', $id)
+                      ->pluck('start_date');
+        Log::notice('step 24: search endDate');
+        $endDate = DB::table('time_frames')->where('id', $id)
+                    ->pluck('end_date');
+        $this->status = DB::table('time_frames')->where('id', $id)
+                   ->pluck('status');
+
+        foreach($startDate as $date)
+        {
+          $this->startDate = $date;
+        }
+        foreach($endDate as $date)
+        {
+          $this->endDate = $date;
+        }
+
+
+        Log::notice('step 25: Pass data to API ');
+        (new Search())->perDates($this->startDate, $this->endDate);
+
+        Log::notice('step 26: update status ');
+          $this->status = "Search in process";
+      //  (new Search())->perDates($id, $this->status);
+
     }
-
-
+    public function saveStatus($id, $status)
+    {
+      $status =  $this->find( $id)
+       ->updateOrFail([
+          'status' => $status
+     ]);
+    }
     public function betweenDates($startRangeDate, $endRangeDate)
     { //output carbon object:  date: 2022-03-21 00:00:00.0 UTC (+00:00)
         $this->startRangeDate = $startRangeDate;
@@ -57,13 +90,13 @@ class TimeFrame extends Model
         $this->carbonFinalEndDate =  Carbon::parse($endRangeDate);
         $this->carbonEndDate =  Carbon::parse($endRangeDate);     //output carbon object
         $this->diffent = $this->freshStartDate->diffInDays($this->carbonFinalEndDate);  // Carbon::diffInDays -> int()
+          Log::info(' step 8: Init in TimeFrame-model ');
         $this->firstProcess();
     }
     public function firstProcess()
     {
       $lastId = 0;
-
-
+        Log::info(' step 9: start firstProcess in TimeFrame-model ');
       if($this->diffent > $this->rangeDates){
         $this->status = "Start Setup";
         $this->carbonEndDate = $this->carbonStartDate->addDays((int)$this->rangeDates);
@@ -78,9 +111,11 @@ class TimeFrame extends Model
                $this->saveDates();
           }
       }
+      // dd($this->carbonStartDate,   $this->carbonEndDate);
     }
     public function saveStartDate()
     {
+        Log::info(' step 12: save StartDate  in TimeFrame-model ');
         $timeTable = $this->create([
           'start_date' => $this->newStartDate,
           'status' => $this->status
@@ -91,6 +126,7 @@ class TimeFrame extends Model
     }
     public function saveDates()
     {
+      Log::info(' step 10: saveDates in TimeFrame-model ');
        $timeTable = $this->create([
          'start_date' => $this->newStartDate,
          'end_date' => $this->newEndDate,
@@ -103,6 +139,7 @@ class TimeFrame extends Model
     }
         public function saveEndDate()
     {
+        Log::info(' step 14: save EndDate in TimeFrame-model ');
        $timeTable =  $this->find( $this->lastId)
         ->updateOrFail([
            'end_date' => $this->newEndDate,
@@ -114,7 +151,7 @@ class TimeFrame extends Model
     public function newStartDate()
     {  // timestamp(Carbon format) with date & time  & timezone format!
           $diffDays = $this->carbonFinalEndDate->diffInDays($this->carbonStartDate);
-
+          Log::info(' step 11: create newStartDate  in TimeFrame-model ');
          if($diffDays > 0){
               $this->carbonStartDate = $this->carbonEndDate->addDays(1);
               $this->newStartDate = $this->carbonToApiFormat($this->carbonStartDate);
@@ -122,6 +159,7 @@ class TimeFrame extends Model
               $this->saveStartDate();
         return $this->newStartDate;
       }
+      Log::info(' step 11: create newStartDate  in TimeFrame-model Finial round');
       return;   ////????
     }
 // get's date in Carbon format(object), return Carbon format
@@ -129,6 +167,7 @@ class TimeFrame extends Model
     {
        // timestamp(Carbon format) with date & time  & timezone format!
     $diffDays = $this->carbonFinalEndDate->diffInDays($this->carbonEndDate);
+    Log::info(' step 13: create newEndDate in TimeFrame-model ');
         if($diffDays > (int)$this->rangeDates)
         {
             if($this->carbonStartDate < $this->carbonFinalEndDate){

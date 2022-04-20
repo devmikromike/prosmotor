@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Searchlist;
 use App\Models\Search;
 use App\Models\TimeFrame;
+use App\Events\ExtractTimeFrameEvent;
 
 class TimeFrameJob implements ShouldQueue
 {
@@ -38,9 +40,17 @@ class TimeFrameJob implements ShouldQueue
     {
         if ($this->batch()->cancelled()) {
             // Detected cancelled batch...
+              Log::info('Job cancelled');
             return;
         }
         // Batched job executing... Extract TimeFrame to table.
+          Log::info(' step 7: calling TimeFrame-model ');
           (new TimeFrame())->betweenDates($this->startRangeDate, $this->endRangeDate);
+
+          Log::info('Step: 15 call ExtractTimeFrameEvent');
+          $timeFrame = new TimeFrame;
+             event(new ExtractTimeFrameEvent($timeFrame));
+               Log::info('Step: 14 return batch info');
+
     }
 }

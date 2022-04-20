@@ -21,14 +21,30 @@ class ExtractTimeFrameEvent
 
     public function __construct(TimeFrame $timeFrame)
     {
-
       $this->timeFrame = $timeFrame;
-      Log::notice('TimeFrameJob Done');
+      Log::notice('Step 16 :TimeFrame Event construct Done');
     }
 
-    public function searchRowId($status)
+    public function eventRowId($status)
     {
-      $model = (new TimeFrame())->RowId($status);     
-      return $model;
+        Log::notice('Step 20:Event is sending status to TimeFrame-Model Scope');
+        $model =  (new TimeFrame())->RowId($status);  //model::Scope
+        Log::notice('Step 22: return TimeFrame-model from scope');       
+        return $model;
+        // dd($model['id']);
+      //  (new SELF())->extractModelInfo($model);
+
     }
+    /*
+    public function extractModelInfo($model)
+    {
+      $rowIds=[];
+
+      foreach ($model as $row)
+      {
+         $rowIds[] = $row->id;
+         dump($rowIds);
+      }
+      return $rowIds;
+    } */
 }
