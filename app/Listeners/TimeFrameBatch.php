@@ -9,7 +9,6 @@ use App\Jobs\ReadTimeFrameForApiJob;
 use App\Jobs\Step2Job;
 use App\Models\Search;
 use App\Models\TimeFrame;
-use Illuminate\Bus\Batch;
 use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
@@ -17,74 +16,78 @@ use Illuminate\Support\Facades\Log;
 class TimeFrameBatch
 {
     public $event;
+    public $batch;
     public $batchId;
     public $startId, $lastId;
     public $rowIds = [];
 
-    use Dispatchable, SerializesModels;
+    use Batchable, Dispatchable, SerializesModels;
 
     public function handle(ExtractTimeFrameEvent $event)
     {
         Log::notice('step 17: Listeners triggered');
-         $batch = Bus::batch([])
+      /*  $batch = Bus::batch([])
           ->name('GetTimeFrame')
         ->dispatch();
         $id = $batch->id;
-        Log::notice('step 18: Second Batch created');
+        Log::notice('step 18: Second Batch created: '.$id);
       $rowArray =  (new SELF())->search($batch, $event);
+        return $batch; */
+
+       $batch =  (new SELF())->createBatch();
+    //   $this->batchId = $bat->id;
+   Log::notice('step 18: Second Batch created: '.$batch->id);
+
+           (new SELF())->search($event, $batch);
+    }
+    public function createBatch()
+    {
+      $batch = Bus::batch([])
+        ->name('GetTimeFrame')
+        ->dispatch();
+        $this->batch = $batch->id;
+
         return $batch;
     }
-    public function search($batch, $event)
+    public function search($event, $batch)
     {
-        Log::notice('step 19: Listener is calling searchRowId with status:Start Setup ');
-
-      if($rowData = $event->eventRowId('Start Setup'))
+      $rowData = $event->eventRowId('Start Setup');
+      if($rowData)
           {
-            foreach ($rowData as $key => $row)
-            {              
-              Log::notice('step 19: inside foreach loop ');
-              $rowId = $row->id;
-              (new TimeFrame())->retRow($row->id);
+            Log::notice('step 19: Listener is calling searchRowId with status:Start Setup from Row: '.$rowData);
 
-          }
+                (new TimeFrame())->retRow($rowData, $batch);
+
+          Log::notice('step 28: Listener is returning: rowData ');
+        return $rowData;
      }
-     (new SELF())->searchSave($event);
-
-      // $this->batchId = $batch->id;
-    //  $job = $batch->add(new Step2Job($batchId));
-        Log::notice('step 28: Listener is returning: rowData ');
-      return $rowData;
+      (new SELF())->searchSave($event, $batch);
     }
 
-    public function searchSave($event)
+    public function searchSave($event, $batch)
     {
-        Log::notice('step 26: Listener is returning: searchSave ');
-      if($rowIdSave = $event->eventRowId('save end dates'))
+      $rowIdSave = $event->eventRowId('save end dates');
+      if($rowIdSave)
           {
-            foreach ($rowIdSave as $key => $row)
-            {
-                $rowId = $row->id;
-                $this->rowIds[] = $rowId;
-            }
+            Log::notice('step 26: Listener is returning: searchSave ');
 
+                  (new TimeFrame())->retRow($rowIdSave,  $batch);
+
+              return $this->rowIds;
           }
-      (new SELF())->searchFinal($event);
-      return $this->rowIds;
+        (new SELF())->searchFinal($event, $batch);
     }
 
-    public function searchFinal($event)
+    public function searchFinal($event, $batch)
     {
-        Log::notice('step 27: Listener is returning: searchFinal ');
-      if($rowFinal = $event->eventRowId('Final dates'))
+      $rowFinal = $event->eventRowId('Final dates');
+      if($rowFinal)
           {
-            foreach($rowFinal as $key => $row)
-            {
-              Log::notice('step 27: inside foreach loop ');
-              $rowId = $row->id;
-                (new TimeFrame())->retRow($row->id);
-            }
-       }
-       return $this->rowIds;
+              Log::notice('step 27: Listener is returning: searchFinal ');
 
+                (new TimeFrame())->retRow($rowFinal, $batch);
+
+           return $this->rowIds;
+       }
   }
 }

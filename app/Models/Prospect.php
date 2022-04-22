@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use App\Models\ProsBlackListed;
 use App\Models\ProsBssLine;
 use App\Models\Contact;
@@ -88,6 +89,7 @@ class Prospect extends Model
     }
    public function collectCompanyData($company,$uri)
    {
+     Log::info('step 35: Black sack process: [Propect Created]');
      $data = (new Prospect())->updateOrCreate($company);
 
      $id = $data->id;
@@ -120,6 +122,7 @@ class Prospect extends Model
            'id' => 'failed'
            ]);
          }else {
+           Log::info('step 34: Black sack extraction process: [CompanyName Found]');
           $prospectModel = (new Prospect())->collectCompanyData($company,$uri);
 
            //   return $response = array($success, [

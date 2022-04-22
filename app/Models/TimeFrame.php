@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use DB;
 use App\Models\Search;
+use App\Jobs\SearchListJob;
+use App\Listeners\TimeFrameBatch;
 
 
 class TimeFrame extends Model
@@ -40,21 +42,27 @@ class TimeFrame extends Model
     public $rowId;
 
 
-    public function scopeRowId($query, $value)
+    public function rowId($value)
     {   Log::notice('step 21: returning scopeRowId from model');
-        return $query
-        ->where('status', $value)
-        ->get();
+
+      $status = DB::table('time_frames')->where('status', $value)
+                    ->pluck('id');
+        foreach($status as $s)
+        {
+            return $s;
+        }
+
     }
-    public function retRow($id)
-      {      
+    public function retRow($id, $batch)
+      {
         Log::notice('step 23: search startDate');
         $startDate = DB::table('time_frames')->where('id', $id)
                       ->pluck('start_date');
         Log::notice('step 24: search endDate');
         $endDate = DB::table('time_frames')->where('id', $id)
                     ->pluck('end_date');
-        $this->status = DB::table('time_frames')->where('id', $id)
+        Log::notice(': search status');
+        $statusFields = DB::table('time_frames')->where('id', $id)
                    ->pluck('status');
 
         foreach($startDate as $date)
@@ -65,25 +73,29 @@ class TimeFrame extends Model
         {
           $this->endDate = $date;
         }
+        foreach($statusFields as $status)
+        {
+          $this->status = $status;
+        }
 
-
-        Log::notice('step 25: Pass data to API ');
-        (new Search())->perDates($this->startDate, $this->endDate);
-
-        Log::notice('step 26: update status ');
+          $batch->add(new SearchListJob($this->startDate, $this->endDate));
           $this->status = "Search in process";
-      //  (new Search())->perDates($id, $this->status);
 
+          (new SELF())->saveStatus($id, $this->status);
+
+          return 'Done';
     }
     public function saveStatus($id, $status)
     {
-      $status =  $this->find( $id)
+      $sta =  $this->find($id)
        ->updateOrFail([
           'status' => $status
      ]);
+     Log::notice('step 26: updated status to : '.$status);
     }
     public function betweenDates($startRangeDate, $endRangeDate)
     { //output carbon object:  date: 2022-03-21 00:00:00.0 UTC (+00:00)
+
         $this->startRangeDate = $startRangeDate;
         $this->freshStartDate = Carbon::parse($startRangeDate);
         $this->carbonStartDate = Carbon::parse($startRangeDate);
@@ -160,7 +172,7 @@ class TimeFrame extends Model
         return $this->newStartDate;
       }
       Log::info(' step 11: create newStartDate  in TimeFrame-model Finial round');
-      return;   ////????
+    //  return;   ////????
     }
 // get's date in Carbon format(object), return Carbon format
     public function newEndDate()

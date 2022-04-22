@@ -14,26 +14,28 @@ use App\Models\Location;
 use App\Models\Contact;
 use App\Models\Searchlist;
 use App\Models\TimeFrame;
+use App\Models\BatchProcessing;
 use App\Jobs\TimeFrameJob;
-use App\Jobs\Step2job;
+use App\Jobs\SearchListJob;
+use App\Jobs\ApiBridgeJob;
 use App\Events\ExtractTimeFrameEvent;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Bus\Batchable;
+// use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\Log;
 
 use Throwable;
 
 class Search extends Model
 {
-  /* jos ei ole vielä registöröity
-    *
-    *
-   */
     use HasFactory;
     protected $guared = [];
     public $statusMsg, $resCode;
+    public $batchName;
+    public $vatId;
+    public  $counter = 0;
 
+/*  Four API Call to Api Bridge. */
     public function perName($name)
     {
       if($response = Http::get('http://api.mikromike.fi/api/SearchByName/'.$name)){
@@ -42,16 +44,22 @@ class Search extends Model
    }
     public function perVatID($vatId)
     {
+        Log::info(' 33: Send request to API Bridge per Vatid: '.$vatId);
       // if($response = Http::get('http://ProsCore-api.test/SearchVatID/'.$vatId)){
          if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
+             Log::info(' 34: get response from API Bridge');
+               Log::info(' 35: Sending statusData');
           $results = (new SELF())->statusData($response);
+          Log::info('*********************************************');
+          Log::info('  return results perVatID process:  '.$vatId);
+          Log::info('*********************************************');
           return $results;
         }
     }
     public function perDates($from, $to)
     {
       Log::info('step 27: Send request to API Bridge');
-      if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
+        if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
       Log::info('step 28: get response from API Bridge');
         $results = (new SELF())->statusData($response);
       }
@@ -64,40 +72,11 @@ class Search extends Model
           $results = (new SELF())->statusData($response);
       }
     }
-    public function createBatchJobByVatID($vatId)
-    {
-
-    }
-    public function createBatchJobBySearchList()
-    {
-
-    }
-    public function createTimeFrameBatchJob($from, $to)
-    {
-      Log::info('Step 2 : Create TimeFrameBatchJob from model-Search');
-    $batchId = (new SELF())->runBatchTimeFrame($from, $to );
-    Log::info('Step: 6 return TimeFrameBatchJob - main process Done');
-    return ($batchId);
-    }
-    public function runBatchTimeFrame($from, $to)
-    {
-      Log::info('Step 3: Create Batch');
-      $batch = Bus::batch([])
-        ->name('ExtractTimeFrameJob')
-        ->dispatch();
-        Log::info('Step 4: Add Job to Batch');
-      $batch->add(new TimeFrameJob($from, $to));
-
-    /*    Log::info('Step: 5 call ExtractTimeFrameEvent');
-      $timeFrame = new TimeFrame;
-           event(new ExtractTimeFrameEvent($timeFrame));
-             Log::info('Step: 14 return batch info'); */
-     Log::info('Step: 5 return batch info');
-      return $batch->id;
-    }
+/*  Four API Call to Api Bridge. */
+/*  Extract incoming Json data   */
     public function extractJson($data)
     { // single data
-
+      Log::info('step 32: Black sack extraction process: [STARTED]');
       $status = '';
       $message = '';
       $vatId = '';
@@ -127,6 +106,7 @@ class Search extends Model
         if ($registers == 'true'){
                $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges);
              }else {
+               Log::info('step 33: Black sack extraction process: [CompanyName Check]');
                $businessChanges = null;
                $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges );
              }
@@ -137,12 +117,12 @@ class Search extends Model
                   if ($results)
                   {
                     $propectId = $pros['prospect']['id'];
-
                   // end of IF
                   }
                }
               if(is_array($data['businessLines'])){
                 $businessLines = $data['businessLines'];
+                     Log::info('step 36: Black sack process: [BusinessLine  Created]');
                 $bssModel = (new ProsBssLine())->saveBss($businessLines);
 
               //  dd($bssModel);
@@ -181,6 +161,7 @@ class Search extends Model
                       $contacts = $data['contactDetails'];
                        $vatId = $data['businessId'];
 
+                       Log::info('step 37: Black sack process: [Extract Contacts]');
                        (new Contact())->extractContact($contacts, $vatId );
                     }
                  };    /// end of Else
@@ -188,7 +169,7 @@ class Search extends Model
         } // end of results
     return 'false';
   }    // end of function
-
+/*  Extract incoming Json data END.  */
     public function counter($r)
     {
       $sum = $r->count();
@@ -213,12 +194,9 @@ class Search extends Model
         if($sum === 1)
         {
             $dataId = $response['results'][0];
-
-          //  dd($dataId);
-
             $data = $response;
             $id = $dataId['businessId'];
-            Log::info('step 30: handeling single data: '.$id);
+            Log::info('step 31: handeling single data: '.$id);
             (new SELF())->extractJson($data); // single data
           return $results = array(
             'Status' => $resCode,
@@ -227,11 +205,16 @@ class Search extends Model
           );
         }else
         { // list mode, more than one company
-            Log::info('step 31: List mode detected');
+            Log::info('step 30: List mode detected');
           (new SELF())->listSearch($response);
         }
       } else {
           if($resCode === 404){
+            Log::info('*************');
+            Log::info(' response status: [ERROR]');
+            Log::error('Error with response status: '.$resCode);
+            Log::info('*************');
+
             return $results = array(
               'Status' => $resCode,
               'Status_message' => $statusMsg,
@@ -270,25 +253,80 @@ class Search extends Model
    public function listSearch($response)
    {
 
+     $r = collect($response['results']);
+     $sum = (new SELF())->counter($r);
+     $counter = $this->counter;
+
      foreach ($response['results'] as $key => $pros){
-       $vatId = $pros['businessId'];
+
+        if($counter < 200 )   {
+            Log::info('Results:  '.$sum);
+            $counter++;
+        }else {
+           Log::info('Sleeping 5 min ....');
+           Log::info('Results:  '.$sum.' Prospects arrived to Queue'.' of'.$counter);
+
+          sleep(30);
+          $this->counter = 0;
+         }
+       $this->vatId = $pros['businessId'];
        $name = $pros['name'];
        $regDate = $pros['registrationDate'];
-         Log::info('step 31: Handeling VatId: '.$vatId);
+         Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
 
          if (!empty($name))
            {
-               Log::info('step 32: Sending '.$vatId.' to API Bridge');
-             (new SELF())->perVatID($vatId);
-             Log::info('step 32: Saving '.$vatId.' to locally: Searchlist-table');
-             (new Searchlist())->saveList($vatId, $name, $regDate);
+               $batch = (new BatchProcessing())->createBatchJob($this->vatId);
+
+            //   Log::info('step 32: Sending '.$vatId.' to API Bridge');
+            // (new SELF())->perVatID($vatId);
+             Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
+              (new Searchlist())->saveList($this->vatId, $name, $regDate);
 
            }else {
-               Log::error('step 33: No Company name on PRH Record for Vatid. '.$vatId).' Company blacklisted!.';
+               Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';
              $reason = 'No Company name on PRH Record for Vatid.';
-             $errors = (new ProsBlackListed())->blacklisted($vatId, $reason);
+             $errors = (new ProsBlackListed())->blacklisted($this->vatId, $reason);
            }
-
-     }
+     } // End of ForEach
+     $batch = (new BatchProcessing())->createBatchJobBySearchList('SearchList', "Search in process");
+     dd($batch);
    }
+   /*
+   public function ApiBridge($batchName)
+   {
+     $batch =  (new Search())->createBatchJob($batchName);
+     $batch->add(new ApiBridgeJob($this->vatId));
+
+    // $result =  (new Search())->addJobToBatch($batch);
+ /*
+ Log::info('Step 3: Create Batch');
+ $batch = Bus::batch([])
+   ->name('ExtractTimeFrameJob')
+   ->dispatch();
+   Log::info('Step 4: Add Job to Batch');
+   $batch->add(new TimeFrameJob($from, $to));
+ */
+
+// } */
+/*
+   public function createBatchJob()
+   {
+     $batch = Bus::batch([])
+     ->name('ApiBridgeJob')
+    ->dispatch();
+
+      $batch->add(new ApiBridgeJob($this->vatId));
+
+     Log::notice('step 17: Created new Batch: '.$batch->name);
+     return $batch->id;    */
+
+/*
+     $batch = Bus::batch([])
+     ->name('ApiBridgeJob')
+    ->dispatch();
+   //    $batch =  (new Search())->createBatchJob();
+       $batch->add(new ApiBridgeJob($this->vatId)); */
+//   }
+
 }  // End of Class

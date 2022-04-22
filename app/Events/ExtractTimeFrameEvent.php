@@ -27,10 +27,11 @@ class ExtractTimeFrameEvent
 
     public function eventRowId($status)
     {
-        Log::notice('Step 20:Event is sending status to TimeFrame-Model Scope');
-        $model =  (new TimeFrame())->RowId($status);  //model::Scope
-        Log::notice('Step 22: return TimeFrame-model from scope');       
-        return $model;
+        Log::notice('Step 20:Event is sending status to TimeFrame-Model');
+        $row =  (new TimeFrame())->rowId($status);
+
+        Log::notice('Step 22: return ExtractTimeFrameEvent with Row id: '.$row);
+        return $row;
         // dd($model['id']);
       //  (new SELF())->extractModelInfo($model);
 

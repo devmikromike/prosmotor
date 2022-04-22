@@ -20,22 +20,14 @@ class TimeFrameJob implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $startRangeDate, $endRangeDate;
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
+    public $timeout = 600;
+
     public function __construct($from, $to)
     {
         $this->startRangeDate = $from;
         $this->endRangeDate = $to;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         if ($this->batch()->cancelled()) {
@@ -46,11 +38,6 @@ class TimeFrameJob implements ShouldQueue
         // Batched job executing... Extract TimeFrame to table.
           Log::info(' step 7: calling TimeFrame-model ');
           (new TimeFrame())->betweenDates($this->startRangeDate, $this->endRangeDate);
-
-          Log::info('Step: 15 call ExtractTimeFrameEvent');
-          $timeFrame = new TimeFrame;
-             event(new ExtractTimeFrameEvent($timeFrame));
-               Log::info('Step: 14 return batch info');
-
+         return;
     }
 }
