@@ -51,16 +51,16 @@ class TimeFrameBatch
     }
     public function search($event, $batch)
     {
-      $rowData = $event->eventRowId('Start Setup');
-      if($rowData)
-          {
-            Log::notice('step 19: Listener is calling searchRowId with status:Start Setup from Row: '.$rowData);
+      $rowData = $event->eventRowId('Start Setup'); // return (Int) $rowData
+        if($rowData)
+            {
+                  Log::notice('step 19: Listener is calling searchRowId with status:Start Setup from Row: '.$rowData);
 
-                (new TimeFrame())->retRow($rowData, $batch);
+                      (new TimeFrame())->retRow($rowData, $batch);
 
-          Log::notice('step 28: Listener is returning: rowData ');
-        return $rowData;
-     }
+                Log::notice('step 28: Listener is returning: rowData ');
+              return $rowData;
+            }
       (new SELF())->searchSave($event, $batch);
     }
 

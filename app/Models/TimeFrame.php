@@ -40,7 +40,12 @@ class TimeFrame extends Model
     public $firstId;
     public $lastId;
     public $rowId;
+    public $lastRowId = 0;
 
+    public function returnRow()
+    {
+      return $lastRowId;
+    }
 
     public function rowId($value)
     {   Log::notice('step 21: returning scopeRowId from model');
@@ -49,9 +54,9 @@ class TimeFrame extends Model
                     ->pluck('id');
         foreach($status as $s)
         {
+            $this->lastRowId = $s;
             return $s;
         }
-
     }
     public function retRow($id, $batch)
       {

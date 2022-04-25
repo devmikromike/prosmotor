@@ -18,13 +18,13 @@ class ExtractTimeFrameEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $timeFrame;
     public $searchRowId;  //method!?!
+    public $lastRowId;
 
     public function __construct(TimeFrame $timeFrame)
     {
       $this->timeFrame = $timeFrame;
       Log::notice('Step 16 :TimeFrame Event construct Done');
     }
-
     public function eventRowId($status)
     {
         Log::notice('Step 20:Event is sending status to TimeFrame-Model');
@@ -32,20 +32,5 @@ class ExtractTimeFrameEvent
 
         Log::notice('Step 22: return ExtractTimeFrameEvent with Row id: '.$row);
         return $row;
-        // dd($model['id']);
-      //  (new SELF())->extractModelInfo($model);
-
     }
-    /*
-    public function extractModelInfo($model)
-    {
-      $rowIds=[];
-
-      foreach ($model as $row)
-      {
-         $rowIds[] = $row->id;
-         dump($rowIds);
-      }
-      return $rowIds;
-    } */
 }

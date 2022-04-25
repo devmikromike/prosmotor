@@ -34,6 +34,7 @@ class Search extends Model
     public $batchName;
     public $vatId;
     public  $counter = 0;
+    public $lastRowId;
 
 /*  Four API Call to Api Bridge. */
     public function perName($name)
@@ -289,8 +290,12 @@ class Search extends Model
              $errors = (new ProsBlackListed())->blacklisted($this->vatId, $reason);
            }
      } // End of ForEach
+     $timeframe = (new TimeFrame());
+     $lastRowId = $timeframe->returnRow;
+        Log::error('Last row from TimeFrame:  '.$lastRowId);
+     // dd($lastRowId);
      $batch = (new BatchProcessing())->createBatchJobBySearchList('SearchList', "Search in process");
-     dd($batch);
+  //   dd($batch);
    }
    /*
    public function ApiBridge($batchName)
