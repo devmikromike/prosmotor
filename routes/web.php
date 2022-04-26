@@ -27,6 +27,9 @@ Route::get('dev-login', function () {
 
 Route::get('/',[HomeController::class, 'index'])->name('public');
 
+Route::get('/config',[HomeController::class, 'config'])->name('config');
+
+
 Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controllers\LanguageController@switchLang']);
 
 // Route::get('/prospect',[ProspectController::class,'list'])->name('public.list');

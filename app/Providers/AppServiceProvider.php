@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Bus\Queueable;
+use App\Models\Setting;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+      Setting::chargeConfig();
       /*
         Queue::failing(function (JobFailed $event) {
            $event->connectionName
