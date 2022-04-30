@@ -16,6 +16,7 @@ class LastRow extends Model
 
     public function createLastRowId($id)
     {
+          Log::notice('step 19: save and return LastRowId'.$id);
         return SELF::updateOrCreate([
           'last_id' => $id
         ]);
@@ -38,8 +39,8 @@ class LastRow extends Model
       // $newId = SELF::find($id)->increment('last_id');
 
       Log::info('Go next row :  '.$newId);
-      // dd($newId);
+   dd($newId);
       return $newId;
     }
-    public function GoNextRow()
+
 }

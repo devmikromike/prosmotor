@@ -21,7 +21,6 @@ use App\Jobs\ApiBridgeJob;
 use App\Events\ExtractTimeFrameEvent;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
-// use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\Log;
 
 use Throwable;
@@ -39,9 +38,9 @@ class Search extends Model
 /*  Four API Call to Api Bridge. */
     public function perName($name)
     {
-      if($response = Http::get('http://api.mikromike.fi/api/SearchByName/'.$name)){
-        $results = (new SELF())->statusData($response);
-      }
+        if($response = Http::get('http://api.mikromike.fi/api/SearchByName/'.$name)){
+          $results = (new SELF())->statusData($response);
+        }
    }
     public function perVatID($vatId)
     {
@@ -59,17 +58,16 @@ class Search extends Model
     }
     public function perDates($from, $to)
     {
-      Log::info('step 27: Send request to API Bridge');
-        if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
-      Log::info('step 28: get response from API Bridge');
-        $results = (new SELF())->statusData($response);
+        Log::info('step 27: Send request to API Bridge');
+          if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
+        Log::info('step 28: get response from API Bridge');
+          $results = (new SELF())->statusData($response);
       }
     }
     public function perPostalCode($code)
-    {
-      // dump($code);
+    {    
   //    if($response = Http::get('http://ProsCore-api.test/SearchPostalCode/'.$code))   // Test Env. locally!
-    if($response = Http::get('http://api.mikromike.fi/api/SearchByPostalCode/'.$code)){
+      if($response = Http::get('http://api.mikromike.fi/api/SearchByPostalCode/'.$code)){
           $results = (new SELF())->statusData($response);
       }
     }
@@ -77,20 +75,20 @@ class Search extends Model
 /*  Extract incoming Json data   */
     public function extractJson($data)
     { // single data
-      Log::info('step 32: Black sack extraction process: [STARTED]');
-      $status = '';
-      $message = '';
-      $vatId = '';
-      $businessLines = array();
-      $results =  Arr::exists($data, 'results');
-      $liq =  Arr::exists($data, 'liquidations');
-      $aux =  Arr::exists($data, 'auxiliaryNames');
-      $changes =  Arr::exists($data, 'businessIdChanges');
-      $registers =  Arr::exists($data, 'registeredEntries');
+        Log::info('step 32: Black sack extraction process: [STARTED]');
+        $status = '';
+        $message = '';
+        $vatId = '';
+        $businessLines = array();
+        $results =  Arr::exists($data, 'results');
+        $liq =  Arr::exists($data, 'liquidations');
+        $aux =  Arr::exists($data, 'auxiliaryNames');
+        $changes =  Arr::exists($data, 'businessIdChanges');
+        $registers =  Arr::exists($data, 'registeredEntries');
 
-      $data = $data['results'][0];
+        $data = $data['results'][0];
 
-      if ($results == 'true'){
+        if ($results == 'true'){
                if($liq){
                   (new ProsBlackListed())->liquidations($data);
                } else {
@@ -117,7 +115,7 @@ class Search extends Model
 
                   if ($results)
                   {
-                    $propectId = $pros['prospect']['id'];
+                    $propectId = $pros['prospect']['id'];   // VatId = BusinessId
                   // end of IF
                   }
                }
@@ -125,8 +123,6 @@ class Search extends Model
                 $businessLines = $data['businessLines'];
                      Log::info('step 36: Black sack process: [BusinessLine  Created]');
                 $bssModel = (new ProsBssLine())->saveBss($businessLines);
-
-              //  dd($bssModel);
 
                 if(!empty($bssModel && $pros['prospect'])){
                     $isok = $pros['prospect']->bssCodeField()->attach($bssModel->id);
@@ -168,30 +164,30 @@ class Search extends Model
                  };    /// end of Else
               return 'true';
         } // end of results
+          Log::info('step 32: Black sack extraction process: [COMPLETED]');
     return 'false';
   }    // end of function
 /*  Extract incoming Json data END.  */
     public function counter($r)
     {
-      $sum = $r->count();
-      return $sum;
+        $sum = $r->count();
+        return $sum;
     }
     public function statusData($response)
     {
-      //  $res = $response->json('Response');
 
-     $statusMsg = $response->json('Status_message');
-      // Get status code from Response.
-      $resCode = $response->json('Status');
+       $statusMsg = $response->json('Status_message');
+        // Get status code from Response.
+        $resCode = $response->json('Status');
 
       Log::info('step 29: checking response status: '.$resCode);
 
-      if($resCode === 200){
-        Log::info('step 29:  response status: [OK]');
+        if($resCode === 200){
+          Log::info('step 29:  response status: [OK]');
 
-          $response = $response->json('Response');
-          $r = collect($response['results']);
-        $sum = (new SELF())->counter($r);
+            $response = $response->json('Response');
+            $r = collect($response['results']);
+          $sum = (new SELF())->counter($r);
         if($sum === 1)
         {
             $dataId = $response['results'][0];
@@ -242,56 +238,54 @@ class Search extends Model
    } // End of public function statusData
    public function packCompany ($pros)
    {
-     $company['name'] = $pros['name'];
-     $company['vatId'] = $pros['businessId'];
-     $company['registrationDate'] = $pros['registrationDate'];
-     $uri = $pros['detailsUri'];
-      return $response = array(
-        $company,
-        $uri
-      );
+       $company['name'] = $pros['name'];
+       $company['vatId'] = $pros['businessId'];
+       $company['registrationDate'] = $pros['registrationDate'];
+       $uri = $pros['detailsUri'];
+        return $response = array(
+          $company,
+          $uri
+        );
    }
    public function listSearch($response)
    {
+       $r = collect($response['results']);
+       $sum = (new SELF())->counter($r);
+       $counter = $this->counter;
 
-     $r = collect($response['results']);
-     $sum = (new SELF())->counter($r);
-     $counter = $this->counter;
+       foreach ($response['results'] as $key => $pros){
 
-     foreach ($response['results'] as $key => $pros){
+          if($counter < 100 )   {
+              Log::info('Results:  '.$sum);
+              $counter++;
+          }else {
+             Log::info('Sleeping 5 min ....');
+             Log::info('Results:  '.$sum.' Prospects arrived to Queue'.' of'.$counter);
 
-        if($counter < 100 )   {
-            Log::info('Results:  '.$sum);
-            $counter++;
-        }else {
-           Log::info('Sleeping 5 min ....');
-           Log::info('Results:  '.$sum.' Prospects arrived to Queue'.' of'.$counter);
-
-          sleep(30);
-          $this->counter = 0;
-         }
-       $this->vatId = $pros['businessId'];
-       $name = $pros['name'];
-       $regDate = $pros['registrationDate'];
-         Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
-
-         if (!empty($name))
-           {
-             $batch = (new BatchProcessing())->createBatchJob($this->vatId);
-
-            //   Log::info('step 32: Sending '.$vatId.' to API Bridge');
-            // (new SELF())->perVatID($vatId);
-             Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
-              (new Searchlist())->saveList($this->vatId, $name, $regDate);
-
-
-           }else {
-             Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';
-             $reason = 'No Company name on PRH Record for Vatid.';
-             $errors = (new ProsBlackListed())->blacklisted($this->vatId, $reason);
+            sleep(30);
+            $this->counter = 0;
            }
+         $this->vatId = $pros['businessId'];
+         $name = $pros['name'];
+         $regDate = $pros['registrationDate'];
+           Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
+
+           if (!empty($name))
+             {
+               $batch = (new BatchProcessing())->createBatchJob($this->vatId);
+
+              //   Log::info('step 32: Sending '.$vatId.' to API Bridge');
+              // (new SELF())->perVatID($vatId);
+               Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
+                (new Searchlist())->saveList($this->vatId, $name, $regDate);
+
+             }else {
+               Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';
+               $reason = 'No Company name on PRH Record for Vatid.';
+               $errors = (new ProsBlackListed())->blacklisted($this->vatId, $reason);
+             }
      } // End of ForEach
-      // 
+      //
       //    Log::info('**************************');
       // $lastRowId = (new LastRow())->GoNextRow();
       //    Log::info('Last row from TimeFrame:  '.$lastRowId);

@@ -20,23 +20,23 @@ class BatchProcessing extends Model
 
     public function createBatchJob($vatId)
     {
-      $batch = Bus::batch([])
-      ->name('ApiBridgeJob')
-     ->dispatch();
+        $batch = Bus::batch([])
+        ->name('ApiBridgeJob')
+       ->dispatch();
 
-      Log::notice('step 17: Created new Batch: '.$batch->name);
-      Log::notice('step 17: Sending request for : '.$vatId);
-       $batch->add(new ApiBridgeJob($vatId));
+        Log::info('step 17: Created new Batch: '.$batch->name);
+        Log::info('step 17: Sending request for : '.$vatId);
+         $batch->add(new ApiBridgeJob($vatId));
 
-      return $batch;
+        return $batch;
       }
     /*  create batch and job   */
         public function createBatch($name)
         {
-          $batch = Bus::batch([])
-          ->name($name)
-          ->dispatch();
-           return $batch;
+            $batch = Bus::batch([])
+            ->name($name)
+            ->dispatch();
+             return $batch;
         }
         public function createBatchJobByVatID($vatId)
         {
@@ -44,44 +44,43 @@ class BatchProcessing extends Model
         }
         public function createBatchJobBySearchList($name, $status)
         {
-          $batch = (new SELF())->createBatch($name);
-          $batch->add(new GetNewRowIdJob($status));
-           return $batch;
+            $batch = (new SELF())->createBatch($name);
+            $batch->add(new GetNewRowIdJob($status));
+             return $batch;
         }
         public function createTimeFrameBatchJob($from, $to)
         { /* Receved call from Livewire component */
-          Log::info('Step 2 : Create TimeFrameBatchJob from model-BatchProcessing');
-        $batch  = (new SELF())->runBatchTimeFrame($from, $to );
-        $name = $batch->name;
-        Log::info('Step: 6 return TimeFrameBatchJob - main process Done');
-        return ($name);
+              Log::info('Step 2 : Create TimeFrameBatchJob from model-BatchProcessing');
+            $batch  = (new SELF())->runBatchTimeFrame($from, $to );
+            $name = $batch->name;
+            Log::info('Step: 6 return TimeFrameBatchJob - main process Done');
+            Log::info('*****************************************************');
+            return ($name);
         }
         public function runBatchTimeFrame($from, $to)
         {
-          Log::info('Step 3: Create Batch: ExtractTimeFrameJob');
-          $batch = Bus::batch([])
-            ->name('ExtractTimeFrameJob')
-            ->then(function (Batch $batch) {
-                (new SELF())->createTimeFrameEvent();
-            })
-            ->dispatch();
-            Log::info('Step 4: Add Job to Batch');
-          $batch->add(new TimeFrameJob($from, $to));
+            Log::info('Step 3: Create Batch: ExtractTimeFrameJob');
+            $batch = Bus::batch([])
+              ->name('ExtractTimeFrameJob')
+              ->then(function (Batch $batch) {
+                    (new SELF())->createTimeFrameEvent();
+              })
+              ->dispatch();
+              Log::info('Step 4: Add Job to Batch');
+            $batch->add(new TimeFrameJob($from, $to));
 
-        /*    Log::info('Step: 5 call ExtractTimeFrameEvent');
-          $timeFrame = new TimeFrame;
-               event(new ExtractTimeFrameEvent($timeFrame));
-                 Log::info('Step: 14 return batch info'); */
-         Log::info('Step: 5 return batch info');
-          return $batch;
+           Log::info('Step: 5 return batch info, First Batch Closed');
+           Log::info('*****************************************************');
+            return $batch;
         }
     /*  create batch and job   */
         public function createTimeFrameEvent()
         {
-          Log::info('Step 15: call ExtractTimeFrameEvent');
-          $timeFrame = new TimeFrame;
-             event(new ExtractTimeFrameEvent($timeFrame));
-           Log::info('Step: 14 return batch info');
+            Log::info('Step 12: call ExtractTimeFrameEvent from BatchProcessing');
+            $timeFrame = new TimeFrame;
+               event(new ExtractTimeFrameEvent($timeFrame));
+             Log::info('Step: 22 return Event and Closed.');
+              Log::info('*****************************************************');
+             return;
         }
-
 }

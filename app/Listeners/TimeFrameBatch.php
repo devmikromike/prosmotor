@@ -25,18 +25,10 @@ class TimeFrameBatch
 
     public function handle(ExtractTimeFrameEvent $event)
     {
-        Log::notice('step 17: Listeners triggered');
-      /*  $batch = Bus::batch([])
-          ->name('GetTimeFrame')
-        ->dispatch();
-        $id = $batch->id;
-        Log::notice('step 18: Second Batch created: '.$id);
-      $rowArray =  (new SELF())->search($batch, $event);
-        return $batch; */
-
+        Log::notice('step 14: Listeners triggered');
        $batch =  (new SELF())->createBatch();
-    //   $this->batchId = $bat->id;
-   Log::notice('step 18: Second Batch created: '.$batch->id);
+
+       Log::notice('step 15: Second Batch created: '.$batch->id);
 
            (new SELF())->search($event, $batch);
     }
@@ -51,10 +43,10 @@ class TimeFrameBatch
     }
     public function search($event, $batch)
     {
-      $rowData = $event->eventRowId('Start Setup'); // return (Int) $rowData
+      $rowData = $event->eventRowId('Start'); // return (Int) $rowData
         if($rowData)
             {
-                  Log::notice('step 19: Listener is calling searchRowId with status:Start Setup from Row: '.$rowData);
+                  Log::notice('step 16: Listener is calling searchRowId with status:Start Setup from Row: '.$rowData);
 
                       (new TimeFrame())->retRow($rowData, $batch);
 
@@ -80,7 +72,7 @@ class TimeFrameBatch
 
     public function searchFinal($event, $batch)
     {
-      $rowFinal = $event->eventRowId('Final dates');
+      $rowFinal = $event->eventRowId('Final');
       if($rowFinal)
           {
               Log::notice('step 27: Listener is returning: searchFinal ');

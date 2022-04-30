@@ -38,7 +38,7 @@ class SearchByTimeframe extends Component
     {
       $seconds = number_format((microtime(true) - $startTime) * 1000, 2);  //WIP - check it! //
       Log::info('Final Response from Search-Model, Back to LIVEWIRE Component!:  ' .$seconds . ' millseconds');
-
+        Log::info('*****************************************************');
        $this->statusMessage = "Search is in Progress";
       return view('livewire.search-by-timeframe')->with('statusMessage', $this->statusMessage );
     }
