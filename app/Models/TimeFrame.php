@@ -80,7 +80,9 @@ class TimeFrame extends Model
         Log::notice(': search status');
         $statusFields = DB::table('time_frames')->where('id', $id)
                    ->pluck('status');
-
+        Log::info('******************************');
+        Log::info('Batch name from Return row: '.$batch->name);
+        Log::info('******************************');
         foreach($startDate as $date)
         {
           $this->startDate = $date;
@@ -189,7 +191,7 @@ class TimeFrame extends Model
          if($diffDays > 0){
               $this->carbonStartDate = $this->carbonEndDate->addDays(1);
               $this->newStartDate = $this->carbonToApiFormat($this->carbonStartDate);
-              $this->status = 'Saving start date';
+              $this->status = 'saving start date';
               $this->saveStartDate();
         return $this->newStartDate;
       }
@@ -207,7 +209,7 @@ class TimeFrame extends Model
             if($this->carbonStartDate < $this->carbonFinalEndDate){
                 $this->carbonEndDate = $this->carbonStartDate->addDays((int)$this->rangeDates);
                   $this->newEndDate = $this->carbonToApiFormat($this->carbonEndDate);
-                  $this->status = 'save end dates';
+                  $this->status = 'Save end dates';
                     Log::info(' saveEndDate  - Status save end dates: lastRow:  '.$this->lastId);
                      $this->saveEndDate();
            }

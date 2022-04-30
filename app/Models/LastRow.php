@@ -29,6 +29,14 @@ class LastRow extends Model
             return $id;   /* return int  */
         }
     }
+    public function GoNextRow($id)
+    {
+        Log::info('Go next row old:  '.$id);
+        $newId = $id+1;
+        Log::info('Go next row :  '.$newId);
+      return $newId;
+    }
+    /*
     public function GoNextRow()
     {
       $id = SELF::findLastRowId();
@@ -41,6 +49,6 @@ class LastRow extends Model
       Log::info('Go next row :  '.$newId);
    dd($newId);
       return $newId;
-    }
+    }    */
 
 }

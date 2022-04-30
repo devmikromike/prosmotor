@@ -26,17 +26,11 @@ class SearchListJob implements ShouldQueue
         $this->endDate = $endDate;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
-
-
       Log::notice('step 25: Pass start and end date data to API Bridge ');
         (new Search())->perDates($this->startDate, $this->endDate);  //API
+     return;
 /*
          Log::info('**************************');
         $lastRowId = (new LastRow())->GoNextRow();

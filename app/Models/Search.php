@@ -29,12 +29,13 @@ class Search extends Model
 {
     use HasFactory;
     protected $guared = [];
+
     public $statusMsg, $resCode;
     public $batchName;
     public $vatId;
-    public  $counter = 0;
+    public $counter = 0;
     public $lastRowId;
-
+    public $lastRow;
 /*  Four API Call to Api Bridge. */
     public function perName($name)
     {
@@ -65,7 +66,7 @@ class Search extends Model
       }
     }
     public function perPostalCode($code)
-    {    
+    {
   //    if($response = Http::get('http://ProsCore-api.test/SearchPostalCode/'.$code))   // Test Env. locally!
       if($response = Http::get('http://api.mikromike.fi/api/SearchByPostalCode/'.$code)){
           $results = (new SELF())->statusData($response);
@@ -202,13 +203,16 @@ class Search extends Model
           );
         }else
         { // list mode, more than one company
-            Log::info('step 30: List mode detected');
-          (new SELF())->listSearch($response);
+           Log::info('step 30: List mode detected');
+           $this->lastRow = (new LastRow())->findLastRowId();
+           Log::info('Last Row id: '.$this->lastRow);
+           (new SELF())->listSearch($response, $this->lastRow);
+           Log::info('****************************');
         }
       } else {
           if($resCode === 404){
             Log::info('*************');
-            Log::info(' response status: [ERROR]');
+            Log::info('response status: [ERROR]');
             Log::error('Error with response status: '.$resCode);
             Log::info('*************');
 
@@ -247,8 +251,9 @@ class Search extends Model
           $uri
         );
    }
-   public function listSearch($response)
+   public function listSearch($response, $id)
    {
+
        $r = collect($response['results']);
        $sum = (new SELF())->counter($r);
        $counter = $this->counter;
@@ -285,14 +290,15 @@ class Search extends Model
                $errors = (new ProsBlackListed())->blacklisted($this->vatId, $reason);
              }
      } // End of ForEach
-      //
-      //    Log::info('**************************');
-      // $lastRowId = (new LastRow())->GoNextRow();
-      //    Log::info('Last row from TimeFrame:  '.$lastRowId);
-      // $batch = (new BatchProcessing())->createBatch('SearchList');
-      //           (new TimeFrame())->retRow($lastRowId, $batch);
-      //  Log::info('**************************');
-                return;
+
+         Log::info('**************************');
+         $lastRowId = (new LastRow())->GoNextRow($id);
+         Log::info('**************************');
+        Log::info('Last row from TimeFrame:  '.$lastRowId);
+         $batch = (new BatchProcessing())->createBatch('SearchList');
+             (new TimeFrame())->retRow($lastRowId, $batch);
+        Log::info('**************************');
+    return;
 
   //   dd($batch);
    }

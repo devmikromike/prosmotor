@@ -28,7 +28,7 @@ class TimeFrameBatch
         Log::notice('step 14: Listeners triggered');
        $batch =  (new SELF())->createBatch();
 
-       Log::notice('step 15: Second Batch created: '.$batch->id);
+       Log::notice('step 15: Second Batch created: '.$batch->name);
 
            (new SELF())->search($event, $batch);
     }
@@ -43,7 +43,10 @@ class TimeFrameBatch
     }
     public function search($event, $batch)
     {
+       Log::notice(' Call Event method: EventRow with status: Start ');
       $rowData = $event->eventRowId('Start'); // return (Int) $rowData
+         Log::notice(' Return:   ************************************************ ');
+
         if($rowData)
             {
                   Log::notice('step 16: Listener is calling searchRowId with status:Start Setup from Row: '.$rowData);
@@ -58,7 +61,7 @@ class TimeFrameBatch
 
     public function searchSave($event, $batch)
     {
-      $rowIdSave = $event->eventRowId('save end dates');
+      $rowIdSave = $event->eventRowId('Save end dates');
       if($rowIdSave)
           {
             Log::notice('step 26: Listener is returning: searchSave ');
