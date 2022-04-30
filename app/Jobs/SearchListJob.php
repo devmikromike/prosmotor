@@ -33,7 +33,16 @@ class SearchListJob implements ShouldQueue
      */
     public function handle()
     {
+
+
       Log::notice('step 25: Pass start and end date data to API Bridge ');
-        (new Search())->perDates($this->startDate, $this->endDate);
+        (new Search())->perDates($this->startDate, $this->endDate);  //API
+/*
+         Log::info('**************************');
+        $lastRowId = (new LastRow())->GoNextRow();
+           Log::info('Last row from TimeFrame:  '.$lastRowId);
+        $batch = (new BatchProcessing())->createBatch('SearchList');
+                  (new TimeFrame())->retRow($lastRowId, $batch);
+       Log::info('**************************');   */
     }
 }

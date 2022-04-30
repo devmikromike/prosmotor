@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use DB;
 use App\Models\Search;
+use App\Models\LastRow;
 use App\Jobs\SearchListJob;
 use App\Listeners\TimeFrameBatch;
 
@@ -42,20 +43,27 @@ class TimeFrame extends Model
     public $rowId;
     public $lastRowId = 0;
 
+
+
     public function returnRow()
     {
-      return $lastRowId;
+        $last_id = SELF::latest('id')->pluck('last_id');
+        foreach($last_id as $id)
+        {
+            return $id;   /* return int  */
+        }
     }
 
     public function rowId($value)
-    {   Log::notice('step 21: returning scopeRowId from model');
+    {   Log::notice('step 21: returning RowId from model');
 
       $status = DB::table('time_frames')->where('status', $value)
                     ->pluck('id');
-        foreach($status as $s)
+        foreach($status as $id)
         {
-            $this->lastRowId = $s;
-            return $s;
+            $this->lastRowId = $id;
+            (new  LastRow())->createLastRowId($id);
+            return $id;
         }
     }
     public function retRow($id, $batch)

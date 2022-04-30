@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-      Setting::chargeConfig();
+      // Setting::chargeConfig(); // works only with new key - value pair, not update from config file. //
       /*
         Queue::failing(function (JobFailed $event) {
            $event->connectionName

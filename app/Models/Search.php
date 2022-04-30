@@ -260,7 +260,7 @@ class Search extends Model
 
      foreach ($response['results'] as $key => $pros){
 
-        if($counter < 200 )   {
+        if($counter < 100 )   {
             Log::info('Results:  '.$sum);
             $counter++;
         }else {
@@ -277,24 +277,29 @@ class Search extends Model
 
          if (!empty($name))
            {
-               $batch = (new BatchProcessing())->createBatchJob($this->vatId);
+             $batch = (new BatchProcessing())->createBatchJob($this->vatId);
 
             //   Log::info('step 32: Sending '.$vatId.' to API Bridge');
             // (new SELF())->perVatID($vatId);
              Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
               (new Searchlist())->saveList($this->vatId, $name, $regDate);
 
+
            }else {
-               Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';
+             Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';
              $reason = 'No Company name on PRH Record for Vatid.';
              $errors = (new ProsBlackListed())->blacklisted($this->vatId, $reason);
            }
      } // End of ForEach
-     $timeframe = (new TimeFrame());
-     $lastRowId = $timeframe->returnRow;
-        Log::error('Last row from TimeFrame:  '.$lastRowId);
-     // dd($lastRowId);
-     $batch = (new BatchProcessing())->createBatchJobBySearchList('SearchList', "Search in process");
+      // 
+      //    Log::info('**************************');
+      // $lastRowId = (new LastRow())->GoNextRow();
+      //    Log::info('Last row from TimeFrame:  '.$lastRowId);
+      // $batch = (new BatchProcessing())->createBatch('SearchList');
+      //           (new TimeFrame())->retRow($lastRowId, $batch);
+      //  Log::info('**************************');
+                return;
+
   //   dd($batch);
    }
    /*
