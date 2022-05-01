@@ -32,7 +32,7 @@ class TimeFrameJob implements ShouldQueue
     {
         if ($this->batch()->cancelled()) {
             // Detected cancelled batch...
-              Log::info('Job cancelled');
+              Log::error('Job cancelled');
             return;
         }
         // Batched job executing... Extract TimeFrame to table.

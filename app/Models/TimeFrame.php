@@ -30,7 +30,7 @@ class TimeFrame extends Model
     public $divided;
     public $diffent;  // Carbon format
     public $offset;
-    public $rangeDates = 5;
+    public $rangeDates = 2;
     public $process = array();
     public $status;
     public $freshStartDate;
@@ -62,24 +62,24 @@ class TimeFrame extends Model
         foreach($status as $id)
         {
             $this->lastRowId = $id;
-            Log::notice('step 17: returning RowId from model'.$id);
+        //    Log::notice('step 17: returning RowId from model'.$id);
             return $id;
         }
     }
     public function retRow($id, $batch)
       {
-        Log::notice('step 23: search startDate');
+      //  Log::notice('step 23: search startDate');
         $startDate = DB::table('time_frames')->where('id', $id)
                       ->pluck('start_date');
-        Log::notice('step 24: search endDate');
+    //    Log::notice('step 24: search endDate');
         $endDate = DB::table('time_frames')->where('id', $id)
                     ->pluck('end_date');
-        Log::notice(': search status');
+    //    Log::notice(': search status');
         $statusFields = DB::table('time_frames')->where('id', $id)
                    ->pluck('status');
-        Log::info('******************************');
-        Log::info('Batch name from Return row: '.$batch->name);
-        Log::info('******************************');
+        //Log::info('******************************');
+        //Log::info('Batch name from Return row: '.$batch->name);
+        //Log::info('******************************');
         foreach($startDate as $date)
         {
           $this->startDate = $date;
@@ -106,7 +106,7 @@ class TimeFrame extends Model
        ->updateOrFail([
           'status' => $status
      ]);
-     Log::notice('step 26: updated status to : '.$status);
+    // Log::notice('step 26: updated status to : '.$status);
      return;
     }
     public function betweenDates($startRangeDate, $endRangeDate)
@@ -118,13 +118,13 @@ class TimeFrame extends Model
         $this->carbonFinalEndDate =  Carbon::parse($endRangeDate);
         $this->carbonEndDate =  Carbon::parse($endRangeDate);     //output carbon object
         $this->diffent = $this->freshStartDate->diffInDays($this->carbonFinalEndDate);  // Carbon::diffInDays -> int()
-          Log::info(' step 8: Init in TimeFrame-model ');
+          //Log::info(' step 8: Init in TimeFrame-model ');
         $this->firstProcess();
     }
     public function firstProcess()
     {
       $lastId = 0;
-        Log::info(' step 9: start firstProcess in TimeFrame-model ');
+        //Log::info(' step 9: start firstProcess in TimeFrame-model ');
       if($this->diffent > $this->rangeDates){
         $this->status = "Start";
         $this->carbonEndDate = $this->carbonStartDate->addDays((int)$this->rangeDates);
@@ -143,7 +143,7 @@ class TimeFrame extends Model
     }
     public function saveStartDate()
     {
-        Log::info(' step 12: save StartDate  in TimeFrame-model '.$this->lastId);
+        //Log::info(' step 12: save StartDate  in TimeFrame-model '.$this->lastId);
         $timeTable = $this->create([
           'start_date' => $this->newStartDate,
           'status' => $this->status
@@ -154,21 +154,21 @@ class TimeFrame extends Model
     }
     public function saveDates()
     {
-      Log::info(' step 10: saveDates in TimeFrame-model ');
+      //Log::info(' step 10: saveDates in TimeFrame-model ');
        $timeTable = $this->create([
          'start_date' => $this->newStartDate,
          'end_date' => $this->newEndDate,
          'status' => $this->status
       ]);
       $this->lastId = $timeTable->id;
-      Log::info('************************************** ');
+      //Log::info('************************************** ');
       if($this->diffent > $this->rangeDates){
           $this->newStartDate();
       }
     }
         public function saveEndDate()
     {
-        Log::info(' step 14: save EndDate in TimeFrame-model ');
+        //Log::info(' step 14: save EndDate in TimeFrame-model ');
        $timeTable =  $this->find( $this->lastId)
         ->updateOrFail([
            'end_date' => $this->newEndDate,
@@ -185,7 +185,7 @@ class TimeFrame extends Model
     public function newStartDate()
     {  // timestamp(Carbon format) with date & time  & timezone format!
           $diffDays = $this->carbonFinalEndDate->diffInDays($this->carbonStartDate);
-          Log::info(' step 11: create newStartDate  in TimeFrame-model '.$this->lastId);
+          //Log::info(' step 11: create newStartDate  in TimeFrame-model '.$this->lastId);
          if($diffDays > 0){
               $this->carbonStartDate = $this->carbonEndDate->addDays(1);
               $this->newStartDate = $this->carbonToApiFormat($this->carbonStartDate);
@@ -193,7 +193,7 @@ class TimeFrame extends Model
               $this->saveStartDate();
         return $this->newStartDate;
       }
-      Log::info(' step 11: create newStartDate  in TimeFrame-model Final round');
+      //Log::info(' step 11: create newStartDate  in TimeFrame-model Final round');
     //  return;   ////????
     }
 // get's date in Carbon format(object), return Carbon format
@@ -201,14 +201,14 @@ class TimeFrame extends Model
     {
        // timestamp(Carbon format) with date & time  & timezone format!
     $diffDays = $this->carbonFinalEndDate->diffInDays($this->carbonEndDate);
-    Log::info(' step 13: create newEndDate in TimeFrame-model: LastRow:  '.$this->lastId);
+    //Log::info(' step 13: create newEndDate in TimeFrame-model: LastRow:  '.$this->lastId);
         if($diffDays > (int)$this->rangeDates)
         {
             if($this->carbonStartDate < $this->carbonFinalEndDate){
                 $this->carbonEndDate = $this->carbonStartDate->addDays((int)$this->rangeDates);
                   $this->newEndDate = $this->carbonToApiFormat($this->carbonEndDate);
                   $this->status = 'Save end dates';
-                    Log::info(' saveEndDate  - Status save end dates: lastRow:  '.$this->lastId);
+                    //Log::info(' saveEndDate  - Status save end dates: lastRow:  '.$this->lastId);
                      $this->saveEndDate();
            }
        } else {
@@ -216,7 +216,7 @@ class TimeFrame extends Model
                 $this->carbonEndDate = $this->carbonStartDate->addDays((int)$diffDays);
                 $this->newEndDate = $this->carbonToApiFormat($this->carbonEndDate);
                 $this->status = 'Final';
-                  Log::info(' saveEndDate  - Status Final: '.$this->lastId);
+                  //Log::info(' saveEndDate  - Status Final: '.$this->lastId);
                 $this->saveEndDate();
            }
        }

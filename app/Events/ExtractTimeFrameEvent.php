@@ -24,15 +24,15 @@ class ExtractTimeFrameEvent
     public function __construct(TimeFrame $timeFrame)
     {
         $this->timeFrame = $timeFrame;
-        Log::notice('Step 13 :TimeFrame Event construct Done');
+      //  Log::notice('Step 13 :TimeFrame Event construct Done');
     }
     public function eventRowId($status)
     {
-        Log::notice('Event is sending status to TimeFrame-Model: '.$status);
-        Log::notice('****************************************************');
+      //  Log::notice('Event is sending status to TimeFrame-Model: '.$status);
+      //  Log::notice('****************************************************');
          $row = (new TimeFrame())->rowId($status);
-          Log::notice('Step 21 return ExtractTimeFrameEvent Closed: '.$status);
-            Log::notice('****************************************************');
+      //    Log::notice('Step 21 return ExtractTimeFrameEvent Closed: '.$status);
+      //      Log::notice('****************************************************');
         return $row;
     }
 }

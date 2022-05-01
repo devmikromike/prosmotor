@@ -28,7 +28,7 @@ class TimeFrameBatch
         Log::notice('step 14: Listeners triggered');
        $batch =  (new SELF())->createBatch();
 
-       Log::notice('step 15: Second Batch created: '.$batch->name);
+  //     Log::notice('step 15: Second Batch created: '.$batch->name);
 
            (new SELF())->search($event, $batch);
     }
@@ -43,17 +43,17 @@ class TimeFrameBatch
     }
     public function search($event, $batch)
     {
-       Log::notice(' Call Event method: EventRow with status: Start ');
+    //   Log::notice(' Call Event method: EventRow with status: Start ');
       $rowData = $event->eventRowId('Start'); // return (Int) $rowData
-         Log::notice(' Return:   ************************************************ ');
+    //     Log::notice(' Return:   ************************************************ ');
 
         if($rowData)
             {
-                  Log::notice('step 16: Listener is calling searchRowId with status:Start Setup from Row: '.$rowData);
+      //            Log::notice('step 16: Listener is calling searchRowId with status:Start Setup from Row: '.$rowData);
 
                       (new TimeFrame())->retRow($rowData, $batch);
 
-                Log::notice('step 28: Listener is returning: rowData ');
+        //        Log::notice('step 28: Listener is returning: rowData ');
               return $rowData;
             }
       (new SELF())->searchSave($event, $batch);
@@ -64,7 +64,7 @@ class TimeFrameBatch
       $rowIdSave = $event->eventRowId('Save end dates');
       if($rowIdSave)
           {
-            Log::notice('step 26: Listener is returning: searchSave ');
+          //  Log::notice('step 26: Listener is returning: searchSave ');
 
                   (new TimeFrame())->retRow($rowIdSave,  $batch);
 
@@ -78,7 +78,7 @@ class TimeFrameBatch
       $rowFinal = $event->eventRowId('Final');
       if($rowFinal)
           {
-              Log::notice('step 27: Listener is returning: searchFinal ');
+            //  Log::notice('step 27: Listener is returning: searchFinal ');
 
                 (new TimeFrame())->retRow($rowFinal, $batch);
 

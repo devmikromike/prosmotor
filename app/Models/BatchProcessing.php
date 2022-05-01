@@ -13,6 +13,7 @@ use App\Jobs\ApiBridgeJob;
 use App\Jobs\GetNewRowIdJob;
 use App\Models\TimeFrame;
 use App\Events\ExtractTimeFrameEvent;
+use Carbon\Carbon;
 
 class BatchProcessing extends Model
 {
@@ -24,8 +25,8 @@ class BatchProcessing extends Model
         ->name('ApiBridgeJob')
        ->dispatch();
 
-        Log::info('step 17: Created new Batch: '.$batch->name);
-        Log::info('step 17: Sending request for : '.$vatId);
+        //Log::info('step 17: Created new Batch: '.$batch->name);
+        //Log::info('step 17: Sending request for : '.$vatId);
          $batch->add(new ApiBridgeJob($vatId));
 
         return $batch;
@@ -36,7 +37,7 @@ class BatchProcessing extends Model
             $batch = Bus::batch([])
             ->name($name)
             ->dispatch();
-              Log::info('Created new Batch: '.$batch->name);
+              //Log::info('Created new Batch: '.$batch->name);
              return $batch;
         }
         public function createBatchJobByVatID($vatId)
@@ -51,33 +52,33 @@ class BatchProcessing extends Model
         }
         public function createTimeFrameBatchJob($from, $to)
         { /* Receved call from Livewire component */
-              Log::info('Step 2 : Create TimeFrameBatchJob from model-BatchProcessing');
+              //Log::info('Step 2 : Create TimeFrameBatchJob from model-BatchProcessing');
             $batch  = (new SELF())->runBatchTimeFrame($from, $to );
             $name = $batch->name;
-            Log::info('Step: 6 return TimeFrameBatchJob - main process Done: '.$name);
-            Log::info('*****************************************************');
+            //Log::info('Step: 6 return TimeFrameBatchJob - main process Done: '.$name);
+            //Log::info('*****************************************************');
             return ($name);
         }
         public function runBatchTimeFrame($from, $to)
         {
-            Log::info('Step 3: Create Batch: ExtractTimeFrameJob');
+            //Log::info('Step 3: Create Batch: ExtractTimeFrameJob');
             $batch = Bus::batch([])
               ->name('ExtractTimeFrameJob')
               ->then(function (Batch $batch) {
                     (new SELF())->createTimeFrameEvent();
               })
               ->dispatch();
-              Log::info('Step 4: Add Job to Batch');
+              //Log::info('Step 4: Add Job to Batch');
             $batch->add(new TimeFrameJob($from, $to));
 
-           Log::info('Step: 5 return batch info, First Batch Closed');
-           Log::info('*****************************************************');
+           //Log::info('Step: 5 return batch info, First Batch Closed');
+           //Log::info('*****************************************************');
             return $batch;
         }
     /*  create batch and job   */
         public function createTimeFrameEvent()
         {
-            Log::info('Step 12: call ExtractTimeFrameEvent from BatchProcessing');
+            //Log::info('Step 12: call ExtractTimeFrameEvent from BatchProcessing');
             $timeFrame = new TimeFrame;
                event(new ExtractTimeFrameEvent($timeFrame));
              Log::info('Step: 22 return Event and Closed.');

@@ -39,8 +39,8 @@ class ProsBlackListed extends Model
     }
     public function liquidations($data)
     {
-      dump('liquidations');
-      dump($data);
+    //  dump('liquidations');
+    //  dump($data);
       $business['status'] = 'failed';
       $details = $data['liquidations'][0];
       $business['lastType'] = $liquidations[0]['type'];
@@ -48,5 +48,6 @@ class ProsBlackListed extends Model
       $business['vatId'] = $data['businessId'];
       $business['description'] = $liquidations[0]['description'];
       $response = (new ProsBlackListed())->createStatus($business);
+      return;
     }
 }

@@ -89,7 +89,7 @@ class Prospect extends Model
     }
    public function collectCompanyData($company,$uri)
    {
-     Log::info('step 35: Black sack process: [Propect Created]');
+    // Log::info('step 35: Black sack process: [Propect Created]');
      $data = (new Prospect())->updateOrCreate($company);
 
      $id = $data->id;
@@ -98,10 +98,10 @@ class Prospect extends Model
           (new ProsDetails())->saveUri($uri, $id);
         };
       //  dump($data);
-        if (empty($id)){
+      /*  if (empty($id)){
           dump('empty');
         //  dd($data);
-        }
+      }   */
 
      return $data;
    }
@@ -115,6 +115,7 @@ class Prospect extends Model
 
      if (empty($name))
        {
+          Log::error('Black sack extraction process: [CompanyName NOT Found] '.$vatId);
          $reason = 'No Company name on PRH Record for Vatid.';
          $errors = (new ProsBlackListed())->blacklisted($vatId, $reason);
           return $response = array($errors, [
@@ -122,7 +123,7 @@ class Prospect extends Model
            'id' => 'failed'
            ]);
          }else {
-           Log::info('step 34: Black sack extraction process: [CompanyName Found]');
+      //     Log::info('step 34: Black sack extraction process: [CompanyName Found]');
           $prospectModel = (new Prospect())->collectCompanyData($company,$uri);
 
            //   return $response = array($success, [
