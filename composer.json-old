@@ -32,20 +32,29 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
-
+            "Tests\\": "tests/",
+            "Pros\\": "../Packages/Pros/src",
+            "MikroMike\\LivewireComponets\\": "../Packages/Livewire-collection/src"
 
         }
     },
     "repositories": [
-
+        {
+            "type": "path",
+            "url": "../Packages/Pros/"
+        },
+        {
+            "type": "path",
+            "url": "../Packages/Livewire-collection/"
+        }
 
 
     ],
     "extra": {
       "laravel": {
           "providers": [
-
+              "Pros\\ProsviewServiceProvider",
+              "MikroMike\\LivewireComponets\\Providers\\LivewireComponetServiceProvider"
 
           ]
       }
