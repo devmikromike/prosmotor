@@ -63,9 +63,6 @@ class TimeFrame extends Model
         {
             $this->lastRowId = $id;
             Log::notice('step 17: returning RowId from model'.$id);
-            Log::notice('step 18: create LastRowId'.$id);
-              (new  LastRow())->createLastRowId($id);
-              Log::notice('step 20: return LastRowId'.$id);
             return $id;
         }
     }
@@ -98,10 +95,10 @@ class TimeFrame extends Model
 
           $batch->add(new SearchListJob($this->startDate, $this->endDate));
           $this->status = "Search in process";
-
+            (new LastRow())->createLastRowId($id);
           (new SELF())->saveStatus($id, $this->status);
 
-          return 'Done';
+        return 'Done';
     }
     public function saveStatus($id, $status)
     {
@@ -110,6 +107,7 @@ class TimeFrame extends Model
           'status' => $status
      ]);
      Log::notice('step 26: updated status to : '.$status);
+     return;
     }
     public function betweenDates($startRangeDate, $endRangeDate)
     { //output carbon object:  date: 2022-03-21 00:00:00.0 UTC (+00:00)

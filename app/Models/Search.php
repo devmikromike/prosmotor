@@ -176,7 +176,6 @@ class Search extends Model
     }
     public function statusData($response)
     {
-
        $statusMsg = $response->json('Status_message');
         // Get status code from Response.
         $resCode = $response->json('Status');
@@ -206,11 +205,73 @@ class Search extends Model
            Log::info('step 30: List mode detected');
            $this->lastRow = (new LastRow())->findLastRowId();
            Log::info('Last Row id: '.$this->lastRow);
-           (new SELF())->listSearch($response, $this->lastRow);
+           $r = (new SELF())->listSearch($response, $this->lastRow);
            Log::info('****************************');
+           $last = (new TimeFrame())->rowId('Final');
+           Log::info('Last Row: '.$last);
+           Log::info('****************************');
+
+           if($this->lastRow !== $last)
+           {
+             $last = (new LastRow())->GoNextRow($this->lastRow);
+           }
+             Log::info('**************************');
+              Log::info('last: '.$last);
+               Log::info('DONE');
+               Log::info('**************************');
+               $batch = (new BatchProcessing())->createBatch('SearchList');
+               $re =  (new TimeFrame())->retRow($last, $batch);
+                   Log::info('**************************');
+              if($re == 'Done')
+              {
+                Log::info('**************************');
+                Log::info('**************************');
+                Log::info('**************************');
+              }
+
+
+          /* if($last = (new LastRow())->rowId('Final') )
+           {
+             dd($last);
+                 (new LastRow())->createLastRowId($this->lastRow);
+
+             Log::info('**************************');
+             $lastRowId = (new LastRow())->GoNextRow($id);
+             Log::info('**************************');
+            Log::info('Last row from TimeFrame:  '.$lastRowId);
+             $batch = (new BatchProcessing())->createBatch('SearchList');
+                 (new TimeFrame())->retRow($lastRowId, $batch);
+            Log::info('**************************');
+          }*/
+
+          return;
         }
       } else {
           if($resCode === 404){
+            Log::info('*************');
+            Log::info('response status: [ERROR]');
+            Log::error('Error with response status: '.$resCode);
+            Log::info('*************');
+
+            return $results = array(
+              'Status' => $resCode,
+              'Status_message' => $statusMsg,
+              'Response' => $response
+            );
+          }
+          if($resCode === 422){
+            Log::info('*************');
+            Log::info('response status: [ERROR]');
+            Log::error('Error with response status: '.$resCode);
+            Log::info('*************');
+
+            return $results = array(
+              'Status' => $resCode,
+              'Status_message' => $statusMsg,
+              'Response' => $response
+            );
+          }
+          if($resCode === 500){
             Log::info('*************');
             Log::info('response status: [ERROR]');
             Log::error('Error with response status: '.$resCode);
@@ -230,7 +291,7 @@ class Search extends Model
          if($errors){
            foreach ($errors as $error)
            {
-             Log::error('step 31: '.$error);
+             Log::error('step 31 HTTP STATUS ERROR: '.$error);
            }
          }
          return $results = array(
@@ -261,15 +322,16 @@ class Search extends Model
        foreach ($response['results'] as $key => $pros){
 
           if($counter < 100 )   {
-              Log::info('Results:  '.$sum);
+              Log::info('Results:  '.$sum. ' in queue.');
               $counter++;
           }else {
              Log::info('Sleeping 5 min ....');
              Log::info('Results:  '.$sum.' Prospects arrived to Queue'.' of'.$counter);
-
-            sleep(30);
-            $this->counter = 0;
-           }
+            $counter = 0;
+            sleep(300);
+            $this->counter = $counter;
+            Log::info('Counter Reseted: '.$this->counter);
+         }
          $this->vatId = $pros['businessId'];
          $name = $pros['name'];
          $regDate = $pros['registrationDate'];
@@ -290,53 +352,10 @@ class Search extends Model
                $errors = (new ProsBlackListed())->blacklisted($this->vatId, $reason);
              }
      } // End of ForEach
+     Log::info('**************************');
+       Log::info('list search process done');
+       Log::info('**************************');
+     return;
 
-         Log::info('**************************');
-         $lastRowId = (new LastRow())->GoNextRow($id);
-         Log::info('**************************');
-        Log::info('Last row from TimeFrame:  '.$lastRowId);
-         $batch = (new BatchProcessing())->createBatch('SearchList');
-             (new TimeFrame())->retRow($lastRowId, $batch);
-        Log::info('**************************');
-    return;
-
-  //   dd($batch);
    }
-   /*
-   public function ApiBridge($batchName)
-   {
-     $batch =  (new Search())->createBatchJob($batchName);
-     $batch->add(new ApiBridgeJob($this->vatId));
-
-    // $result =  (new Search())->addJobToBatch($batch);
- /*
- Log::info('Step 3: Create Batch');
- $batch = Bus::batch([])
-   ->name('ExtractTimeFrameJob')
-   ->dispatch();
-   Log::info('Step 4: Add Job to Batch');
-   $batch->add(new TimeFrameJob($from, $to));
- */
-
-// } */
-/*
-   public function createBatchJob()
-   {
-     $batch = Bus::batch([])
-     ->name('ApiBridgeJob')
-    ->dispatch();
-
-      $batch->add(new ApiBridgeJob($this->vatId));
-
-     Log::notice('step 17: Created new Batch: '.$batch->name);
-     return $batch->id;    */
-
-/*
-     $batch = Bus::batch([])
-     ->name('ApiBridgeJob')
-    ->dispatch();
-   //    $batch =  (new Search())->createBatchJob();
-       $batch->add(new ApiBridgeJob($this->vatId)); */
-//   }
-
 }  // End of Class
