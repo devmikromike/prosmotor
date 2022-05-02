@@ -31,6 +31,7 @@ class TimeFrameBatch
   //     Log::notice('step 15: Second Batch created: '.$batch->name);
 
            (new SELF())->search($event, $batch);
+        return;
     }
     public function createBatch()
     {
@@ -57,6 +58,7 @@ class TimeFrameBatch
               return $rowData;
             }
           (new SELF())->searchSave($event, $batch);
+         return;
     }
 
     public function searchSave($event, $batch)
@@ -71,6 +73,7 @@ class TimeFrameBatch
               return $rowIdSave;
           }
         (new SELF())->searchFinal($event, $batch);
+       return;
     }
 
     public function searchFinal($event, $batch)
@@ -84,5 +87,6 @@ class TimeFrameBatch
 
            return $rowFinal;
        }
+     return;
   }
 }
