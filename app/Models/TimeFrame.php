@@ -80,6 +80,7 @@ class TimeFrame extends Model
     //    Log::notice(': search status');
         $statusFields = DB::table('time_frames')->where('id', $id)
                    ->pluck('status');
+         Log::notice(': search status: '.$statusFields);
         //Log::info('******************************');
         //Log::info('Batch name from Return row: '.$batch->name);
         //Log::info('******************************');
@@ -97,6 +98,7 @@ class TimeFrame extends Model
         }
            Log::notice(' reading RowId  and creating new batch:  '.$id.' ...'.$this->startDate.' : '.$this->endDate);
           $batch->add(new SearchListJob($this->startDate, $this->endDate));
+           Log::info(' **** add  new SearchListJob  **** '.$this->status);
           $this->status = "Search in process";
             (new LastRow())->createLastRowId($id);
           (new SELF())->saveStatus($id, $this->status);

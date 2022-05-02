@@ -20,7 +20,6 @@ class ExtractTimeFrameEvent
     public $searchRowId;  //method!?!
     public $lastRowId;
 
-
     public function __construct(TimeFrame $timeFrame)
     {
         $this->timeFrame = $timeFrame;
