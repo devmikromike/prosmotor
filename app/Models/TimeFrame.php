@@ -68,7 +68,7 @@ class TimeFrame extends Model
     }
     public function retRow($id, $batch)
       {
-             Log::notice(' RowId  and creating new batch:  '.$id.' ...');
+
       //  Log::notice('step 23: search startDate');
         $startDate = DB::table('time_frames')->where('id', $id)
                       ->pluck('start_date');
@@ -93,13 +93,13 @@ class TimeFrame extends Model
         {
           $this->status = $status;
         }
-
+           Log::notice(' reading RowId  and creating new batch:  '.$id.' ...'.$this->startDate.' : '.$this->endDate);
           $batch->add(new SearchListJob($this->startDate, $this->endDate));
           $this->status = "Search in process";
             (new LastRow())->createLastRowId($id);
           (new SELF())->saveStatus($id, $this->status);
 
-        return 'Done';
+        return;
     }
     public function saveStatus($id, $status)
     {

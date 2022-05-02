@@ -33,6 +33,6 @@ class GetNewRowIdJob implements ShouldQueue
      */
     public function handle()
     {
-      return 'Doen';
+      return 'Done';
     }
 }

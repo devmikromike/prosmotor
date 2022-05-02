@@ -213,8 +213,8 @@ class Search extends Model
 
            if(!empty($last))
            {
-               //Log::info('Last Row: '.$last);
-               //Log::info('****************************');
+              Log::info('Last Row: '.$last);
+              Log::info('****************************');
 
                if($this->lastRow !== $last)
                {

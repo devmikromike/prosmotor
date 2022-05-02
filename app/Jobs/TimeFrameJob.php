@@ -36,7 +36,7 @@ class TimeFrameJob implements ShouldQueue
             return;
         }
         // Batched job executing... Extract TimeFrame to table.
-        Log::info(' step 7: calling TimeFrame-model, created  TimeFrameJob!');
+        Log::info(' step 7:create date range and save it to timeframe table!');
           (new TimeFrame())->betweenDates($this->startRangeDate, $this->endRangeDate);
         Log::info('************ Job Completed *********** ');
          return;
