@@ -72,9 +72,11 @@ class TimeFrame extends Model
       //  Log::notice('step 23: search startDate');
         $startDate = DB::table('time_frames')->where('id', $id)
                       ->pluck('start_date');
+         Log::notice('step 23: search startDate:'.$startDate.' -ID: '.$id );
     //    Log::notice('step 24: search endDate');
         $endDate = DB::table('time_frames')->where('id', $id)
                     ->pluck('end_date');
+        Log::notice('step 24: search endDate:'.$endDate.' -ID: '.$id);
     //    Log::notice(': search status');
         $statusFields = DB::table('time_frames')->where('id', $id)
                    ->pluck('status');
