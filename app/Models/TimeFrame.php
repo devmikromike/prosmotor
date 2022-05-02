@@ -68,6 +68,7 @@ class TimeFrame extends Model
     }
     public function retRow($id, $batch)
       {
+             Log::notice(' RowId  and creating new batch:  '.$id.' ...');
       //  Log::notice('step 23: search startDate');
         $startDate = DB::table('time_frames')->where('id', $id)
                       ->pluck('start_date');
