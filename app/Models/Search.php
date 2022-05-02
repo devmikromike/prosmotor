@@ -206,9 +206,9 @@ class Search extends Model
            Log::info('step 30: List mode detected');
             Log::info('*********************************************');
            $this->lastRow = (new LastRow())->findLastRowId();
-           //Log::info('Last Row id: '.$this->lastRow);
+           Log::info('Last Row id: '.$this->lastRow);
            $r = (new SELF())->listSearch($response, $this->lastRow);
-           //Log::info('****************************');
+           Log::info('****************************');
            $last = (new TimeFrame())->rowId('Final');
 
            if(!empty($last))

@@ -56,33 +56,33 @@ class TimeFrameBatch
         //        Log::notice('step 28: Listener is returning: rowData ');
               return $rowData;
             }
-      (new SELF())->searchSave($event, $batch);
+          (new SELF())->searchSave($event, $batch);
     }
 
     public function searchSave($event, $batch)
     {
-      $rowIdSave = $event->eventRowId('Save end dates');
+      $rowIdSave = $event->eventRowId('Save end dates'); // return Int (rowId)
       if($rowIdSave)
           {
           //  Log::notice('step 26: Listener is returning: searchSave ');
 
                   (new TimeFrame())->retRow($rowIdSave,  $batch);
 
-              return $this->rowIds;
+              return $rowIdSave;
           }
         (new SELF())->searchFinal($event, $batch);
     }
 
     public function searchFinal($event, $batch)
     {
-      $rowFinal = $event->eventRowId('Final');
+      $rowFinal = $event->eventRowId('Final');   // return Int (rowId)
       if($rowFinal)
           {
             //  Log::notice('step 27: Listener is returning: searchFinal ');
 
                 (new TimeFrame())->retRow($rowFinal, $batch);
 
-           return $this->rowIds;
+           return $rowFinal;
        }
   }
 }
