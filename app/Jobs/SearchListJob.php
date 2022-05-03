@@ -28,7 +28,7 @@ class SearchListJob implements ShouldQueue
 
     public function handle()
     {
-      Log::info('step 25: Pass start and end date data to API Bridge ');
+      Log::info('JOB->  Pass start and end date data to API Bridge ');
         (new Search())->perDates($this->startDate, $this->endDate);  //API
      return;
 /*
