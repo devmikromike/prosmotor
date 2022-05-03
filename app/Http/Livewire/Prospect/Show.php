@@ -38,54 +38,35 @@ class Show extends Component
 
     public function  byVatId($vatId)
     {
-      $prosmodel = (new Prospect())->getId($vatId);
+     $prosmodel = (new Prospect())->getId($vatId);
       if(!empty($prosmodel)){
-        $id = $prosmodel->id;
-        $bssField = Prospect::find($id)->bssCodeField()->first();
-        $prosmodel['nameFI'] = $bssField->nameFI;
-        $prosmodel['bsscode'] = $bssField->code;
-        $location = Prospect::find($id)
-          ->locations()
-          ->VisitAddress()
-          ->EndDate()
-          ->first();
-        if (!empty($prosmodel['street'])){
-          $prosmodel['street'] = $location->street;
-          $prosmodel['postCode'] = $location->postCode;
-          $prosmodel['city'] = $location->city;
+          $id = $prosmodel->id;
+          $bssField = Prospect::find($id)->bssCodeField()->first();
+          $prosmodel['nameFI'] = $bssField->nameFI;
+          $prosmodel['bsscode'] = $bssField->code;
+          $location = Prospect::find($id)
+            ->locations()
+            ->VisitAddress()
+            ->EndDate()
+            ->first();
+          if (!empty($prosmodel['street'])){
+            $prosmodel['street'] = $location->street;
+            $prosmodel['postCode'] = $location->postCode;
+            $prosmodel['city'] = $location->city;
 
-        }
-        $this->prosmodel =  $prosmodel;
-        $this->refresh();
-        return $prosmodel;
-      }else {
-        $this->vatId = $vatId;
+          }
+          $this->prosmodel =  $prosmodel;
           $this->refresh();
-
-      }
-
+          return $prosmodel;
+        }else {
+          $this->vatId = $vatId;
+            $this->refresh();
+        }
     }
-
     public function render()
     {
         $prosmodel = $this->prosmodel;
-  //       dd($prosmodel);
-     /*   "id" => 2
-    "name" => "Mafisa Oy"
-    "vatId" => "0858510-3"
-    "www" => "www.mafisa.fi"
-    "registrationDate" => "1991-10-09"
-    "created_at" => "2022-02-17 09:35:22"
-    "updated_at" => "2022-02-17 09:35:22"
-    "nameFI" => "Muu tekninen palvelu"
-    "bsscode" => 71129
-    "street" => "Ollilantie 14 C"
-    "postCode" => "00780"
-    "city" => "HELSINKI"
-     */
-
         return view('livewire.prospect.show',[
-          // 'prospect' => $prospect,
           'prosmodel' =>   $prosmodel,
         ]);
     }

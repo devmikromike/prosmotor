@@ -10,5 +10,10 @@ return [
     'subheader'  => 'Tällä hetkellä voit hakea ainostaan Osakeyhtiöiden tietoja (OY).',
     'listheader'  => 'Potentiaalisten asiakkaiden lista',
     'listbutton'  => 'Hae listalta.',
-    'propectNotFound' => 'Yritys ei ole enään rekisterissä!'
+    'propectNotFound' => 'Yritys ei ole enään rekisterissä!',
+    'searchbutton'  => 'Hae',
+    'placeholder.vatid' => 'Y-tunnuksella 1234567-8.',
+    'placeholder.name' => 'Nimellä tai osa-nimellä.',
+    'placeholder.start' => 'Aloituspäivä 2014-01-01.',
+    'placeholder.end' => 'Päättymispäivä 2022-01-01.',
 ];

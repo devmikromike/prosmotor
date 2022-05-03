@@ -16,7 +16,7 @@
           >
           {{ $vatId }}
         </div>
-          <button class="mt-4 p-2 bg-blue-300 border rounded border-1 border-gray-600">{{__('Hae PRHsta')}}</button>
+          <button class="mt-4 p-2 bg-blue-300 border rounded border-1 border-gray-600">{{__('messages.searchbutton')}}</button>
       </div>
 
   </form>
@@ -24,7 +24,7 @@
    {{ $statusMessage }}
    <br>
   <div class="">
-   
+
     @foreach ($results as $result)
         <div class="mt-4 border border-t border-2 border-gray-500">
           {{  $result['businessId'] }} <br>

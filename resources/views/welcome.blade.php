@@ -27,20 +27,20 @@
               <div class="mt-2  flex flex-1  ">
                    @livewire('search-by-vatid',
                    [
-                    'placeholder' => 'Hae Y-tunnuksella.',
+                    'placeholder' => __('messages.placeholder.vatid'),
                    ])
               </div>
               <div class="mt-2  flex flex-1  ">
                  @livewire('search-by-name',
                  [
-                  'placeholder' => 'Nimellä tai osa-nimellä.',
+                  'placeholder' =>  __('messages.placeholder.name'),
                  ])
             </div>
             <div class="mt-2  flex flex-1   ">
                @livewire('search-by-timeframe',
                [
-                'placeholder' => 'Aloituspäivä..',
-                'placeholder2' => 'Päättymispäivä..'
+                'placeholder' =>  __('messages.placeholder.start'),
+                'placeholder2' =>  __('messages.placeholder.end'),
                ])
             </div>
           </div>
