@@ -18,6 +18,7 @@ class ApiBridgeJob implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $vatId;
+    public $timeout = 300;
     /**
      * Create a new job instance.
      *
