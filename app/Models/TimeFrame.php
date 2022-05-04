@@ -97,7 +97,7 @@ class TimeFrame extends Model
           $this->status = $status;
         }
            Log::notice(' reading RowId  and creating new batch:  '.$id.' ...'.$this->startDate.' : '.$this->endDate);
-          $batch->add(new SearchListJob($this->startDate, $this->endDate));
+          $batch->add(new SearchListJob($this->startDate, $this->endDate));  // Send TimeFrame for API
            Log::info(' **** add  new SearchListJob  **** '.$this->status);
           $this->status = "Search in process";
             (new LastRow())->createLastRowId($id);

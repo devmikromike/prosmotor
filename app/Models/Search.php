@@ -64,9 +64,9 @@ class Search extends Model
         Log::info('step 28: get response from API Bridge');
       //    Log::info('*********************************************');
           $results = (new SELF())->statusData($response);
-          return;
+          return 0;
       }
-      return;
+      return -1;
     }
     public function perPostalCode($code)
     {
