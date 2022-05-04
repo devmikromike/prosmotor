@@ -18,8 +18,7 @@ class SearchListJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $uniqueFor = 3600;
-     public $timeout = 120;
+     public $timeout = 300;
     public $startDate, $endDate;
 
     public function __construct($startDate, $endDate)
@@ -32,7 +31,6 @@ class SearchListJob implements ShouldQueue
     {
       Log::info('JOB->  Pass start and end date data to API Bridge ');
         (new Search())->perDates($this->startDate, $this->endDate);  //API
-     return;
 /*
          Log::info('**************************');
         $lastRowId = (new LastRow())->GoNextRow();

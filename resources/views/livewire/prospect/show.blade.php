@@ -3,7 +3,7 @@
     <div class=" overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-         
+
           @if(!empty($prosmodel))
           <table class="min-w-full divide-y divide-gray-200 ">
             <thead class="bg-gray-50 mb-4">
@@ -38,7 +38,8 @@
               <tr>
                 <th scope="col" class=" px-6 py-3 text-left text-md uppercase
                                     font-medium text-gray-500 tracking-wider ">
-                  @if(!empty($prosmodel->street)) {{ $prosmodel->street }}{{('  /  ')}} {{$prosmodel->postCode}} @endif
+                  @if(!empty($prosmodel->street)) {{ $prosmodel->street }}{{('  /  ')}}
+                                                               {{$prosmodel->postCode}} @endif
                 </th>
                 <th>
                   @if(!empty($prosmodel->city)) {{ $prosmodel->city }} @endif
@@ -48,10 +49,10 @@
           </table>
           @else
              @if(!empty($vatId)){{__('Y-tunnus: ')}} {{ $vatId }}
-                <p> {{__('messages.propectNotFound')}}  </p>
+                 <p>  {{__('messages.propectNotFound')}}  </p>
              @endif
-          @endif
-        </div>
+        @endif
+      </div>
      </div>
    </div>
   </div>

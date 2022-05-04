@@ -53,7 +53,6 @@ class Show extends Component
             $prosmodel['street'] = $location->street;
             $prosmodel['postCode'] = $location->postCode;
             $prosmodel['city'] = $location->city;
-
           }
           $this->prosmodel =  $prosmodel;
           $this->refresh();
@@ -67,7 +66,7 @@ class Show extends Component
     {
         $prosmodel = $this->prosmodel;
         return view('livewire.prospect.show',[
-          'prosmodel' =>   $prosmodel,
+          'prosmodel' => $prosmodel,
         ]);
     }
 }
