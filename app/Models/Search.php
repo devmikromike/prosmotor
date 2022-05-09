@@ -334,14 +334,14 @@ class Search extends Model
 
        foreach ($response['results'] as $key => $pros){
 
-          if($counter < 150 )   {
+          if($counter < 50 )   {
               //Log::info('Results:  '.$sum. ' in queue.');
               $counter++;
           }else {
              //Log::info('Sleeping 5 min ....');
              //Log::info('Results:  '.$sum.' Prospects arrived to Queue'.' of'.$counter);
             $counter = 0;
-             sleep(60);
+             sleep(600);
             $this->counter = $counter;
             //Log::info('Counter Reseted: '.$this->counter);
          }
