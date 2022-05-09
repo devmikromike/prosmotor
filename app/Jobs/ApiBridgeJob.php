@@ -39,5 +39,6 @@ class ApiBridgeJob implements ShouldQueue
       Log::info(' Sending '.$this->vatId.' to API Bridge');
         sleep(20);
         (new Search())->perVatID($this->vatId);
+      return;  
     }
 }
