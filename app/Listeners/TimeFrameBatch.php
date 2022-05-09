@@ -35,7 +35,7 @@ class TimeFrameBatch
       $batch = Bus::batch([])
         ->name('GetTimeFrame')
         ->dispatch();
-        $this->batch = $batch->id;
+        $this->batchId = $batch->id;
 
         return $batch;
     }
@@ -45,7 +45,7 @@ class TimeFrameBatch
       $rowData = $event->eventRowId('Start'); // return (Int) $rowData
         if($rowData)
             {
-                      (new TimeFrame())->retRow($rowData, $batch);      
+                      (new TimeFrame())->retRow($rowData, $batch);
               return $rowData;
             }
           (new SELF())->searchSave($event, $batch);

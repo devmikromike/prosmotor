@@ -33,12 +33,12 @@ class TimeFrameJob implements ShouldQueue
         if ($this->batch()->cancelled()) {
             // Detected cancelled batch...
               Log::error('Job cancelled');
-            return;
+          return;
         }
         // Batched job executing... Extract TimeFrame to table.
-        Log::info(' step 7:create date range and save it to timeframe table!');
-          (new TimeFrame())->betweenDates($this->startRangeDate, $this->endRangeDate);
-        Log::info('************ Job Completed *********** ');
-         return;
+          Log::info(' step 7:create date range and save it to timeframe table!');
+           (new TimeFrame())->betweenDates($this->startRangeDate, $this->endRangeDate);
+         Log::info('************ Job Completed *********** ');
+      return;
     }
 }
