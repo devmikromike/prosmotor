@@ -84,18 +84,18 @@ class TimeFrame extends Model
         //Log::info('******************************');
         //Log::info('Batch name from Return row: '.$batch->name);
         //Log::info('******************************');
-        foreach($startDate as $date)
-        {
-          $this->startDate = $date;
-        }
-        foreach($endDate as $date)
-        {
-          $this->endDate = $date;
-        }
-        foreach($statusFields as $status)
-        {
-          $this->status = $status;
-        }
+          foreach($startDate as $date)
+          {
+            $this->startDate = $date;
+          }
+          foreach($endDate as $date)
+          {
+            $this->endDate = $date;
+          }
+          foreach($statusFields as $status)
+          {
+            $this->status = $status;
+          }
            Log::notice(' reading RowId  and creating new batch:  '.$id.' ...'.$this->startDate.' : '.$this->endDate);
           $batch->add(new SearchListJob($this->startDate, $this->endDate));  // Send TimeFrame for API
            Log::info(' **** add  new SearchListJob  **** '.$this->status);
@@ -103,7 +103,7 @@ class TimeFrame extends Model
             (new LastRow())->createLastRowId($id);
           (new SELF())->saveStatus($id, $this->status);
 
-        return;
+      return;
     }
     public function saveStatus($id, $status)
     {
