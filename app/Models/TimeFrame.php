@@ -43,17 +43,17 @@ class TimeFrame extends Model
     public $rowId;
     public $lastRowId = 0;
 
-
-
-    public function returnRow()
+    public function retStatus($id)
     {
-        $last_id = SELF::latest('id')->pluck('last_id');
-        foreach($last_id as $id)
+      $statusId = DB::table('time_frames')->where('id', $id)
+                    ->pluck('status');
+        foreach($statusId as $status)
         {
-            return $id;   /* return int  */
+            $this->status = $status;
+         Log::notice(': returning status: '.$status);
+            return $status;
         }
     }
-
     public function rowId($value)
     {
 

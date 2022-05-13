@@ -8,6 +8,8 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\ExtractTimeFrameEvent;
 use App\Listeners\TimeFrameBatch;
+use App\Events\TimeFrameFinalEvent;
+use App\Listeners\TimeFrameListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
 
         ExtractTimeFrameEvent::class => [
             TimeFrameBatch::class,
+        ],
+        TimeFrameFinalEvent::class => [
+            TimeFrameListener::class,
         ],
     ];
 

@@ -19,6 +19,7 @@ use App\Jobs\TimeFrameJob;
 use App\Jobs\SearchListJob;
 use App\Jobs\ApiBridgeJob;
 use App\Events\ExtractTimeFrameEvent;
+use App\Events\TimeFrameFinalEvent;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
@@ -49,13 +50,17 @@ class Search extends Model
       // if($response = Http::get('http://ProsCore-api.test/SearchVatID/'.$vatId)){
          if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
              Log::info(' 34: get response from API Bridge'.$vatId);
-            //   Log::info(' 35: Sending statusData');
-          $results = (new SELF())->statusData($response);
-    //      Log::info('*********************************************');
+
+    //      $results = (new SELF())->statusData($response);
+
+          if($results =  (new SELF())->checkStatus($response))
+          {
+            return 1;
+          }
           Log::info('  return results perVatID process:  '.$vatId);
           Log::info('*********************************************');
         //  dd($results);
-          return $results;   /// Array
+          return $results;   /// Array ???
         }
         return 0;
     }
@@ -65,11 +70,14 @@ class Search extends Model
           if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
         Log::info('step 28: get response from API Bridge'.$from.' : '.$to);
 
-          if($res =  (new SELF())->checkStatus($response))
-          {
-            return 1;
-          }
-          return 0;
+        // Log::info('Next Row!');
+        // $next = (new SELF())->nextRow();
+          $res =  (new SELF())->checkStatus($response);
+          Log::info('TimeFrame search completed!');
+            $search = new Search;
+           event(new TimeFrameFinalEvent($search));
+           Log::info('Event TimeFrame Final Created! ');
+        return 1;
       }
       return 0;
     }
@@ -80,6 +88,33 @@ class Search extends Model
           $results = (new SELF())->statusData($response);
       }
     }
+    public function nextRow()
+    {
+        $rowId = (new LastRow())->findLastRowId();
+        $status = (new TimeFrame())->retStatus($rowId);
+        $last = (new TimeFrame())->rowId('Final');
+        if($last > $rowId)
+        {
+            $newId = (new LastRow())->GoNextRow($rowId);
+            $name = ('NextJob-'.$newId);
+            $batch = (new BatchProcessing())->createBatch($name);
+             (new TimeFrame())->retRow($newId, $batch);
+          return 1;
+        }else{
+          if($status == 'Final')
+          {
+              $name = ('NextJob-'.$rowId);
+              $batch = (new BatchProcessing())->createBatch($name);
+              (new TimeFrame())->retRow($rowId, $batch);
+              $newId = 'No More';
+            return 1;
+          }
+        }
+        Log::info('*******************************************************');
+        return 1;
+
+    }
+
      public function checkStatus($response)
      {
        Log::info('Checking response status...');
@@ -87,6 +122,7 @@ class Search extends Model
             $response = (new SELF())->dataExtraction($results);
             $sum = (new SELF())->summaer($response);
             $res = (new SELF())->singleOrList($sum, $response);
+      Log::info('Response status COMPLETED...');
          return $res;
      }
      public function dataExtraction($results)
@@ -107,7 +143,8 @@ class Search extends Model
       if($sum === 1)
       {
          Log::info('Response Sum: '.$sum);
-         $data = $response['results'][0];
+      //   $data = $response['results'][0];
+          $data = $response;
           (new SELF())->extractJson($data);
         return;
 
@@ -389,33 +426,32 @@ class Search extends Model
              //Log::info('Sleeping 5 min ....');
              //Log::info('Results:  '.$sum.' Prospects arrived to Queue'.' of'.$counter);
             $counter = 0;
-             sleep(600);
+             sleep(100);
             $this->counter = $counter;
             Log::info('Counter Reseted: '.$this->counter);
          }
          $this->vatId = $pros['businessId'];
          $name = $pros['name'];
          $regDate = $pros['registrationDate'];
-          // Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
+
+         Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
 
            if (!empty($name))
              {
                $batch = (new BatchProcessing())->createBatchJob($this->vatId);
-
-               //Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
+               Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
                 (new Searchlist())->saveList($this->vatId, $name, $regDate);
-              return 1;
              }else {
                Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';
                $reason = 'No Company name on PRH Record for Vatid.';
                $errors = (new ProsBlackListed())->blacklisted($this->vatId, $reason);
-             return 0;
+
              }
      } // End of ForEach
      Log::info('**************************');
        Log::info('list search process done: ');
        Log::info('**************************');
-     return;
+     return 1;
 
    }
 }  // End of Class

@@ -6,7 +6,6 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Events\ExtractTimeFrameEvent;
 use App\Jobs\ReadTimeFrameForApiJob;
-use App\Jobs\Step2Job;
 use App\Models\Search;
 use App\Models\TimeFrame;
 use Illuminate\Bus\Batchable;
