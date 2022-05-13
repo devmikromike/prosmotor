@@ -57,8 +57,8 @@ class Search extends Model
           {
             return 1;
           }
-          Log::info('  return results perVatID process:  '.$vatId);
-          Log::info('*********************************************');
+  //        Log::info('  return results perVatID process:  '.$vatId);
+    //      Log::info('*********************************************');
         //  dd($results);
           return $results;   /// Array ???
         }
@@ -73,10 +73,10 @@ class Search extends Model
         // Log::info('Next Row!');
         // $next = (new SELF())->nextRow();
           $res =  (new SELF())->checkStatus($response);
-          Log::info('TimeFrame search completed!');
+        //  Log::info('TimeFrame search completed!');
             $search = new Search;
            event(new TimeFrameFinalEvent($search));
-           Log::info('Event TimeFrame Final Created! ');
+      //     Log::info('Event TimeFrame Final Created! ');
         return 1;
       }
       return 0;
@@ -110,14 +110,14 @@ class Search extends Model
             return 1;
           }
         }
-        Log::info('*******************************************************');
+      //  Log::info('*******************************************************');
         return 1;
 
     }
 
      public function checkStatus($response)
      {
-       Log::info('Checking response status...');
+      // Log::info('Checking response status...');
             $results = (new SELF())->statusData($response);
             $response = (new SELF())->dataExtraction($results);
             $sum = (new SELF())->summaer($response);
@@ -135,14 +135,14 @@ class Search extends Model
        // Data level
        $r = collect($response['results']);
        $sum = (new SELF())->counter($r);
-       Log::info('Checking response Sum...');
+    //   Log::info('Checking response Sum...');
        return $sum;
      }
     public function singleOrList($sum, $response)
     {
       if($sum === 1)
       {
-         Log::info('Response Sum: '.$sum);
+      //   Log::info('Response Sum: '.$sum);
       //   $data = $response['results'][0];
           $data = $response;
           (new SELF())->extractJson($data);
@@ -154,7 +154,7 @@ class Search extends Model
          Log::info('*********************************************');
          $data = $response['results'];
            (new SELF())->listSearch($data);
-            Log::info(' List mode created and closed.');
+        //    Log::info(' List mode created and closed.');
          return;
       }
    }
@@ -330,7 +330,7 @@ class Search extends Model
         // Get status code from Response.
         $resCode = $response->json('Status');
 
-      Log::info('step 29: checking response status data: '.$resCode);
+      //Log::info('step 29: checking response status data: '.$resCode);
 
         if($resCode === 200){
           //Log::info('step 29:  response status: [OK]');
@@ -434,12 +434,12 @@ class Search extends Model
          $name = $pros['name'];
          $regDate = $pros['registrationDate'];
 
-         Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
+         //Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
 
            if (!empty($name))
              {
                $batch = (new BatchProcessing())->createBatchJob($this->vatId);
-               Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
+          //     Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
                 (new Searchlist())->saveList($this->vatId, $name, $regDate);
              }else {
                Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';
@@ -452,6 +452,5 @@ class Search extends Model
        Log::info('list search process done: ');
        Log::info('**************************');
      return 1;
-
    }
 }  // End of Class
