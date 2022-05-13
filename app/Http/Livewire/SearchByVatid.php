@@ -34,15 +34,15 @@ class SearchByVatid extends Component
       {
         return $statusMessage = '';
       }else {
- 
+
          $statusMessage = $this->response['Status_message'];
       return  $statusMessage = $this->response['Status_message'];
       }
     }
-      public function mount()
-      {
-         $this->search = new Search();
-      }
+    public function mount()
+    {
+       $this->search = new Search();
+    }
 
       public function submit( )
      {

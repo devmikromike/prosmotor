@@ -48,25 +48,30 @@ class Search extends Model
         Log::info(' 33: Send request to API Bridge per Vatid: '.$vatId);
       // if($response = Http::get('http://ProsCore-api.test/SearchVatID/'.$vatId)){
          if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
-             Log::info(' 34: get response from API Bridge');
+             Log::info(' 34: get response from API Bridge'.$vatId);
             //   Log::info(' 35: Sending statusData');
           $results = (new SELF())->statusData($response);
     //      Log::info('*********************************************');
           Log::info('  return results perVatID process:  '.$vatId);
           Log::info('*********************************************');
-          return $results;
+        //  dd($results);
+          return $results;   /// Array
         }
+        return 0;
     }
     public function perDates($from, $to)
     {
         Log::info('step 27: Send request to API Bridge: '.$from.' : '.$to);
           if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
-        Log::info('step 28: get response from API Bridge');
-      //    Log::info('*********************************************');
-          $results = (new SELF())->statusData($response);
+        Log::info('step 28: get response from API Bridge'.$from.' : '.$to);
+
+          if($res =  (new SELF())->checkStatus($response))
+          {
+            return 1;
+          }
           return 0;
       }
-      return -1;
+      return 0;
     }
     public function perPostalCode($code)
     {
@@ -75,6 +80,111 @@ class Search extends Model
           $results = (new SELF())->statusData($response);
       }
     }
+     public function checkStatus($response)
+     {
+       Log::info('Checking response status...');
+            $results = (new SELF())->statusData($response);
+            $response = (new SELF())->dataExtraction($results);
+            $sum = (new SELF())->summaer($response);
+            $res = (new SELF())->singleOrList($sum, $response);
+         return $res;
+     }
+     public function dataExtraction($results)
+     {
+       $response = $results['Response']['Response'];
+       return $response;
+     }
+     public function summaer($response)
+     {
+       // Data level
+       $r = collect($response['results']);
+       $sum = (new SELF())->counter($r);
+       Log::info('Checking response Sum...');
+       return $sum;
+     }
+    public function singleOrList($sum, $response)
+    {
+      if($sum === 1)
+      {
+         Log::info('Response Sum: '.$sum);
+         $data = $response['results'][0];
+          (new SELF())->extractJson($data);
+        return;
+
+      }else {
+         Log::info('Response Sum: '.$sum);
+         Log::info('step 30: List mode detected');
+         Log::info('*********************************************');
+         $data = $response['results'];
+           (new SELF())->listSearch($data);
+            Log::info(' List mode created and closed.');
+         return;
+      }
+   }
+/*
+      else
+      { // list mode, more than one company
+         Log::info('step 30: List mode detected');
+          Log::info('*********************************************');
+         $this->lastRow = (new LastRow())->findLastRowId();
+         Log::info('Last Row id: '.$this->lastRow);
+         $r = (new SELF())->listSearch($response, $this->lastRow);
+         Log::info('****************************');
+         $last = (new TimeFrame())->rowId('Final');
+
+         if(!empty($last))
+         {
+            Log::info('Last Row: '.$last);
+            Log::info('****************************');
+
+             if($this->lastRow !== $last)
+             {
+               $last = (new LastRow())->GoNextRow($this->lastRow);
+             }
+               //Log::info('**************************');
+                //Log::info('last: '.$last);
+                 //Log::info('DONE');
+                 //Log::info('**************************');
+                 $batch = (new BatchProcessing())->createBatch('SearchList');
+                 $re =  (new TimeFrame())->retRow($last, $batch);
+                     //Log::info('**************************');
+                if($re == 'Done')
+                {
+                  Log::info('**************************');
+                  Log::info('* Next round * '.$last);
+                  Log::info('**************************');
+                }
+         }
+         return;
+       } */
+
+
+      /*
+      // Log::info('Last Row: '.$last);
+      // Log::info('****************************');
+      //
+      // if($this->lastRow !== $last)
+      // {
+      //   $last = (new LastRow())->GoNextRow($this->lastRow);
+      // }
+      //   Log::info('**************************');
+      //    Log::info('last: '.$last);
+      //     Log::info('DONE');
+      //     Log::info('**************************');
+      //     $batch = (new BatchProcessing())->createBatch('SearchList');
+      //     $re =  (new TimeFrame())->retRow($last, $batch);
+      //         Log::info('**************************');
+      //    if($re == 'Done')
+      //    {
+      //      Log::info('**************************');
+      //      Log::info('* Next round * '.$last);
+      //      Log::info('**************************');
+      //    }
+
+      */
+  //  }
+
+
 /*  Four API Call to Api Bridge. */
 /*  Extract incoming Json data   */
     public function extractJson($data)
@@ -183,135 +293,70 @@ class Search extends Model
         // Get status code from Response.
         $resCode = $response->json('Status');
 
-      Log::info('step 29: checking response status: '.$resCode);
+      Log::info('step 29: checking response status data: '.$resCode);
 
         if($resCode === 200){
           //Log::info('step 29:  response status: [OK]');
 
-            $response = $response->json('Response');
-            $r = collect($response['results']);
-          $sum = (new SELF())->counter($r);
-        if($sum === 1)
-        {
-            $dataId = $response['results'][0];
-            $data = $response;
-            $id = $dataId['businessId'];
-            //Log::info('step 31: handeling single data: '.$id);
-            (new SELF())->extractJson($data); // single data
           return $results = array(
             'Status' => $resCode,
             'Status_message' => $statusMsg,
             'Response' => $response
           );
-        }else
-        { // list mode, more than one company
-           Log::info('step 30: List mode detected');
-            Log::info('*********************************************');
-           $this->lastRow = (new LastRow())->findLastRowId();
-           Log::info('Last Row id: '.$this->lastRow);
-           $r = (new SELF())->listSearch($response, $this->lastRow);
-           Log::info('****************************');
-           $last = (new TimeFrame())->rowId('Final');
+        } else {
 
-           if(!empty($last))
-           {
-              Log::info('Last Row: '.$last);
-              Log::info('****************************');
+                if($resCode === 404){
+                  Log::info('*************');
+                  Log::info('response status: [ERROR]');
+                  Log::error('Error with response status: '.$resCode);
+                  Log::info('*************');
 
-               if($this->lastRow !== $last)
-               {
-                 $last = (new LastRow())->GoNextRow($this->lastRow);
+                  return $results = array(
+                    'Status' => $resCode,
+                    'Status_message' => $statusMsg,
+                    'Response' => $response
+                  );
+                }
+                if($resCode === 422){
+                  Log::info('*************');
+                  Log::info('response status: [ERROR]');
+                  Log::error('Error with response status: '.$resCode);
+                  Log::info('*************');
+
+                  return $results = array(
+                    'Status' => $resCode,
+                    'Status_message' => $statusMsg,
+                    'Response' => $response
+                  );
+                }
+                if($resCode === 500){
+                  Log::info('*************');
+                  Log::info('response status: [ERROR]');
+                  Log::error('Error with response status: '.$resCode);
+                  Log::info('*************');
+
+                  return $results = array(
+                    'Status' => $resCode,
+                    'Status_message' => $statusMsg,
+                    'Response' => $response
+                  );
+                }
+                /// http error code other than 200
+               $resCode = $response->json('Status');
+               $statusMsg = $response->json('Status_message');
+               $errors =  Arr::exists($response, 'Errors');
+               $response = '';
+               if($errors){
+                 foreach ($errors as $error)
+                 {
+                   Log::error('step 31 HTTP STATUS ERROR: '.$error);
+                 }
                }
-                 //Log::info('**************************');
-                  //Log::info('last: '.$last);
-                   //Log::info('DONE');
-                   //Log::info('**************************');
-                   $batch = (new BatchProcessing())->createBatch('SearchList');
-                   $re =  (new TimeFrame())->retRow($last, $batch);
-                       //Log::info('**************************');
-                  if($re == 'Done')
-                  {
-                    Log::info('**************************');
-                    Log::info('* Next round * '.$last);
-                    Log::info('**************************');
-                  }
-           }
-
-           // Log::info('Last Row: '.$last);
-           // Log::info('****************************');
-           //
-           // if($this->lastRow !== $last)
-           // {
-           //   $last = (new LastRow())->GoNextRow($this->lastRow);
-           // }
-           //   Log::info('**************************');
-           //    Log::info('last: '.$last);
-           //     Log::info('DONE');
-           //     Log::info('**************************');
-           //     $batch = (new BatchProcessing())->createBatch('SearchList');
-           //     $re =  (new TimeFrame())->retRow($last, $batch);
-           //         Log::info('**************************');
-           //    if($re == 'Done')
-           //    {
-           //      Log::info('**************************');
-           //      Log::info('* Next round * '.$last);
-           //      Log::info('**************************');
-           //    }
-          return;
-        }
-      } else {
-          if($resCode === 404){
-            Log::info('*************');
-            Log::info('response status: [ERROR]');
-            Log::error('Error with response status: '.$resCode);
-            Log::info('*************');
-
-            return $results = array(
-              'Status' => $resCode,
-              'Status_message' => $statusMsg,
-              'Response' => $response
-            );
-          }
-          if($resCode === 422){
-            Log::info('*************');
-            Log::info('response status: [ERROR]');
-            Log::error('Error with response status: '.$resCode);
-            Log::info('*************');
-
-            return $results = array(
-              'Status' => $resCode,
-              'Status_message' => $statusMsg,
-              'Response' => $response
-            );
-          }
-          if($resCode === 500){
-            Log::info('*************');
-            Log::info('response status: [ERROR]');
-            Log::error('Error with response status: '.$resCode);
-            Log::info('*************');
-
-            return $results = array(
-              'Status' => $resCode,
-              'Status_message' => $statusMsg,
-              'Response' => $response
-            );
-          }
-          /// http error code other than 200
-         $resCode = $response->json('Status');
-         $statusMsg = $response->json('Status_message');
-         $errors =  Arr::exists($response, 'Errors');
-         $response = '';
-         if($errors){
-           foreach ($errors as $error)
-           {
-             Log::error('step 31 HTTP STATUS ERROR: '.$error);
-           }
-         }
-         return $results = array(
-           'Status' => $resCode,
-           'Status_message' => $statusMsg,
-           'Response' => $response
-         );
+               return $results = array(
+                 'Status' => $resCode,
+                 'Status_message' => $statusMsg,
+                 'Response' => $response
+               );
        }
    } // End of public function statusData
    public function packCompany ($pros)
@@ -325,16 +370,19 @@ class Search extends Model
           $uri
         );
    }
-   public function listSearch($response, $id)
+    // public function listSearch($response, $id)
+   public function listSearch($data)
    {
-
+/*
        $r = collect($response['results']);
        $sum = (new SELF())->counter($r);
+       $counter = $this->counter; */
+
        $counter = $this->counter;
 
-       foreach ($response['results'] as $key => $pros){
+       foreach ($data as $key => $pros){
 
-          if($counter < 50 )   {
+          if($counter < 150 )   {
               //Log::info('Results:  '.$sum. ' in queue.');
               $counter++;
           }else {
@@ -343,12 +391,12 @@ class Search extends Model
             $counter = 0;
              sleep(600);
             $this->counter = $counter;
-            //Log::info('Counter Reseted: '.$this->counter);
+            Log::info('Counter Reseted: '.$this->counter);
          }
          $this->vatId = $pros['businessId'];
          $name = $pros['name'];
          $regDate = $pros['registrationDate'];
-           //Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
+          // Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
 
            if (!empty($name))
              {
@@ -356,15 +404,16 @@ class Search extends Model
 
                //Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
                 (new Searchlist())->saveList($this->vatId, $name, $regDate);
-
+              return 1;
              }else {
                Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';
                $reason = 'No Company name on PRH Record for Vatid.';
                $errors = (new ProsBlackListed())->blacklisted($this->vatId, $reason);
+             return 0;
              }
      } // End of ForEach
      Log::info('**************************');
-       Log::info('list search process done: '.$id);
+       Log::info('list search process done: ');
        Log::info('**************************');
      return;
 

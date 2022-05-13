@@ -28,6 +28,7 @@ class TimeFrameBatch
         Log::notice('step 14: Listeners triggered');
        $batch =  (new SELF())->createBatch();
            (new SELF())->search($event, $batch);
+             Log::notice('Listeners closed');
         return;
     }
     public function createBatch()
