@@ -102,7 +102,7 @@ class TimeFrame extends Model
              sleep(120);
            }
            Log::notice(' reading RowId  and creating new batch:  '.$id.' ...'.$this->startDate.' : '.$this->endDate);
-            $batch->add(new SearchListJob($this->startDate, $this->endDate));  // Send TimeFrame for API
+            $batch->add(new SearchListJob($this->startDate, $this->endDate, $id));  // Send TimeFrame for API
              Log::info(' **** add  new SearchListJob  **** '.$this->status);
             $this->status = "Search in process";
               (new LastRow())->createLastRowId($id);
@@ -143,6 +143,12 @@ class TimeFrame extends Model
           $this->saveDates();
       }else{
           if($this->diffent < $this->rangeDates){
+             $this->newEndDate = $this->carbonToApiFormat($this->carbonEndDate);
+             $this->newStartDate   = $this->carbonToApiFormat($this->freshStartDate);
+               $this->status = 'Final';
+               $this->saveDates();
+          }
+          if($this->diffent = $this->rangeDates){
              $this->newEndDate = $this->carbonToApiFormat($this->carbonEndDate);
              $this->newStartDate   = $this->carbonToApiFormat($this->freshStartDate);
                $this->status = 'Final';

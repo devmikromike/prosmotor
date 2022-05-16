@@ -18,9 +18,11 @@ use App\Models\BatchProcessing;
 use App\Jobs\TimeFrameJob;
 use App\Jobs\SearchListJob;
 use App\Jobs\ApiBridgeJob;
+use App\Jobs\ExtractJsonDataJob;
 use App\Events\ExtractTimeFrameEvent;
 use App\Events\TimeFrameFinalEvent;
 use Illuminate\Bus\Batch;
+use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 
@@ -28,7 +30,7 @@ use Throwable;
 
 class Search extends Model
 {
-    use HasFactory;
+    use Batchable, HasFactory;
     protected $guared = [];
 
     public $statusMsg, $resCode;
@@ -75,7 +77,7 @@ class Search extends Model
           $res =  (new SELF())->checkStatus($response);
         //  Log::info('TimeFrame search completed!');
             $search = new Search;
-           event(new TimeFrameFinalEvent($search));
+              event(new TimeFrameFinalEvent($search));
       //     Log::info('Event TimeFrame Final Created! ');
         return 1;
       }
@@ -142,11 +144,23 @@ class Search extends Model
     {
       if($sum === 1)
       {
-      //   Log::info('Response Sum: '.$sum);
-      //   $data = $response['results'][0];
           $data = $response;
-          (new SELF())->extractJson($data);
-        return;
+          if(is_array($data))
+          {
+            $results =  Arr::exists($data, 'results');
+            $id = $response['results'][0]['businessId'];
+            Log::info('extractDataJob'.' - '.$id);
+            $name = ('extractData'.'-'.$id);
+
+            if ($results == 'true'){
+            
+                $JsonDataJob = ExtractJsonDataJob::dispatch($data);
+          /*    $batch = (new BatchProcessing())->createBatch($name);
+                $batch->add(new ExtractJsonDataJob($data));   */   /// failed, batch cannot get array!
+            return 1;
+            }
+          }
+        return 0;
 
       }else {
          Log::info('Response Sum: '.$sum);
@@ -158,74 +172,10 @@ class Search extends Model
          return;
       }
    }
-/*
-      else
-      { // list mode, more than one company
-         Log::info('step 30: List mode detected');
-          Log::info('*********************************************');
-         $this->lastRow = (new LastRow())->findLastRowId();
-         Log::info('Last Row id: '.$this->lastRow);
-         $r = (new SELF())->listSearch($response, $this->lastRow);
-         Log::info('****************************');
-         $last = (new TimeFrame())->rowId('Final');
-
-         if(!empty($last))
-         {
-            Log::info('Last Row: '.$last);
-            Log::info('****************************');
-
-             if($this->lastRow !== $last)
-             {
-               $last = (new LastRow())->GoNextRow($this->lastRow);
-             }
-               //Log::info('**************************');
-                //Log::info('last: '.$last);
-                 //Log::info('DONE');
-                 //Log::info('**************************');
-                 $batch = (new BatchProcessing())->createBatch('SearchList');
-                 $re =  (new TimeFrame())->retRow($last, $batch);
-                     //Log::info('**************************');
-                if($re == 'Done')
-                {
-                  Log::info('**************************');
-                  Log::info('* Next round * '.$last);
-                  Log::info('**************************');
-                }
-         }
-         return;
-       } */
-
-
-      /*
-      // Log::info('Last Row: '.$last);
-      // Log::info('****************************');
-      //
-      // if($this->lastRow !== $last)
-      // {
-      //   $last = (new LastRow())->GoNextRow($this->lastRow);
-      // }
-      //   Log::info('**************************');
-      //    Log::info('last: '.$last);
-      //     Log::info('DONE');
-      //     Log::info('**************************');
-      //     $batch = (new BatchProcessing())->createBatch('SearchList');
-      //     $re =  (new TimeFrame())->retRow($last, $batch);
-      //         Log::info('**************************');
-      //    if($re == 'Done')
-      //    {
-      //      Log::info('**************************');
-      //      Log::info('* Next round * '.$last);
-      //      Log::info('**************************');
-      //    }
-
-      */
-  //  }
-
-
-/*  Four API Call to Api Bridge. */
-/*  Extract incoming Json data   */
     public function extractJson($data)
     { // single data
+      //  liq status: 2593915-3
+
         //Log::info('step 32: Black sack extraction process: [STARTED]');
         $status = '';
         $message = '';
