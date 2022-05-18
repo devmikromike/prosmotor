@@ -72,13 +72,10 @@ class Search extends Model
           if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
         Log::info('step 28: get response from API Bridge'.$from.' : '.$to);
 
-        // Log::info('Next Row!');
-        // $next = (new SELF())->nextRow();
-          $res =  (new SELF())->checkStatus($response);
-        //  Log::info('TimeFrame search completed!');
+          $res =  (new SELF())->checkStatus($response);    
             $search = new Search;
               event(new TimeFrameFinalEvent($search));
-      //     Log::info('Event TimeFrame Final Created! ');
+
         return 1;
       }
       return 0;
