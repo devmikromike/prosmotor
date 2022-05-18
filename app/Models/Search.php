@@ -143,11 +143,8 @@ class Search extends Model
     {
       if($sum === 1)
       {
-<<<<<<< HEAD
       //   Log::info('Response Sum: '.$sum);
       //   $data = $response['results'][0];
-=======
->>>>>>> 188708334a8f6f83c3cfbfa9e45f01de0746d3a4
           $data = $response;
           if(is_array($data))
           {
