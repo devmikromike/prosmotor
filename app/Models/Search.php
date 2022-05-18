@@ -128,6 +128,11 @@ class Search extends Model
        $response = $results['Response']['Response'];
        return $response;
      }
+     public function dataResultExtraction($results)
+     {
+       $response = $results['Response'];
+       return $response;
+     }
      public function summaer($response)
      {
        // Data level
@@ -378,11 +383,12 @@ class Search extends Model
             $this->counter = $counter;
             Log::info('Counter Reseted: '.$this->counter);
          }
+         Log::info('listSearch out of if: ');
          $this->vatId = $pros['businessId'];
          $name = $pros['name'];
          $regDate = $pros['registrationDate'];
 
-         //Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
+         Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
 
            if (!empty($name))
              {
