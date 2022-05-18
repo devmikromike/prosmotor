@@ -59,9 +59,6 @@ class Search extends Model
           {
             return 1;
           }
-  //        Log::info('  return results perVatID process:  '.$vatId);
-    //      Log::info('*********************************************');
-        //  dd($results);
           return $results;   /// Array ???
         }
         return 0;
@@ -72,7 +69,7 @@ class Search extends Model
           if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
         Log::info('step 28: get response from API Bridge'.$from.' : '.$to);
 
-          $res =  (new SELF())->checkStatus($response);    
+          $res =  (new SELF())->checkStatus($response);
             $search = new Search;
               event(new TimeFrameFinalEvent($search));
 
