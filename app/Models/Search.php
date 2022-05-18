@@ -120,10 +120,13 @@ class Search extends Model
      public function checkStatus($response)
      {
       // Log::info('Checking response status...');
+
             $results = (new SELF())->statusData($response);
-            $response = (new SELF())->dataExtraction($results);
-            $sum = (new SELF())->summaer($response);
-            $res = (new SELF())->singleOrList($sum, $response);
+          //  dd($results);
+
+            $resp = (new SELF())->dataExtraction($results);
+            $sum = (new SELF())->summaer($resp);
+            $res = (new SELF())->singleOrList($sum, $resp);
       Log::info('Response status COMPLETED...');
          return $res;
      }
@@ -153,7 +156,7 @@ class Search extends Model
             $name = ('extractData'.'-'.$id);
 
             if ($results == 'true'){
-            
+
                 $JsonDataJob = ExtractJsonDataJob::dispatch($data);
           /*    $batch = (new BatchProcessing())->createBatch($name);
                 $batch->add(new ExtractJsonDataJob($data));   */   /// failed, batch cannot get array!
@@ -167,6 +170,7 @@ class Search extends Model
          Log::info('step 30: List mode detected');
          Log::info('*********************************************');
          $data = $response['results'];
+
            (new SELF())->listSearch($data);
         //    Log::info(' List mode created and closed.');
          return;
@@ -191,6 +195,9 @@ class Search extends Model
 
         if ($results == 'true'){
                if($liq){
+
+                 dump($data);
+
                   (new ProsBlackListed())->liquidations($data);
                } else {
                    $company['name'] = $data['name'];
@@ -388,8 +395,11 @@ class Search extends Model
 
            if (!empty($name))
              {
-               $batch = (new BatchProcessing())->createBatchJob($this->vatId);
+               $startTime = microtime(true);
+                $batch = (new BatchProcessing())->createBatchJob($this->vatId);
+               $seconds = number_format((microtime(true) - $startTime) * 1000, 2);  //WIP - check it! //
           //     Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
+                Log::info('ApiBridgeJob completed at:  ' .$seconds . '  millseconds');
                 (new Searchlist())->saveList($this->vatId, $name, $regDate);
              }else {
                Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';

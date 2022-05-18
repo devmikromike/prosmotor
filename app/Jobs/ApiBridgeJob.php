@@ -19,7 +19,7 @@ class ApiBridgeJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $vatId;
-    public $timeout = 300;
+    public $timeout = 360;
     /**
      * Create a new job instance.
      *
