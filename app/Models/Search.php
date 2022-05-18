@@ -272,7 +272,7 @@ class Search extends Model
                  };    /// end of Else
               return 'true';
         } // end of results
-          //Log::info('step 32: Black sack extraction process: [COMPLETED]');
+         
     return 'false';
   }    // end of function
 /*  Extract incoming Json data END.  */
