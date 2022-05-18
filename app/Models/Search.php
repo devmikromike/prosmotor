@@ -195,7 +195,6 @@ class Search extends Model
 
         if ($results == 'true'){
                if($liq){
-
                  dump($data);
 
                   (new ProsBlackListed())->liquidations($data);
@@ -272,7 +271,6 @@ class Search extends Model
                  };    /// end of Else
               return 'true';
         } // end of results
-         
     return 'false';
   }    // end of function
 /*  Extract incoming Json data END.  */
@@ -286,8 +284,6 @@ class Search extends Model
        $statusMsg = $response->json('Status_message');
         // Get status code from Response.
         $resCode = $response->json('Status');
-
-      //Log::info('step 29: checking response status data: '.$resCode);
 
         if($resCode === 200){
           //Log::info('step 29:  response status: [OK]');
