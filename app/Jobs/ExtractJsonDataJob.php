@@ -3,31 +3,29 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Bus\Batchable;
 use App\Models\Search;
 
-
-class ApiBridgeJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
+class ExtractJsonDataJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $vatId;
-    public $timeout = 360;
+    public $data = array();
+    public $timeout = 3600;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($vatId)
+    public function __construct($data)
     {
-      $this->vatId = $vatId;
+
+        $this->data = $data;
     }
 
     /**
@@ -37,10 +35,7 @@ class ApiBridgeJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
      */
     public function handle()
     {
-      Log::info(' Sending '.$this->vatId.' to API Bridge');
-        sleep(20);
-        (new Search())->perVatID($this->vatId);
-          Log::info('ApiBridge JOB closed:!  '.$this->vatId);
-      return;
+        (new Search())->extractJson($this->data);
+      return 1;
     }
 }

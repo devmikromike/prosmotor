@@ -18,9 +18,11 @@ use App\Models\BatchProcessing;
 use App\Jobs\TimeFrameJob;
 use App\Jobs\SearchListJob;
 use App\Jobs\ApiBridgeJob;
+use App\Jobs\ExtractJsonDataJob;
 use App\Events\ExtractTimeFrameEvent;
 use App\Events\TimeFrameFinalEvent;
 use Illuminate\Bus\Batch;
+use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 
@@ -28,7 +30,7 @@ use Throwable;
 
 class Search extends Model
 {
-    use HasFactory;
+    use Batchable, HasFactory;
     protected $guared = [];
 
     public $statusMsg, $resCode;
@@ -75,7 +77,11 @@ class Search extends Model
           $res =  (new SELF())->checkStatus($response);
         //  Log::info('TimeFrame search completed!');
             $search = new Search;
+<<<<<<< HEAD
            event(new TimeFrameFinalEvent($search));
+=======
+              event(new TimeFrameFinalEvent($search));
+>>>>>>> 188708334a8f6f83c3cfbfa9e45f01de0746d3a4
       //     Log::info('Event TimeFrame Final Created! ');
         return 1;
       }
@@ -118,10 +124,16 @@ class Search extends Model
      public function checkStatus($response)
      {
       // Log::info('Checking response status...');
+<<<<<<< HEAD
+=======
+
+>>>>>>> 188708334a8f6f83c3cfbfa9e45f01de0746d3a4
             $results = (new SELF())->statusData($response);
-            $response = (new SELF())->dataExtraction($results);
-            $sum = (new SELF())->summaer($response);
-            $res = (new SELF())->singleOrList($sum, $response);
+          //  dd($results);
+
+            $resp = (new SELF())->dataExtraction($results);
+            $sum = (new SELF())->summaer($resp);
+            $res = (new SELF())->singleOrList($sum, $resp);
       Log::info('Response status COMPLETED...');
          return $res;
      }
@@ -142,90 +154,44 @@ class Search extends Model
     {
       if($sum === 1)
       {
+<<<<<<< HEAD
       //   Log::info('Response Sum: '.$sum);
       //   $data = $response['results'][0];
+=======
+>>>>>>> 188708334a8f6f83c3cfbfa9e45f01de0746d3a4
           $data = $response;
-          (new SELF())->extractJson($data);
-        return;
+          if(is_array($data))
+          {
+            $results =  Arr::exists($data, 'results');
+            $id = $response['results'][0]['businessId'];
+            Log::info('extractDataJob'.' - '.$id);
+            $name = ('extractData'.'-'.$id);
+
+            if ($results == 'true'){
+
+                $JsonDataJob = ExtractJsonDataJob::dispatch($data);
+          /*    $batch = (new BatchProcessing())->createBatch($name);
+                $batch->add(new ExtractJsonDataJob($data));   */   /// failed, batch cannot get array!
+            return 1;
+            }
+          }
+        return 0;
 
       }else {
          Log::info('Response Sum: '.$sum);
          Log::info('step 30: List mode detected');
          Log::info('*********************************************');
          $data = $response['results'];
+
            (new SELF())->listSearch($data);
         //    Log::info(' List mode created and closed.');
          return;
       }
    }
-/*
-      else
-      { // list mode, more than one company
-         Log::info('step 30: List mode detected');
-          Log::info('*********************************************');
-         $this->lastRow = (new LastRow())->findLastRowId();
-         Log::info('Last Row id: '.$this->lastRow);
-         $r = (new SELF())->listSearch($response, $this->lastRow);
-         Log::info('****************************');
-         $last = (new TimeFrame())->rowId('Final');
-
-         if(!empty($last))
-         {
-            Log::info('Last Row: '.$last);
-            Log::info('****************************');
-
-             if($this->lastRow !== $last)
-             {
-               $last = (new LastRow())->GoNextRow($this->lastRow);
-             }
-               //Log::info('**************************');
-                //Log::info('last: '.$last);
-                 //Log::info('DONE');
-                 //Log::info('**************************');
-                 $batch = (new BatchProcessing())->createBatch('SearchList');
-                 $re =  (new TimeFrame())->retRow($last, $batch);
-                     //Log::info('**************************');
-                if($re == 'Done')
-                {
-                  Log::info('**************************');
-                  Log::info('* Next round * '.$last);
-                  Log::info('**************************');
-                }
-         }
-         return;
-       } */
-
-
-      /*
-      // Log::info('Last Row: '.$last);
-      // Log::info('****************************');
-      //
-      // if($this->lastRow !== $last)
-      // {
-      //   $last = (new LastRow())->GoNextRow($this->lastRow);
-      // }
-      //   Log::info('**************************');
-      //    Log::info('last: '.$last);
-      //     Log::info('DONE');
-      //     Log::info('**************************');
-      //     $batch = (new BatchProcessing())->createBatch('SearchList');
-      //     $re =  (new TimeFrame())->retRow($last, $batch);
-      //         Log::info('**************************');
-      //    if($re == 'Done')
-      //    {
-      //      Log::info('**************************');
-      //      Log::info('* Next round * '.$last);
-      //      Log::info('**************************');
-      //    }
-
-      */
-  //  }
-
-
-/*  Four API Call to Api Bridge. */
-/*  Extract incoming Json data   */
     public function extractJson($data)
     { // single data
+      //  liq status: 2593915-3
+
         //Log::info('step 32: Black sack extraction process: [STARTED]');
         $status = '';
         $message = '';
@@ -241,6 +207,9 @@ class Search extends Model
 
         if ($results == 'true'){
                if($liq){
+
+                 dump($data);
+
                   (new ProsBlackListed())->liquidations($data);
                } else {
                    $company['name'] = $data['name'];
@@ -438,8 +407,16 @@ class Search extends Model
 
            if (!empty($name))
              {
+<<<<<<< HEAD
                $batch = (new BatchProcessing())->createBatchJob($this->vatId);
           //     Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
+=======
+               $startTime = microtime(true);
+                $batch = (new BatchProcessing())->createBatchJob($this->vatId);
+               $seconds = number_format((microtime(true) - $startTime) * 1000, 2);  //WIP - check it! //
+          //     Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
+                Log::info('ApiBridgeJob completed at:  ' .$seconds . '  millseconds');
+>>>>>>> 188708334a8f6f83c3cfbfa9e45f01de0746d3a4
                 (new Searchlist())->saveList($this->vatId, $name, $regDate);
              }else {
                Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';

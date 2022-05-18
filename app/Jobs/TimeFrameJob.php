@@ -10,14 +10,15 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Bus\Batchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use App\Models\Searchlist;
 use App\Models\Search;
 use App\Models\TimeFrame;
 use App\Events\ExtractTimeFrameEvent;
 
-class TimeFrameJob implements ShouldQueue
+class TimeFrameJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels ;
 
     public $startRangeDate, $endRangeDate;
     public $timeout = 600;
