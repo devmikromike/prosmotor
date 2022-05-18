@@ -77,11 +77,7 @@ class Search extends Model
           $res =  (new SELF())->checkStatus($response);
         //  Log::info('TimeFrame search completed!');
             $search = new Search;
-<<<<<<< HEAD
-           event(new TimeFrameFinalEvent($search));
-=======
               event(new TimeFrameFinalEvent($search));
->>>>>>> 188708334a8f6f83c3cfbfa9e45f01de0746d3a4
       //     Log::info('Event TimeFrame Final Created! ');
         return 1;
       }
