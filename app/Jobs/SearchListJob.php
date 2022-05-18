@@ -48,5 +48,6 @@ class SearchListJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
     public function uniqueId()
     {
         return $this->rowId;
+        
     }
 }
