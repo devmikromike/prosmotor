@@ -117,10 +117,6 @@ class Search extends Model
      public function checkStatus($response)
      {
       // Log::info('Checking response status...');
-<<<<<<< HEAD
-=======
-
->>>>>>> 188708334a8f6f83c3cfbfa9e45f01de0746d3a4
             $results = (new SELF())->statusData($response);
           //  dd($results);
 
