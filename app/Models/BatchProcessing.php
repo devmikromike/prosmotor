@@ -71,8 +71,8 @@ class BatchProcessing extends Model
               //Log::info('Step 4: Add Job to Batch');
             $batch->add(new TimeFrameJob($from, $to));
 
-           Log::info('Step: 5 return batch info, First Batch Closed');
-          Log::info('*****************************************************');
+    //       Log::info('Step: 5 return batch info, First Batch Closed');
+    //      Log::info('*****************************************************');
             return $batch;
         }
     /*  create batch and job   */
@@ -81,8 +81,8 @@ class BatchProcessing extends Model
             //Log::info('Step 12: call ExtractTimeFrameEvent from BatchProcessing');
             $timeFrame = new TimeFrame;
                event(new ExtractTimeFrameEvent($timeFrame));
-             Log::info('Step: 22 return Event and Closed.');
-              Log::info('*****************************************************');
+      //       Log::info('Step: 22 return Event and Closed.');
+      //        Log::info('*****************************************************');
              return;
         }
 }

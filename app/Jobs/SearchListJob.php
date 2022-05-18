@@ -18,7 +18,7 @@ class SearchListJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-     public $timeout = 300;
+    public $timeout = 600;
     public $startDate, $endDate;
 
     public function __construct($startDate, $endDate)
