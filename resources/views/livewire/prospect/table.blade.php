@@ -40,7 +40,7 @@
                         @endif
                     </tbody>
                     @endforeach
-            @endif
+             @endif
           </table>
    </div>
   </div>
