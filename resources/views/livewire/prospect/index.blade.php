@@ -19,7 +19,7 @@
                    @endforeach
                  </select>
                </div>
-               
+
                @if(!empty($value))
                <div class=" flex flex-col ml-6 mr-4 flex-1 ">
                  <p class="mb-2">{{__('messages.field')}}</p>
@@ -37,5 +37,5 @@
              wire:click.prevent= "submit" >{{__('messages.listbutton')}}</button>
           </form>
          </div>
-      </div>
+      </div>    
 </div>

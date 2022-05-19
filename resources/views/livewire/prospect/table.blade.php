@@ -1,59 +1,48 @@
-
-<div class="flex flex-col">
-  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-        <table class="min-w-full divide-y divide-gray-200">
-          @if(!empty($prospect))
-            @foreach($prospect as $pros)
-            {{  dd($pros  );   }}
-              @if(!empty($pros))
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {{__('prospectlist.vatid')}}
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      {{__('prospectlist.name')}}
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {{__('prospectlist.city')}}
-                    </th>
-                  </tr>
+<div class="py-1">
+    <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-1 bg-white border-b border-gray-200">
+              <table class="min-w-full">
+                @if(!empty($prospect))
+                <thead class=" grid-rows-1 text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+                  <tr class="grid row-auto grid-cols-3 text-left" >
+                        <th   class="px-6 py-3  col-span-1 row-span-1">
+                            {{__('prospectlist.vatid')}}
+                        </th>
+                        <th   class="px-6 py-3 col-span-1 row-span-1">
+                            {{__('prospectlist.name')}}
+                        </th>
+                        <th   class="px-6 py-3  col-span-1 row-span-1" >
+                              {{__('prospectlist.city')}}
+                        </th>
+                    </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        {{-- dd($pros['prospects'][0]); --}}
-                      <div class="flex items-le">
-                      ID:   @if(!empty($pros['id'])) {{ $pros['id'] }} /
-                      {{ $pros['prospects'][0]['vatId']}}     @endif
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900">
-                        <a href="{{ route('pros.show',$pros['prospects'][0]['id'])}}">
-                              {{ $pros['prospects'][0]['name']}}
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="flex items-le">
-                        {{-- $pros['prospects'][0]->codeField($pros['id']) --}}
-                      </div>
-                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                       @if(!empty($pros['city']))
-                        {{  $pros['city']  }}
-                       @endif
-                      </span>
-
-                    </td>
-                  </tr>
-                  @endif
-            @endforeach
-          @endif
-        </tbody>
-      </table>
-    </div>
+                    @foreach($prospect as $pros)
+                      <tbody>
+                        @if(!empty($pros))
+                        <tr class="bg-white grid grid-cols-5 text-left border-b dark:bg-gray-800 dark:border-gray-700 border border-4">
+                            <td class="px-6 py-4 text-left col-span-1">
+                                ID:   @if(!empty($pros['id'])) {{ $pros['id'] }} /
+                                {{ $pros['prospects'][0]['vatId']}}     @endif
+                              </td>
+                              <td class="px-6 py-4 text-left border border-4 col-span-2">
+                                      {{ $pros['prospects'][0]['name']}}
+                              </td>
+                              <td class="flex justify-between px-3 py-4 text-left col-span-1">
+                                @if(!empty($pros['city']))
+                                 {{  $pros['city']  }}
+                                @endif
+                                <span class ="text-right">
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                </span>
+                              </td>
+                        </tr>
+                        @endif
+                    </tbody>
+                    @endforeach
+            @endif
+          </table>
+   </div>
   </div>
  </div>
 </div>
