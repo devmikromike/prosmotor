@@ -387,8 +387,7 @@ class Search extends Model
               //Log::info('Results:  '.$sum. ' in queue.');
               $counter++;
           }else {
-             //Log::info('Sleeping 5 min ....');
-             //Log::info('Results:  '.$sum.' Prospects arrived to Queue'.' of'.$counter);
+            
             $counter = 0;
              sleep(100);
             $this->counter = $counter;
