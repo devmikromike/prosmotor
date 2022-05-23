@@ -212,7 +212,7 @@ class Search extends Model
 
         if ($results == 'true'){
                if($liq){
-               
+
 
                   (new ProsBlackListed())->liquidations($data);
                } else {
@@ -416,7 +416,7 @@ class Search extends Model
                $startTime = microtime(true);
                 $batch = (new BatchProcessing())->createBatchJob($this->vatId);
                $seconds = number_format((microtime(true) - $startTime) * 1000, 2);  //WIP - check it! //
-          //     Log::info('step 33: Saving '.$this->vatId.' to locally: Searchlist-table');
+      
                 Log::info('ApiBridgeJob completed at:  ' .$seconds . '  millseconds');
 >>>>>>> 188708334a8f6f83c3cfbfa9e45f01de0746d3a4
                 (new Searchlist())->saveList($this->vatId, $name, $regDate);
@@ -424,7 +424,6 @@ class Search extends Model
                Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';
                $reason = 'No Company name on PRH Record for Vatid.';
                $errors = (new ProsBlackListed())->blacklisted($this->vatId, $reason);
-
              }
      } // End of ForEach
      Log::info('**************************');
