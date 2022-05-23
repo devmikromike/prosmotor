@@ -379,11 +379,6 @@ class Search extends Model
     // public function listSearch($response, $id)
    public function listSearch($data)
    {
-/*
-       $r = collect($response['results']);
-       $sum = (new SELF())->counter($r);
-       $counter = $this->counter; */
-
        $counter = $this->counter;
 
        foreach ($data as $key => $pros){
@@ -411,8 +406,7 @@ class Search extends Model
                $startTime = microtime(true);
                 $batch = (new BatchProcessing())->createBatchJob($this->vatId);
                $seconds = number_format((microtime(true) - $startTime) * 1000, 2);  //WIP - check it! //
-      
-                Log::info('ApiBridgeJob completed at:  ' .$seconds . '  millseconds');
+                  Log::info('ApiBridgeJob completed at:  ' .$seconds . '  millseconds');
                 (new Searchlist())->saveList($this->vatId, $name, $regDate);
              }else {
                Log::error('step 34: No Company name on PRH Record for Vatid. '.$this->vatId).' Company blacklisted!.';
