@@ -40,7 +40,7 @@ class Prospect extends Model
     public function codeField($id)
     {
       $codeModel = ProsBssLine::find('prospect_id', $id);
-    
+
     }
 /************
 *  Start Scopes
@@ -89,7 +89,7 @@ class Prospect extends Model
     }
    public function collectCompanyData($company,$uri)
    {
-    // Log::info('step 35: Black sack process: [Propect Created]');
+      Log::info('step 35: Black sack process: [Propect Created]'.$company['vatId']);
      $data = (new Prospect())->updateOrCreate($company);
 
      $id = $data->id;

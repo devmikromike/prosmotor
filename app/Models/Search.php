@@ -57,11 +57,16 @@ class Search extends Model
 
           if($results =  (new SELF())->checkStatus($response))
           {
-            return 1;
+             Log::info(' true; checkStatus for '.$vatId.' - '.$results);
+            return $results;
           }
+            
+             Log::info(' false; checkStatus for '.$vatId.'- '.$response);
           return $results;   /// Array ???
         }
-        return 0;
+        Log::info('false for response: '.$vatId.'- '.$response);
+
+        return $response;
     }
     public function perDates($from, $to)
     {
@@ -108,7 +113,6 @@ class Search extends Model
         }
       //  Log::info('*******************************************************');
         return 1;
-
     }
 
      public function checkStatus($response)
@@ -117,22 +121,34 @@ class Search extends Model
 
             $results = (new SELF())->statusData($response);
           //  dd($results);
-
+            $data = (new SELF())->dataResultExtraction($results);
+          if($data)
+          {
+        //    dump($data);
             $resp = (new SELF())->dataExtraction($results);
             $sum = (new SELF())->summaer($resp);
             $res = (new SELF())->singleOrList($sum, $resp);
-      Log::info('Response status COMPLETED...');
+              Log::info('Response status COMPLETED...');
          return $res;
+       }else
+       {
+         return $res ='';
+       }
+
      }
      public function dataExtraction($results)
      {
+
        $response = $results['Response']['Response'];
        return $response;
      }
      public function dataResultExtraction($results)
      {
-       $response = $results['Response'];
-       return $response;
+       if($response = $results['Response'])
+       {
+          return $response;
+       }
+       return $response = '';
      }
      public function summaer($response)
      {
@@ -157,6 +173,7 @@ class Search extends Model
             if ($results == 'true'){
 
                 $JsonDataJob = ExtractJsonDataJob::dispatch($data);
+
           /*    $batch = (new BatchProcessing())->createBatch($name);
                 $batch->add(new ExtractJsonDataJob($data));   */   /// failed, batch cannot get array!
             return 1;
@@ -179,7 +196,7 @@ class Search extends Model
     { // single data
       //  liq status: 2593915-3
 
-        //Log::info('step 32: Black sack extraction process: [STARTED]');
+    Log::info('step 32: Black sack extraction process: [STARTED] ');
         $status = '';
         $message = '';
         $vatId = '';
