@@ -27,7 +27,6 @@ class Index extends Component
     public $nameFI, $nameEN, $value;
     public $applocale;
 
-
     public function mount()
     {
       $this->citylist = new CityList();

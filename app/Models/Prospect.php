@@ -40,7 +40,7 @@ class Prospect extends Model
     public function codeField($id)
     {
       $codeModel = ProsBssLine::find('prospect_id', $id);
-      dd($codeModel);
+    
     }
 /************
 *  Start Scopes

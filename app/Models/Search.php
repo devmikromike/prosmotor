@@ -411,7 +411,7 @@ class Search extends Model
              }
      } // End of ForEach
      Log::info('**************************');
-       Log::info('list search process done: ');
+       Log::info('list search process done. ');
        Log::info('**************************');
      return 1;
    }
