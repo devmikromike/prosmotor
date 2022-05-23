@@ -61,9 +61,6 @@ class SearchByVatid extends Component
       {
           $this->emit('byVatId', $this->vatId);     // sent to show component
       }
-
-
-
      session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
     }
       public function render()
