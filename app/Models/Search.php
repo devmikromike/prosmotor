@@ -60,7 +60,7 @@ class Search extends Model
              Log::info(' true; checkStatus for '.$vatId.' - '.$results);
             return $results;
           }
-            
+
              Log::info(' false; checkStatus for '.$vatId.'- '.$response);
           return $results;   /// Array ???
         }
@@ -211,7 +211,7 @@ class Search extends Model
 
         if ($results == 'true'){
                if($liq){
-                 dump($data);
+               
 
                   (new ProsBlackListed())->liquidations($data);
                } else {
