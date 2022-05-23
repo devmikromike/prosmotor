@@ -41,13 +41,41 @@ class ProsBlackListed extends Model
     {
     //  dump('liquidations');
     //  dump($data);
-      $business['status'] = 'failed';
-      $details = $data['liquidations'][0];
-      $business['lastType'] = $liquidations[0]['type'];
-      $business['regDate'] = $liquidations[0]['registrationDate'];
-      $business['vatId'] = $data['businessId'];
-      $business['description'] = $liquidations[0]['description'];
-      $response = (new ProsBlackListed())->createStatus($business);
-      return;
+        $business['status'] = 'failed';
+        $liquidations = $data['liquidations'][0];
+        $business['lastType'] = $liquidations[0]['type'];
+        $business['regDate'] = $liquidations[0]['registrationDate'];
+        $business['vatId'] = $data['businessId'];
+        $business['description'] = $liquidations[0]['description'];
+        $response = (new ProsBlackListed())->createStatus($business);
+      return 1;
     }
+    public function find($vatId)
+    {
+         Log::info(' ProsBlackListed Process! '.$vatId);
+
+      if($model =  (new SELF())->where('vatId', $vatId )->first())
+        {
+          Log::info(' ProsBlackListed Process Response for!  '.$vatId);
+
+           if($model->status !='')
+           {
+              Log::info(' Process Response  Status for!  '.$model->status);
+                return 1;
+           }
+            Log::info(' Process Response  Status for!  '.$model->status);
+          return 0;
+        }
+
+      return 0;
+    }
+    public function checkLastType()
+    {
+      //
+    }
+    /*
+    public function checkStatus($vatId)
+    {
+      //
+    }   */
 }

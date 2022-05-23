@@ -29,18 +29,18 @@ class Index extends Component
 
     public function mount()
     {
-      $this->citylist = new CityList();
-      $this->prosBssLine = new ProsBssLine();
-      $this->proslist = new Prospect();
-      $value = session('applocale', 'en');
-      $this->value = $value;
+        $this->citylist = new CityList();
+        $this->prosBssLine = new ProsBssLine();
+        $this->proslist = new Prospect();
+        $value = session('applocale', 'en');
+        $this->value = $value;
     }
      protected function rules()
      {
-       $array = [
-         'citynames' => ['required',Rule::in($this->citynames)],
-      ];
-      return $array;
+         $array = [
+           'citynames' => ['required',Rule::in($this->citynames)],
+        ];
+        return $array;
      }
     public function updatingSubmit($sendproslist, $codes )
     {
@@ -48,18 +48,18 @@ class Index extends Component
        $sendcodelist = $codes;
        $sendcitylist = $this->citynames;
 
-       $this->emit('proslistCreated', $sendproslist);  // data ok.
-       $this->emit('codelistCreated', $sendcodelist);
-       $this->emit('citylistCreated', $sendcitylist);
+       $this->emit('proslistCreated', $sendproslist);  // sent data to searchlist component
+       $this->emit('codelistCreated', $sendcodelist);  // sent data to searchlist component
+       $this->emit('citylistCreated', $sendcitylist);  // sent data to searchlist component
     }
     public function submit()
     {
-     session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
-      $sendproslist =  (new CityList())->prosCityList($this->citynames);
-      $codes = (new ProsBssLine())->codeList($this->codeIds);
+       session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
+        $sendproslist =  (new CityList())->prosCityList($this->citynames);
+        $codes = (new ProsBssLine())->codeList($this->codeIds);
 
-      $this->updatingSubmit($sendproslist, $codes);
-      session()->flash('message', '');
+        $this->updatingSubmit($sendproslist, $codes);
+        session()->flash('message', '');
     }
     public function render()
     {

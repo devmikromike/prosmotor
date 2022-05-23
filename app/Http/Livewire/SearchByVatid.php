@@ -5,16 +5,18 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Http\Livewire\Prospect\Show;
 use App\Models\Search;
+use App\Models\ProsByVatId;
 use Illuminate\Support\Facades\Http;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class SearchByVatid extends Component
 { // Search Form ///
 
-    public  $search;   // Search Model
+    public Search $search;   // Search Model
     public $placeholder;
     protected $collection;
     public $vatId;
@@ -41,7 +43,7 @@ class SearchByVatid extends Component
     }
     public function mount()
     {
-       $this->search = new Search();
+      //  $this->search = new Search(); // Move to UP
     }
 
       public function submit( )
@@ -50,8 +52,17 @@ class SearchByVatid extends Component
         //  dump($this->vatId);
 
       $this->validate();
-      (new Search())->perVatID($this->vatId);
-      $this->emit('byVatId', $this->vatId);
+        // (new Search())->perVatID($this->vatId);
+           Log::info(' Send Vat id to Process! '.$this->vatId);
+        $response = (new ProsByVatId())->search($this->vatId);
+          Log::info(' Response from Process! '.$response);
+
+        if(!Empty($response))    // Model not empty!?
+      {
+          $this->emit('byVatId', $this->vatId);     // sent to show component
+      }
+
+
 
      session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
     }
