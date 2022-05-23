@@ -64,7 +64,6 @@ class Prospect extends Model
     /************
     *  End Scopes
     */
-
     public function saveBssProspect($propectId, $bssModel)
     {
       $pros_bss_line_id = $bssModel;
@@ -75,7 +74,6 @@ class Prospect extends Model
       // $isok = $location->prospects()->attach($propectId);
     //    dd($isok);
     }
-
 
     public function bsslineCodes($codes)
     {
