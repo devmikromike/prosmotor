@@ -36,7 +36,7 @@ class Search extends Model
     public $statusMsg, $resCode;
     public $batchName;
     public $vatId;
-    public $counter = 0;
+    public $counter = 1;
     public $lastRowId;
     public $lastRow;
 /*  Four API Call to Api Bridge. */
@@ -52,12 +52,11 @@ class Search extends Model
                        return $results;
                      }
 
-                        Log::info(' false; checkStatus for '.$name.'- '.$response);
-                     return $results;   /// Array ???
+                        Log::info(' false; checkStatus for '.$name.' - '.$response->json());
+                     return $response->json();   /// Array or Object (JSON)
                    }
-                   Log::info('false for response: '.$name.'- '.$response);
-
-                   return $response;
+                   Log::error('false for response: '.$name);
+                return $name;
    }
     public function perVatID($vatId)
     {
@@ -401,7 +400,7 @@ class Search extends Model
               $counter++;
           }else {
 
-            $counter = 0;
+            $counter = 1;
              sleep(100);
             $this->counter = $counter;
             Log::info('Counter Reseted: '.$this->counter);

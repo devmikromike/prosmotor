@@ -10,6 +10,7 @@ use App\Models\ProsBlackListed;
 use App\Models\CityList;
 use App\Models\Prospect;
 use App\Models\ProsBssLine;
+use App\Models\PostCodeList;
 
 class Location extends Model
 {
@@ -107,6 +108,8 @@ class Location extends Model
         $address['endDate'] = $loc['endDate'];
         $street = $address['street'];
         $addss =  (new SELF())->saveLocation($address, $propectId);
+          $cityModel = (new CityList())->saveCity($loc['city']);
+           (new PostCodeList())->createPostalCode(($loc['postCode']),$cityModel->id);
         return   $addss;
 
     }
@@ -121,8 +124,6 @@ class Location extends Model
     }
     public function saveLocation($address, $propectId)
     {
-      $city = $address['city'];
-      (new CityList())->saveCity($city);
       $addss = (new SELF())->updateOrCreate($address);
      return $addss;
     }
