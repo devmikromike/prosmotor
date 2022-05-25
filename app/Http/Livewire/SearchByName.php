@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Search;
+use App\Models\ProsByName;
 use Illuminate\Support\Facades\Http;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 
@@ -35,7 +36,8 @@ class SearchByName extends Component
   public function submit( )
  {
     $this->validate();
-    $this->response  =  (new Search())->perName($this->name);     
+    // $this->response  =  (new Search())->perName($this->name);
+    $this->response  =  (new ProsByName())->search($this->name);
  }
   public function render()
   {

@@ -153,13 +153,18 @@ class Prospect extends Model
         return $name;
       }
    }
-   public function getName($vatId)
+   public function getName($name)
    {
-      $pros =  (new SELF())->where('vatId', $vatId )->first();
-      if(!empty($pros['name'])){
-        $name = $pros['name'];
-        return $name;
-      }
+      $names = array();
+      $prospects =  (new SELF())->where('name', $name )->get();
+
+      $sum = (new Search())->counter($prospects);
+
+        foreach ($prospects as $pros)
+        {
+            $names[] = $pros['name'];
+        }
+          return $names;
    }
    public function saveWww($www_value,$vatId)
    {

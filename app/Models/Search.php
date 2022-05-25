@@ -36,22 +36,34 @@ class Search extends Model
     public $statusMsg, $resCode;
     public $batchName;
     public $vatId;
-    public $counter = 0;
+    public $counter = 1;
     public $lastRowId;
     public $lastRow;
 /*  Four API Call to Api Bridge. */
     public function perName($name)
     {
+        Log::info(' 33: Send request to API Bridge per Vatid: '.$name);
         if($response = Http::get('http://api.mikromike.fi/api/SearchByName/'.$name)){
-          $results = (new SELF())->statusData($response);
-        }
+           Log::info(' 34: get response from API Bridge'.$name);
+
+                     if($results =  (new SELF())->checkStatus($response))
+                     {
+                        Log::info(' true; checkStatus for '.$name.' - '.$results);
+                       return $results;
+                     }
+
+                        Log::info(' false; checkStatus for '.$name.' - '.$response->json());
+                     return $response->json();   /// Array or Object (JSON)
+                   }
+                   Log::error('false for response: '.$name);
+                return $name;
    }
     public function perVatID($vatId)
     {
         Log::info(' 33: Send request to API Bridge per Vatid: '.$vatId);
       // if($response = Http::get('http://ProsCore-api.test/SearchVatID/'.$vatId)){
          if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
-             Log::info(' 34: get response from API Bridge'.$vatId);
+             Log::info(' 34: get response from API Bridge: '.$vatId);
 
     //      $results = (new SELF())->statusData($response);
 
@@ -117,9 +129,11 @@ class Search extends Model
 
      public function checkStatus($response)
      {
-      // Log::info('Checking response status...');
+
+        Log::info('Checking response status...');
+ 
             $results = (new SELF())->statusData($response);
-          //  dd($results);
+
             $data = (new SELF())->dataResultExtraction($results);
           if($data)
           {
@@ -388,8 +402,8 @@ class Search extends Model
               //Log::info('Results:  '.$sum. ' in queue.');
               $counter++;
           }else {
-            
-            $counter = 0;
+
+            $counter = 1;
              sleep(100);
             $this->counter = $counter;
             Log::info('Counter Reseted: '.$this->counter);
@@ -402,7 +416,7 @@ class Search extends Model
          Log::info('step 31: Handeling VatId: '.$this->vatId.' with is number: '.$counter );
 
            if (!empty($name))
-             { 
+             {
                $startTime = microtime(true);
                 $batch = (new BatchProcessing())->createBatchJob($this->vatId);
                $seconds = number_format((microtime(true) - $startTime) * 1000, 2);  //WIP - check it! //

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSearchTemplatesTable extends Migration
+class CreatePostCodeListsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateSearchTemplatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('search_templates', function (Blueprint $table) {
+        Schema::create('post_code_lists', function (Blueprint $table) {
             $table->id();
-            
+            $table->integer('city_id');
+            $table->string('postalCode');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateSearchTemplatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('search_templates');
+        Schema::dropIfExists('post_code_lists');
     }
 }
