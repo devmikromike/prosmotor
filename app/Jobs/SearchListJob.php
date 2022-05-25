@@ -19,11 +19,8 @@ class SearchListJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-<<<<<<< HEAD
-    public $timeout = 600;
-=======
+
     public $timeout = 3600;
->>>>>>> 188708334a8f6f83c3cfbfa9e45f01de0746d3a4
     public $startDate, $endDate;
     public $rowId;
     public $uniqueFor = 3600;
@@ -47,6 +44,6 @@ class SearchListJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
     }
     public function uniqueId()
     {
-        return $this->rowId;           
+        return $this->rowId;
     }
 }
