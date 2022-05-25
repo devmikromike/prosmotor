@@ -19,3 +19,4 @@ composer.json-old
 /info
 /.ssh
 /backup
+/public/upload
