@@ -31,7 +31,7 @@ class Index extends Component
     {
         $this->citylist = new CityList();
         $this->prosBssLine = new ProsBssLine();
-      //  $this->proslist = new Prospect();
+      //  $this->proslist = new Prospect(); // Not needed
         $value = session('applocale', 'en');
         $this->value = $value;
     }
@@ -65,17 +65,17 @@ class Index extends Component
     {
       $citylists = CityList::CityAll()->toArray();
       $codelists = ProsBssLine::CodeAll()->toArray();
-  //    $proslists = Prospect::with('locations')->ProsAll()->toArray();
+  //    $proslists = Prospect::with('locations')->ProsAll()->toArray();  // Not needed
 
       $this->citylists = $citylists;
       $this->codelists = $codelists;
-  //    $this->proslists = $proslists;
+  //    $this->proslists = $proslists;  // Not needed
       $value = $this->value;
 
       return view('livewire.prospect.index',
         ['citylists' => $citylists,
          'codelists' => $codelists,
-    //     'proslists' => $proslists,
+    //     'proslists' => $proslists,  // Not needed
          'applocale' => $this->value
        ]);
     }
