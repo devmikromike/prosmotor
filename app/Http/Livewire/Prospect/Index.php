@@ -12,6 +12,7 @@ use App\Models\CityList;
 use App\Models\ProsBssLine;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class Index extends Component
 {
@@ -54,9 +55,12 @@ class Index extends Component
     }
     public function submit()
     {
-       session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
+        session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
         $sendproslist =  (new CityList())->prosCityList($this->citynames);
+            Log::info('Response from Process! '.$sendproslist);
+
         $codes = (new ProsBssLine())->codeList($this->codeIds);
+            Log::info('Response from Process! '.$codes);
 
         $this->updatingSubmit($sendproslist, $codes);
         session()->flash('message', '');
