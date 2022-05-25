@@ -129,15 +129,15 @@ class Search extends Model
 
      public function checkStatus($response)
      {
+ 
 
         Log::info('Checking response status...');
- 
-            $results = (new SELF())->statusData($response);
 
+
+            $results = (new SELF())->statusData($response);
             $data = (new SELF())->dataResultExtraction($results);
           if($data)
           {
-        //    dump($data);
             $resp = (new SELF())->dataExtraction($results);
             $sum = (new SELF())->summaer($resp);
             $res = (new SELF())->singleOrList($sum, $resp);
@@ -147,7 +147,6 @@ class Search extends Model
        {
          return $res ='';
        }
-
      }
      public function dataExtraction($results)
      {
