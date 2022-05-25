@@ -13,6 +13,7 @@ use App\Models\ProsBssLine;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use File;
 
 class Index extends Component
 {
@@ -57,10 +58,24 @@ class Index extends Component
     {
         session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
         $sendproslist =  (new CityList())->prosCityList($this->citynames);
-            Log::info('Response from Process! '.$sendproslist);
+        //  dump($sendproslist['citylist']);
+          //  Log::info('Response from Process! '.$sendproslist);
+          $codes = (new ProsBssLine())->codeList($this->codeIds);
+          /* */
+          $data['templateName'] = 'Default';
+          $data['citylist'] = $sendproslist['citylist'];
+          $file['token'] = time();
+          $data['codelist'] = $codes;
 
-        $codes = (new ProsBssLine())->codeList($this->codeIds);
-            Log::info('Response from Process! '.$codes);
+          $test['data'] = json_encode($data);
+          $fileName = $file['token']. '_datafile.json';
+           File::put(public_path('/upload/'.$fileName),$test);
+
+    //      dump($test['data']);
+          /* */
+      //  $codes = (new ProsBssLine())->codeList($this->codeIds);
+          //  Log::info('Response from Process! '.$codes);
+        //  dump($codes);
 
         $this->updatingSubmit($sendproslist, $codes);
         session()->flash('message', '');

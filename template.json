@@ -1,0 +1,18 @@
+{
+ "templateName": "Default",
+ "cities" : [
+		"HÄMEENKYRÖ ",
+		"HÄMEENLINNA ",
+		"HAMINA "
+	],
+ "businessCodes": [
+		{
+			"nameFI": "Asuntojen vuokraus",
+			"code": "68201"
+		},
+		{
+			"nameFI": "Atk-laitteisto- ja ohjelmistokonsultointi",
+			"code": "62020"
+		}	
+	]
+}
