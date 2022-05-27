@@ -15,7 +15,7 @@ class CreateSearchTemplatesTable extends Migration
     {
         Schema::create('search_templates', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('fileName')->default(0);
             $table->timestamps();
         });
     }

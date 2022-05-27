@@ -10,6 +10,7 @@ use App\Http\Livewire\Prospect\Searchlist;
 use App\Models\Prospect;
 use App\Models\CityList;
 use App\Models\ProsBssLine;
+use App\Models\searchTemplate;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -28,6 +29,7 @@ class Index extends Component
     public $city;
     public $nameFI, $nameEN, $value;
     public $applocale;
+    public $fileName, $fileId;
 
     public function mount()
     {
@@ -54,6 +56,38 @@ class Index extends Component
        $this->emit('codelistCreated', $sendcodelist);  // sent data to searchlist component
        $this->emit('citylistCreated', $sendcitylist);  // sent data to searchlist component
     }
+    public function saveJsonData($sendproslist, $codes, $fileName = false)
+    {
+
+        if ($fileName)
+        {
+           $data['templateName'] = ($fileName);
+           $fileName = $fileName. '_datafile.json';
+
+        }else{
+          $file['token'] = time();
+          $fileName = $file['token']. '_datafile.json';
+          $data['templateName'] = ('Default_'.$file['token']);
+        }
+
+        $file['token'] = time();
+        $data['citylist'] = $sendproslist['citylist'];
+        $data['codelist'] = $codes;
+    //    $data['templateName'] = ('Default_'.$file['token']);
+        $dataArray['data'] = json_encode($data);
+    //    $fileName = $file['token']. '_datafile.json';
+         File::put(public_path('/upload/'.$fileName),$dataArray);  // Check public folder, security!
+       return $fileName;
+    }
+
+    public function saveTemplate( )
+    {
+      $modelSave = searchTemplate::updateOrCreate([
+          'fileName' => $this->fileName
+      ]);
+
+      $this->fileId = $modelSave->id;
+    }
     public function submit()
     {
         session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
@@ -62,23 +96,32 @@ class Index extends Component
           //  Log::info('Response from Process! '.$sendproslist);
           $codes = (new ProsBssLine())->codeList($this->codeIds);
           /* */
-          $data['templateName'] = 'Default';
-          $data['citylist'] = $sendproslist['citylist'];
-          $file['token'] = time();
-          $data['codelist'] = $codes;
-
-          $test['data'] = json_encode($data);
-          $fileName = $file['token']. '_datafile.json';
-           File::put(public_path('/upload/'.$fileName),$test);
+          // $data['templateName'] = 'Default';
+          // $data['citylist'] = $sendproslist['citylist'];
+          // $file['token'] = time();
+          // $data['codelist'] = $codes;
+          //
+          // $test['data'] = json_encode($data);
+          // $fileName = $file['token']. '_datafile.json';
+          //  File::put(public_path('/upload/'.$fileName),$test);
 
     //      dump($test['data']);
           /* */
       //  $codes = (new ProsBssLine())->codeList($this->codeIds);
           //  Log::info('Response from Process! '.$codes);
         //  dump($codes);
+        if ($this->fileName)
+        {
+           $this->saveJsonData($sendproslist, $codes, $this->fileName);
+           $this->updatingSubmit($sendproslist, $codes);
+          session()->flash('message', 'Search saved.');
 
-        $this->updatingSubmit($sendproslist, $codes);
-        session()->flash('message', '');
+        }else {
+          $fileName = $this->saveJsonData($sendproslist, $codes);
+          $this->updatingSubmit($sendproslist, $codes);
+          session()->flash('message', 'Search saved by default template.');
+        }
+
     }
     public function render()
     {

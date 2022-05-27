@@ -33,9 +33,19 @@
                </div>
                @endif
              </div>
-             <button class="mt-4 mb-4 ml-6 p-2 rounded-md border border-2 border-blue-300 bg-gray-300 hover:bg-blue-100"
-             wire:click.prevent= "submit" >{{__('messages.listbutton')}}</button>
+             <div class="flex justify-start">
+               <div class=" ">
+                 <button class="mt-4 mb-4 ml-6 p-2 rounded-md border border-2 border-blue-300 bg-gray-300 hover:bg-blue-100"
+                 wire:click.prevent= "submit" >{{__('messages.listbutton')}}</button>
+               </div>
+               <div class=" ">
+                 <input id="searchTemplate" wire:model ="fileName" class=" mt-4 mb-4 ml-6 p-2 rounded-md" type="searchTemplate"
+                                             name="fileName"
+                                             placeholder=" Save Search Template " />
+               </div>
+             </div>
+
           </form>
          </div>
-      </div>    
+      </div>
 </div>

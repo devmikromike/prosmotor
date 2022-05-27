@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title' => 'You search companies from local database by using filters.',
+    'title' => 'You can search companies from local database by using filters.',
     'subtitle' => 'Prospect list',
     'city' => 'City list: ',
     'field' => 'Business field list.',
@@ -10,6 +10,7 @@ return [
     'subheader'  => 'You can search only limited companies at this moment (OY / LTD).',
     'listheader'  => 'Prospect list',
     'listbutton'  => 'Get prospect list',
+    'templatebutton'  => 'Save search template',
     'propectNotFound' => 'Prospect not found fron Register',
     'searchbutton'  => 'search',
     'placeholder.vatid'  => 'Search by Vat 1234567-8.',

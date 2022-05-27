@@ -10,6 +10,7 @@ return [
     'subheader'  => 'Tällä hetkellä voit hakea ainostaan Osakeyhtiöiden tietoja (OY).',
     'listheader'  => 'Potentiaalisten asiakkaiden lista',
     'listbutton'  => 'Hae listalta.',
+    'templatebutton'  => 'Tallenna haku tiedot',
     'propectNotFound' => 'Yritys ei ole enään rekisterissä!',
     'searchbutton'  => 'Hae',
     'placeholder.vatid' => 'Y-tunnuksella 1234567-8.',
