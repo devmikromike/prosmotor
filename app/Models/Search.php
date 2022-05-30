@@ -123,16 +123,12 @@ class Search extends Model
             return 1;
           }
         }
-      //  Log::info('*******************************************************');
         return 1;
     }
 
      public function checkStatus($response)
      {
- 
-
         Log::info('Checking response status...');
-
 
             $results = (new SELF())->statusData($response);
             $data = (new SELF())->dataResultExtraction($results);
@@ -185,7 +181,6 @@ class Search extends Model
             $name = ('extractData'.'-'.$id);
 
             if ($results == 'true'){
-
                 $JsonDataJob = ExtractJsonDataJob::dispatch($data);
 
           /*    $batch = (new BatchProcessing())->createBatch($name);
@@ -208,7 +203,7 @@ class Search extends Model
    }
     public function extractJson($data)
     { // single data
-      //  liq status: 2593915-3
+        //  liq status: 2593915-3
 
     Log::info('step 32: Black sack extraction process: [STARTED] ');
         $status = '';
@@ -216,18 +211,25 @@ class Search extends Model
         $vatId = '';
         $businessLines = array();
         $results =  Arr::exists($data, 'results');
-        $liq =  Arr::exists($data, 'liquidations');
-        $aux =  Arr::exists($data, 'auxiliaryNames');
-        $changes =  Arr::exists($data, 'businessIdChanges');
-        $registers =  Arr::exists($data, 'registeredEntries');
+          // $data = $data['results'][0];
+          //   $liq =  Arr::exists($data, 'liquidations');
+          //   $aux =  Arr::exists($data, 'auxiliaryNames');
+          //   $changes =  Arr::exists($data, 'businessIdChanges');
+          //   $registers =  Arr::exists($data, 'registeredEntries');
 
-        $data = $data['results'][0];
+      //  $data = $data['results'][0];
 
         if ($results == 'true'){
+          $data = $data['results'][0];
+            $liq =  Arr::exists($data, 'liquidations');
+            $aux =  Arr::exists($data, 'auxiliaryNames');
+            $changes =  Arr::exists($data, 'businessIdChanges');
+            $registers =  Arr::exists($data, 'registeredEntries');
+          Log::info('Extract: [STARTED] ');
                if($liq){
-
-
+                 Log::info('BlackList: [STARTED] ');
                   (new ProsBlackListed())->liquidations($data);
+                  return 1;
                } else {
                    $company['name'] = $data['name'];
                    $company['vatId'] = $data['businessId'];
@@ -236,16 +238,14 @@ class Search extends Model
 
                    if (empty($uri)){
                      $uri === 'not availble';
-                   }else {
-
-                 }
-        if ($registers == 'true'){
-               $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges);
-             }else {
-               //Log::info('step 33: Black sack extraction process: [CompanyName Check]');
-               $businessChanges = null;
-               $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges );
-             }
+                   }else {}
+          if ($registers == 'true'){
+                 $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges);
+               }else {
+                 //Log::info('step 33: Black sack extraction process: [CompanyName Check]');
+                 $businessChanges = null;
+                 $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges );
+               }
                foreach ($prosModel as $pros)
                {
                   $results =  Arr::exists($pros, 'prospect');
@@ -316,7 +316,7 @@ class Search extends Model
         $resCode = $response->json('Status');
 
         if($resCode === 200){
-          //Log::info('step 29:  response status: [OK]');
+        //  Log::info('step 29:  response status: [OK]');
 
           return $results = array(
             'Status' => $resCode,

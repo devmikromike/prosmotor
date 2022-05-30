@@ -87,8 +87,9 @@ class Prospect extends Model
     }
    public function collectCompanyData($company,$uri)
    {
-      Log::info('step 35: Black sack process: [Propect Created]'.$company['vatId']);
+   
      $data = (new Prospect())->updateOrCreate($company);
+     Log::info('step 35: Black sack process: [Propect Created]'.$company['vatId']);
 
      $id = $data->id;
       if (empty($uri)){

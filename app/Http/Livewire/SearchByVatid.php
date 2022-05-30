@@ -55,7 +55,7 @@ class SearchByVatid extends Component
         // (new Search())->perVatID($this->vatId);
            Log::info(' Send Vat id to Process! '.$this->vatId);
         $response = (new ProsByVatId())->search($this->vatId);
-          Log::info(' Response from Process! '.$response);
+          Log::info(' Response from Process SearchByVatid-Component =  '.$response);
 
         if(!Empty($response))    // Model not empty!?
       {

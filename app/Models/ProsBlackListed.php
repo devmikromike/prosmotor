@@ -43,11 +43,12 @@ class ProsBlackListed extends Model
     //  dump($data);
         $business['status'] = 'failed';
         $liquidations = $data['liquidations'][0];
-        $business['lastType'] = $liquidations[0]['type'];
-        $business['regDate'] = $liquidations[0]['registrationDate'];
+        $business['lastType'] = $liquidations['type'];
+        $business['regDate'] = $liquidations['registrationDate'];
         $business['vatId'] = $data['businessId'];
-        $business['description'] = $liquidations[0]['description'];
+        $business['description'] = $liquidations['description'];
         $response = (new ProsBlackListed())->createStatus($business);
+         Log::info('BlackList: [COMPLETED] '.$data['businessId']);  
       return 1;
     }
     public function find($vatId)
