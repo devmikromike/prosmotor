@@ -13,28 +13,18 @@ use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Support\Facades\Log;
 use App\Models\Search;
 
-
 class ApiBridgeJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $vatId;
     public $timeout = 3600;
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
+
     public function __construct($vatId)
     {
       $this->vatId = $vatId;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
       $startTime = microtime(true);

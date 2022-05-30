@@ -25,7 +25,6 @@ use Illuminate\Bus\Batch;
 use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
-
 use Throwable;
 
 class Search extends Model
@@ -89,7 +88,6 @@ class Search extends Model
           $res =  (new SELF())->checkStatus($response);
             $search = new Search;
               event(new TimeFrameFinalEvent($search));
-
         return 1;
       }
       return 0;
@@ -212,22 +210,24 @@ class Search extends Model
         $businessLines = array();
         $results =  Arr::exists($data, 'results');
           // $data = $data['results'][0];
-          //   $liq =  Arr::exists($data, 'liquidations');
+        $liq =  Arr::exists($data, 'liquidations');
           //   $aux =  Arr::exists($data, 'auxiliaryNames');
-          //   $changes =  Arr::exists($data, 'businessIdChanges');
-          //   $registers =  Arr::exists($data, 'registeredEntries');
+      //     $changes =  Arr::exists($data, 'businessIdChanges');
+      //     $registers =  Arr::exists($data, 'registeredEntries');
 
       //  $data = $data['results'][0];
 
         if ($results == 'true'){
+
           $data = $data['results'][0];
-            $liq =  Arr::exists($data, 'liquidations');
+
+      //      $liq =  Arr::exists($data, 'liquidations');
             $aux =  Arr::exists($data, 'auxiliaryNames');
             $changes =  Arr::exists($data, 'businessIdChanges');
             $registers =  Arr::exists($data, 'registeredEntries');
-          Log::info('Extract: [STARTED] ');
                if($liq){
-                 Log::info('BlackList: [STARTED] ');
+                 dd($liq);
+                 Log::error('BlackList: [STARTED] '.$data['businessId']);
                   (new ProsBlackListed())->liquidations($data);
                   return 1;
                } else {
@@ -235,17 +235,24 @@ class Search extends Model
                    $company['vatId'] = $data['businessId'];
                    $uri = $data['detailsUri'];
                    $company['registrationDate'] = $data['registrationDate'];
-
+                     Log::info('Extract: [STARTED] '.$data['businessId']);
                    if (empty($uri)){
                      $uri === 'not availble';
                    }else {}
           if ($registers == 'true'){
+              if($changes)
+              {
+                $businessChanges = $data['businessIdChanges'];
                  $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges);
+              }
+
                }else {
                  //Log::info('step 33: Black sack extraction process: [CompanyName Check]');
                  $businessChanges = null;
+                  Log::info('Extract businessChanges: [STARTED] '.$data['businessId']);
                  $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges );
                }
+
                foreach ($prosModel as $pros)
                {
                   $results =  Arr::exists($pros, 'prospect');
@@ -298,7 +305,9 @@ class Search extends Model
                        //Log::info('step 37: Black sack process: [Extract Contacts]');
                        (new Contact())->extractContact($contacts, $vatId );
                     }
+                     Log::info('Extract: [COMPLETED] '.$data['businessId']);
                  };    /// end of Else
+                 Log::info('[DONE] '.$data['businessId']);
               return 'true';
         } // end of results
     return 'false';
@@ -401,7 +410,6 @@ class Search extends Model
               //Log::info('Results:  '.$sum. ' in queue.');
               $counter++;
           }else {
-
             $counter = 1;
              sleep(100);
             $this->counter = $counter;
