@@ -27,7 +27,7 @@ class ExtractTimeFrameEvent
     }
     public function eventRowId($status)
     {
-      //  Log::notice('Event is sending status to TimeFrame-Model: '.$status);
+        Log::notice('Event is sending status to TimeFrame-Model: '.$status);
       //  Log::notice('****************************************************');
          $row = (new TimeFrame())->rowId($status);
          Log::info('Step 21 return ExtractTimeFrameEvent Closed: '.$status);

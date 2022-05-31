@@ -37,7 +37,7 @@ class BatchProcessing extends Model
             $batch = Bus::batch([])
             ->name($name)
             ->dispatch();
-              //Log::info('Created new Batch: '.$batch->name);
+              Log::info('Created new Batch: '.$batch->name);
              return $batch;
         }
         public function createBatchJobByVatID($vatId)
@@ -47,6 +47,7 @@ class BatchProcessing extends Model
         public function createBatchJobBySearchList($name, $status)
         {
             $batch = (new SELF())->createBatch($name);
+            Log::info('create BatchJob By SearchList');
             $batch->add(new GetNewRowIdJob($status));
              return $batch;
         }
@@ -81,7 +82,7 @@ class BatchProcessing extends Model
             //Log::info('Step 12: call ExtractTimeFrameEvent from BatchProcessing');
             $timeFrame = new TimeFrame;
                event(new ExtractTimeFrameEvent($timeFrame));
-      //       Log::info('Step: 22 return Event and Closed.');
+            Log::info('Step: 22 return Event and Closed.');
       //        Log::info('*****************************************************');
              return;
         }
