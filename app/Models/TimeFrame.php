@@ -101,8 +101,11 @@ class TimeFrame extends Model
            {
              sleep(120);
            }
+           $startTime = microtime(true);
            Log::notice(' reading RowId  and creating new batch:  '.$id.' ...'.$this->startDate.' : '.$this->endDate);
-            $batch->add(new SearchListJob($this->startDate, $this->endDate, $id));  // Send TimeFrame for API
+           Log::info('ApiBridgeJob Started at:  ' .$startTime );
+           /* Calling SearchList Job */
+            $batch->add(new SearchListJob($this->startDate, $this->endDate, $id, $startTime));  // Send TimeFrame for API
              Log::info(' **** add  new SearchListJob  **** '.$this->status);
             $this->status = "Search in process";
               (new LastRow())->createLastRowId($id);
