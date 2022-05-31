@@ -22,7 +22,7 @@ class BatchProcessing extends Model
     public function createBatchJob($vatId)
     {
         $batch = Bus::batch([])
-        ->name('ApiBridgeJob')
+        ->name('ApiBridgeJob-'.$vatId)
        ->dispatch();
 
         //Log::info('step 17: Created new Batch: '.$batch->name);
