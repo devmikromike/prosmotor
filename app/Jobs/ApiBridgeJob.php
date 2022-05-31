@@ -32,7 +32,7 @@ class ApiBridgeJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
       Log::info(' Sending '.$this->vatId.' to API Bridge');
         sleep(20);
         (new Search())->perVatID($this->vatId);
-          Log::info('ApiBridge JOB closed:!  '.$this->vatId.' in'.$seconds . ' millseconds');
+          Log::info('ApiBridge JOB closed:!  '.$this->vatId.' in '.$seconds . ' millseconds');
       return;
     }
 }

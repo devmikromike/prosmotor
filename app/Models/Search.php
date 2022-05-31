@@ -85,9 +85,9 @@ class Search extends Model
           if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
         Log::info('step 28: get response from API Bridge'.$from.' : '.$to);
 
-          $res =  (new SELF())->checkStatus($response);
-            $search = new Search;
-              event(new TimeFrameFinalEvent($search));
+          $res =  (new SELF())->resPerDates($response);
+               // $search = new Search;
+              // event(new TimeFrameFinalEvent($search));
         return 1;
       }
       return 0;
@@ -99,6 +99,15 @@ class Search extends Model
           $results = (new SELF())->statusData($response);
       }
     }
+    public function resPerDates($response)
+    {
+        $res =  (new SELF())->checkStatus($response);
+        $search = new Search;
+          event(new TimeFrameFinalEvent($search));
+      return 1;
+    }
+
+
     public function nextRow()
     {
         $rowId = (new LastRow())->findLastRowId();

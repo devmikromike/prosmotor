@@ -23,7 +23,7 @@ class SearchListJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
     public $timeout = 3600;
     public $startDate, $endDate;
     public $rowId;
-    public $uniqueFor = 3600;
+    public $uniqueFor = 3900;
 
     public function __construct($startDate, $endDate, $rowId)
     {
@@ -36,7 +36,7 @@ class SearchListJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
       $startTime = microtime(true);
       $seconds = number_format((microtime(true) - $startTime) * 1000, 2);  //WIP - check it! //
       Log::info('SearchList JOB->  Pass start and end date data to API Bridge '.$this->startDate.' + '.$this->endDate);
-        (new Search())->perDates($this->startDate, $this->endDate);  //API
+      $res = (new Search())->perDates($this->startDate, $this->endDate);  //API
         Log::info('SearchList JOB reply and closed! ');
         Log::info('ApiBridgeJob completed at:  ' .$seconds . '  millseconds');
       Log::info('**************************************************');

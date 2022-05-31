@@ -21,7 +21,7 @@ class TimeFrameJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels ;
 
     public $startRangeDate, $endRangeDate;
-    public $timeout = 600;
+    public $timeout = 6000;
 
     public function __construct($from, $to)
     {
