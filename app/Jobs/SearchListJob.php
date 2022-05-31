@@ -36,7 +36,7 @@ class SearchListJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
     public function handle()
     {
 
-      $seconds = number_format((microtime(true) - $startTime) * 1000, 2);  //WIP - check it! //
+      $seconds = number_format((microtime(true) - $this->startTime) * 1000, 2);  //WIP - check it! //
       Log::info('Created SearchList JOB->  Pass start and end date data to API Bridge '.$this->startDate.' + '.$this->endDate);
       $res = (new Search())->perDates($this->startDate, $this->endDate);  //API
         Log::info('SearchList JOB reply and closed! ');
