@@ -111,7 +111,7 @@ class TimeFrame extends Model
               (new LastRow())->createLastRowId($id);
             (new SELF())->saveStatus($id, $this->status);
 
-      return;
+      return 1;
     }
     public function saveStatus($id, $status)
     {

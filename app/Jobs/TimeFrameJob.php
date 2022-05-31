@@ -33,7 +33,7 @@ class TimeFrameJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
     {
         if ($this->batch()->cancelled()) {
             // Detected cancelled batch...
-              Log::error('Job cancelled');
+              Log::error('TimeFrame Job cancelled');
           return;
         }
         // Batched job executing... Extract TimeFrame to table.

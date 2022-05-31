@@ -35,14 +35,19 @@ class SearchListJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
     }
     public function handle()
     {
+      if ($this->batch()->cancelled()) {
+          // Detected cancelled batch...
+            Log::error('SearchList Job cancelled');
+        return;
+      }
 
       $seconds = number_format((microtime(true) - $this->startTime) * 1000, 2);  //WIP - check it! //
       Log::info('Created SearchList JOB->  Pass start and end date data to API Bridge '.$this->startDate.' + '.$this->endDate);
-      $res = (new Search())->perDates($this->startDate, $this->endDate);  //API
+        (new Search())->perDates($this->startDate, $this->endDate);  //API
         Log::info('SearchList JOB reply and closed! ');
         Log::info('ApiBridgeJob completed at:  ' .$seconds . '  millseconds');
       Log::info('**************************************************');
-     return 1;
+     return ;
     }
     public function uniqueId()
     {
