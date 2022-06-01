@@ -31,9 +31,10 @@ class TimeFrameBatch
         return;
     }
     public function createBatch()
-    {
+    {  /// GetTimeFrame is failing for timeout?
       $batch = Bus::batch([])
         ->name('GetTimeFrame')
+        ->onQueue('timeFrame')
         ->dispatch();
         $this->batchId = $batch->id;
         Log::notice('TimeFrame Batch Created');

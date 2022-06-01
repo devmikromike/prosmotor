@@ -75,6 +75,8 @@ class Search extends Model
     }
     public function perDates($from, $to)
     {
+
+      $seconds = number_format((microtime(true) - $this->startTime) * 1000, 2);  //WIP - check it! //
         Log::info('step 27: Send request to API Bridge: '.$from.' : '.$to);
           if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
         Log::info('step 28: get response from API Bridge'.$from.' : '.$to);
