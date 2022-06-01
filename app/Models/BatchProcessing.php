@@ -79,7 +79,7 @@ class BatchProcessing extends Model
     /*  create batch and job   */
         public function createTimeFrameEvent()
         {
-            //Log::info('Step 12: call ExtractTimeFrameEvent from BatchProcessing');
+          Log::info('Call ExtractTimeFrameEvent from BatchProcessing');
             $timeFrame = new TimeFrame;
                event(new ExtractTimeFrameEvent($timeFrame));
             Log::info('Step: 22 return Event and Closed.');

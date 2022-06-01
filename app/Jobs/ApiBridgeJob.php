@@ -18,7 +18,7 @@ class ApiBridgeJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $vatId;
-    public $timeout = 3600;
+    public $timeout = 6000;
 
     public function __construct($vatId)
     {
@@ -33,6 +33,6 @@ class ApiBridgeJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
         sleep(20);
         (new Search())->perVatID($this->vatId);
           Log::info('ApiBridge JOB closed:!  '.$this->vatId.' in '.$seconds . ' millseconds');
-      return;
+      // return;
     }
 }

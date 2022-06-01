@@ -47,7 +47,7 @@ class SearchListJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
         Log::info('SearchList JOB reply and closed! ');
         Log::info('SearchList completed at:  ' .$seconds . '  millseconds');
       Log::info('**************************************************');
-     return ;
+     return;
     }
     public function uniqueId()
     {

@@ -21,6 +21,7 @@ class SearchByTimeframe extends Component
   public $from;
   public $to;
   public $statusMessage;
+
   protected $rules = [
   'from' => 'required',
   'to'   => 'required'
@@ -31,6 +32,7 @@ class SearchByTimeframe extends Component
     $this->validate();
     $startTime = microtime(true);
     Log::info('Step 1 : Create TimeFrameBatchJob');
+
     //$this->response  =  (new Search())->perDates($this->from, $this->to);
     $this->response  =  (new BatchProcessing())->createTimeFrameBatchJob($this->from, $this->to);
     $this->response = $this->response;
@@ -39,11 +41,17 @@ class SearchByTimeframe extends Component
       $seconds = number_format((microtime(true) - $startTime) * 1000, 2);  //WIP - check it! //
       Log::info('Final Response from Search-Model, Back to LIVEWIRE Component!:  ' .$seconds . ' millseconds');
         Log::info('*****************************************************');
-       $this->statusMessage = "Search is in Progress";
+       $this->statusMessage =  __('batch.statusMessage');
       return view('livewire.search-by-timeframe')->with('statusMessage', $this->statusMessage );
     }
     return view('livewire.search-by-timeframe');
   }
+  /*
+  public function updatingSubmit( )
+  {
+    $this->statusMessage =  __('batch.statusMessageComplated');
+    return view('livewire.search-by-timeframe')->with('statusMessage', $this->statusMessage );
+  }   */
   public function render()
   {
       return view('livewire.search-by-timeframe');
