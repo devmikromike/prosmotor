@@ -24,7 +24,7 @@ class TimeFrameBatch
 
     public function handle(ExtractTimeFrameEvent $event)
     {
-        Log::notice('TimeFrameBatch Listeners triggered');ex
+        Log::notice('TimeFrameBatch Listeners triggered');
        $batch =  (new SELF())->createBatch();
            (new SELF())->search($event, $batch);
              Log::notice('TimeFrameBatch Listeners closed');
