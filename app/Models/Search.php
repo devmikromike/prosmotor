@@ -66,18 +66,12 @@ class Search extends Model
 
     //      $results = (new SELF())->statusData($response);
 
-          if($results =  (new SELF())->checkStatus($response))
-          {
-             Log::info(' true; checkStatus for '.$vatId.' - '.$results);
-            return;
-          }
+            (new SELF())->resPerVatId($response);
 
-             Log::info(' false; checkStatus for '.$vatId.'- '.$response);
-          return $results;   /// Array ???
+
+          return 1;
         }
-        Log::info('false for response: '.$vatId.'- '.$response);
-
-        return $response;
+      return 0;
     }
     public function perDates($from, $to)
     {
@@ -98,6 +92,17 @@ class Search extends Model
       if($response = Http::get('http://api.mikromike.fi/api/SearchByPostalCode/'.$code)){
           $results = (new SELF())->statusData($response);
       }
+    }
+    public function resPerVatId($response)
+    {
+      if($results =  (new SELF())->checkStatus($response))
+      {
+         Log::info(' true; checkStatus for '.$vatId.' - '.$results);
+        return;
+      }
+         Log::info(' false; checkStatus for '.$vatId.'- '.$response);
+      return $results;   /// Array ???
+
     }
     public function resPerDates($response)
     {
@@ -334,7 +339,7 @@ class Search extends Model
         $resCode = $response->json('Status');
 
         if($resCode === 200){
-        //  Log::info('step 29:  response status: [OK]');
+          Log::info('step 29:  response status: [OK]');
 
           return $results = array(
             'Status' => $resCode,
