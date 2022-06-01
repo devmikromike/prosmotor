@@ -69,7 +69,7 @@ class Search extends Model
           if($results =  (new SELF())->checkStatus($response))
           {
              Log::info(' true; checkStatus for '.$vatId.' - '.$results);
-            return $results;
+            return;
           }
 
              Log::info(' false; checkStatus for '.$vatId.'- '.$response);
