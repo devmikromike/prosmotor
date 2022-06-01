@@ -31,6 +31,7 @@ class SearchByTimeframe extends Component
   {
     $this->validate();
     $startTime = microtime(true);
+      Log::info('*****************************************************');
     Log::info('Step 1 : Create TimeFrameBatchJob');
 
     //$this->response  =  (new Search())->perDates($this->from, $this->to);
