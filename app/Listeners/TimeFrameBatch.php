@@ -24,10 +24,10 @@ class TimeFrameBatch
 
     public function handle(ExtractTimeFrameEvent $event)
     {
-        Log::notice('step 14: Listeners triggered');
+        Log::notice('TimeFrameBatch Listeners triggered');
        $batch =  (new SELF())->createBatch();
            (new SELF())->search($event, $batch);
-             Log::notice('Listeners closed');
+             Log::notice('TimeFrameBatch Listeners closed');
         return;
     }
     public function createBatch()
@@ -36,7 +36,7 @@ class TimeFrameBatch
         ->name('GetTimeFrame')
         ->dispatch();
         $this->batchId = $batch->id;
-
+        Log::notice('TimeFrame Batch Created');
         return $batch;
     }
     public function search($event, $batch)
@@ -44,7 +44,7 @@ class TimeFrameBatch
 
       $rowData = $event->eventRowId('Start'); // return (Int) $rowData
         if($rowData)
-            {
+            {   Log::notice('Start: in TimeFrameBatch Listener');
                       (new TimeFrame())->retRow($rowData, $batch);
               return $rowData;
             }
@@ -58,7 +58,7 @@ class TimeFrameBatch
       if($rowIdSave)
           {
           //  Log::notice('step 26: Listener is returning: searchSave ');
-
+           Log::notice('Save end dates:  in TimeFrameBatch Listener');
                   (new TimeFrame())->retRow($rowIdSave,  $batch);
 
               return $rowIdSave;
@@ -73,7 +73,7 @@ class TimeFrameBatch
       if($rowFinal)
           {
             //  Log::notice('step 27: Listener is returning: searchFinal ');
-
+             Log::notice('Final:  in TimeFrameBatch Listener');
                 (new TimeFrame())->retRow($rowFinal, $batch);
 
            return $rowFinal;
