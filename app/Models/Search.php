@@ -63,25 +63,18 @@ class Search extends Model
       // if($response = Http::get('http://ProsCore-api.test/SearchVatID/'.$vatId)){
          if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
              Log::info(' 34: get response from API Bridge: '.$vatId);
-
-    //      $results = (new SELF())->statusData($response);
-
-            (new SELF())->resPerVatId($response, $vatId);
+             (new SELF())->resPerVatId($response, $vatId);
           return 1;
         }
       return 0;
     }
     public function perDates($from, $to)
     {
-
       $seconds = number_format((microtime(true) - $this->startTime) * 1000, 2);  //WIP - check it! //
         Log::info('step 27: Send request to API Bridge: '.$from.' : '.$to);
           if($response = Http::get('http://api.mikromike.fi/api/SearchByDates/'.$from .'/' .$to)){
         Log::info('step 28: get response from API Bridge'.$from.' : '.$to);
-
           $res =  (new SELF())->resPerDates($response);
-               // $search = new Search;
-              // event(new TimeFrameFinalEvent($search));
         return 1;
       }
       return 0;
@@ -240,7 +233,7 @@ class Search extends Model
             $changes =  Arr::exists($data, 'businessIdChanges');
             $registers =  Arr::exists($data, 'registeredEntries');
                if($liq){
-                 
+
                  Log::error('BlackList: [STARTED] '.$data['businessId']);
                   (new ProsBlackListed())->liquidations($data);
                   return 1;
