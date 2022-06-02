@@ -40,17 +40,19 @@ class BatchProcessing extends Model
               Log::info('Created new Batch: '.$batch->name);
              return $batch;
         }
+        /*
         public function createBatchJobByVatID($vatId)
         {
 
-        }
+        }  */
+        /*
         public function createBatchJobBySearchList($name, $status)
         {
             $batch = (new SELF())->createBatch($name);
             Log::info('create BatchJob By SearchList');
             $batch->add(new GetNewRowIdJob($status));
              return $batch;
-        }
+        }   */
         public function createTimeFrameBatchJob($from, $to)
         { /* Receved call from Livewire component */
               //Log::info('Step 2 : Create TimeFrameBatchJob from model-BatchProcessing');
@@ -65,6 +67,7 @@ class BatchProcessing extends Model
             //Log::info('Step 3: Create Batch: ExtractTimeFrameJob');
             $batch = Bus::batch([])
               ->name('ExtractTimeFrameJob')
+              ->onQueue('timeFrame')
               ->then(function (Batch $batch) {
                     (new SELF())->createTimeFrameEvent();
               })

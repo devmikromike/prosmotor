@@ -3,7 +3,7 @@
 return [
 
 
-    'default' => env('QUEUE_CONNECTION', 'sync'),  
+    'default' => env('QUEUE_CONNECTION', 'sync'),
 
     'connections' => [
 
@@ -15,7 +15,7 @@ return [
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'default',
-            'retry_after' => 90,
+            'retry_after' => 190,
             'after_commit' => false,
         ],
 

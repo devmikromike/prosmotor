@@ -33,8 +33,8 @@ class TimeFrameBatch
     public function createBatch()
     {  /// GetTimeFrame is failing for timeout?
       $batch = Bus::batch([])
-        ->name('GetTimeFrame')
-        ->onQueue('timeFrame')
+        ->name('SearchListJob')
+        ->onQueue('searchJob')
         ->dispatch();
         $this->batchId = $batch->id;
         Log::notice('TimeFrame Batch Created');
@@ -45,7 +45,8 @@ class TimeFrameBatch
 
       $rowData = $event->eventRowId('Start'); // return (Int) $rowData
         if($rowData)
-            {   Log::notice('Start: in TimeFrameBatch Listener');
+            {
+              Log::notice('Start: in TimeFrameBatch Listener');
                       (new TimeFrame())->retRow($rowData, $batch);
               return $rowData;
             }

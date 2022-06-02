@@ -20,7 +20,7 @@ class SearchListJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
-    public $timeout = 6000;
+    public $timeout = 600;
     public $startDate, $endDate;
     public $rowId;
     public $uniqueFor = 6900;

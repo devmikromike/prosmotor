@@ -240,7 +240,7 @@ class Search extends Model
             $changes =  Arr::exists($data, 'businessIdChanges');
             $registers =  Arr::exists($data, 'registeredEntries');
                if($liq){
-                 dd($liq);
+                 
                  Log::error('BlackList: [STARTED] '.$data['businessId']);
                   (new ProsBlackListed())->liquidations($data);
                   return 1;
