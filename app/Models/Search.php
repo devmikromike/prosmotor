@@ -66,9 +66,7 @@ class Search extends Model
 
     //      $results = (new SELF())->statusData($response);
 
-            (new SELF())->resPerVatId($response);
-
-
+            (new SELF())->resPerVatId($response, $vatId);
           return 1;
         }
       return 0;
@@ -95,7 +93,7 @@ class Search extends Model
           $results = (new SELF())->statusData($response);
       }
     }
-    public function resPerVatId($response)
+    public function resPerVatId($response, $vatId)
     {
       if($results =  (new SELF())->checkStatus($response))
       {
