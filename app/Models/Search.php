@@ -90,10 +90,10 @@ class Search extends Model
     {
       if($results =  (new SELF())->checkStatus($response))
       {
-         Log::info(' true; checkStatus for '.$vatId.' - '.$results);
+    //     Log::info(' true; checkStatus for '.$vatId.' - '.$results);
         return;
       }
-         Log::info(' false; checkStatus for '.$vatId.'- '.$response);
+  //       Log::info(' false; checkStatus for '.$vatId.'- '.$response);
       return $results;   /// Array ???
     }
     public function resPerDates($response)
