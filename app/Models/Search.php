@@ -95,7 +95,6 @@ class Search extends Model
       }
          Log::info(' false; checkStatus for '.$vatId.'- '.$response);
       return $results;   /// Array ???
-
     }
     public function resPerDates($response)
     {
