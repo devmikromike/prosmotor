@@ -28,7 +28,6 @@ class BatchProcessing extends Model
         //Log::info('step 17: Created new Batch: '.$batch->name);
       Log::info('Created new Batch for : '.$vatId);
          $batch->add(new ApiBridgeJob($vatId));
-
         return $batch;
       }
     /*  create batch and job   */
