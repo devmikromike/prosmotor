@@ -13,7 +13,6 @@ class ProsCity extends Model
 
     public function scopeCity($query, $city)
     {
-      return $query ->where('city', $city);
-
+      return $query->where('city', $city);
     }
 }

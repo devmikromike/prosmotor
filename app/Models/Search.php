@@ -185,7 +185,19 @@ class Search extends Model
             $name = ('extractData'.'-'.$id);
 
             if ($results == 'true'){
-                $JsonDataJob = ExtractJsonDataJob::dispatch($data);
+              $batch = Bus::batch([
+                  // ...
+                  new ExtractJsonDataJob($data)
+              ])->then(function (Batch $batch) {
+                  // All jobs completed successfully...
+              })
+              ->onQueue('extractJson')
+              ->name($name)
+              ->dispatch();
+
+              /*
+                $JsonDataJob = ExtractJsonDataJob::dispatch($data)
+                ->onQueue('ExtractJson'); */ // toimii
 
           /*    $batch = (new BatchProcessing())->createBatch($name);
                 $batch->add(new ExtractJsonDataJob($data));   */   /// failed, batch cannot get array!
@@ -339,7 +351,6 @@ class Search extends Model
             'Response' => $response
           );
         } else {
-
                 if($resCode === 404){
                   Log::info('*************');
                   Log::info('response status: [ERROR]');

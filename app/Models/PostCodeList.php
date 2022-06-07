@@ -21,10 +21,15 @@ class PostCodeList extends Model
     }
     public function createPostalCode($postalCode, $cityID)
     {
-      SELF::updateOrCreate([
-        'city_lists_id' => $cityID,
-        'postalCode' => $postalCode
-      ]);
+      if(!empty($postalCode))
+      {
+        SELF::updateOrCreate([
+          'city_lists_id' => $cityID,
+          'postalCode' => $postalCode
+        ]);
+        return ;
+      }
+      return 0;
 
       //   $this->cities()->attach($cityID);
       // dd($postalCode, $cityID);
