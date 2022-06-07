@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/public/upload
+/public
 /storage/*.key
 /storage/logs
 /vendor
@@ -20,4 +22,3 @@ composer.json-old
 /info
 /.ssh
 /backup
-/public/upload

@@ -27,6 +27,6 @@ class PostCodeList extends Model
       ]);
 
       //   $this->cities()->attach($cityID);
-       dd($postalCode, $cityID);
+      // dd($postalCode, $cityID);
     }
 }
