@@ -15,7 +15,7 @@ class CreatePostCodeListsTable extends Migration
     {
         Schema::create('post_code_lists', function (Blueprint $table) {
             $table->id();
-            $table->integer('city_id');
+            $table->integer('city_lists_id');
             $table->string('postalCode');
             $table->timestamps();
         });

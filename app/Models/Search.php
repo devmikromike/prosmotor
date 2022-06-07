@@ -411,7 +411,6 @@ class Search extends Model
        $counter = $this->counter;
 
        foreach ($data as $key => $pros){
-
           if($counter < 150 )   {
               //Log::info('Results:  '.$sum. ' in queue.');
               $counter++;

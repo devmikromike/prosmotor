@@ -92,6 +92,7 @@ class Location extends Model
         if($type == 2)
         {
             $postal = SELF::postalAddressIsNotExist($street);
+
            return $postal;
         }
     }

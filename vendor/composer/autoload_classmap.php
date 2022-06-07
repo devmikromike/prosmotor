@@ -56,6 +56,7 @@ return array(
     'App\\Models\\BatchProcessing' => $baseDir . '/app/Models/BatchProcessing.php',
     'App\\Models\\CategoryPros' => $baseDir . '/app/Models/CategoryPros.php',
     'App\\Models\\CityList' => $baseDir . '/app/Models/CityList.php',
+    'App\\Models\\CityListPostCodeList' => $baseDir . '/app/Models/CityListPostCodeList.php',
     'App\\Models\\CompanyStatus' => $baseDir . '/app/Models/CompanyStatus.php',
     'App\\Models\\Contact' => $baseDir . '/app/Models/Contact.php',
     'App\\Models\\LastRow' => $baseDir . '/app/Models/LastRow.php',
