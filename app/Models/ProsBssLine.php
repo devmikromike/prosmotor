@@ -17,7 +17,11 @@ class ProsBssLine extends Model
     {
       return $this->belongTo(Prospect::class);
     }
-
+    public function scopeCountBssCodes($query)
+    {
+      return $query
+      ->count();
+    }
     public function codeList($idsCodes)
     {  // Business line codes
       $results = [];

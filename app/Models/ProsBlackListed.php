@@ -12,6 +12,11 @@ class ProsBlackListed extends Model
 
     protected $guarded = [];
 
+    public function scopeCountBlackListed($query)
+    {
+      return $query
+      ->count();
+    }
     public function blacklisted($vatId, $reason)
     {
         $business = array();
@@ -48,7 +53,7 @@ class ProsBlackListed extends Model
         $business['vatId'] = $data['businessId'];
         $business['description'] = $liquidations['description'];
         $response = (new ProsBlackListed())->createStatus($business);
-         Log::info('BlackList: [COMPLETED] '.$data['businessId']);  
+         Log::info('BlackList: [COMPLETED] '.$data['businessId']);
       return 1;
     }
     public function find($vatId)

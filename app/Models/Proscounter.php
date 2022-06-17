@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Prospect;
 
 class Proscounter extends Model
 {
     use HasFactory;
+
+   
 
     public function countProsPerCity($results)
     {// total count of selected cities times Bss
@@ -60,7 +63,7 @@ class Proscounter extends Model
 
                 if($city === $proscity )
                 {
-                  $proslist[] = $item;                
+                  $proslist[] = $item;
                 }
               }
             }

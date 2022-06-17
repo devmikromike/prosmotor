@@ -86,15 +86,35 @@ class Search extends Model
           $results = (new SELF())->statusData($response);
       }
     }
+    public function perPostalCodeWithBssCode($code, $bssCode)
+    {
+      // ?totalResults=true&maxResults=1000&streetAddressPostCode=00100&businessLineCode=70220&companyRegistrationTo=2014-01-01
+      //    if($response = Http::get('http://ProsCore-api.test/SearchPostalCode/'.$code))   // Test Env. locally!
+        Log::info('step 27: Send request to API Bridge: '.$code.' : '.$bssCode);
+      if($response = Http::get('http://api.mikromike.fi/api/SearchByPostalCode/'.$code.'/'.$bssCode)){
+          Log::info('step 28: get response from API Bridge to perPostalCodeWithBssCode!' );
+          $results = (new SELF())->resPostalCodeWithBssCode($response);
+          return 1;
+        }
+        return 0;
+    }
+    public function resPostalCodeWithBssCode($response)
+    {
+      if($results =  (new SELF())->checkStatus($response))
+      {
+    //     Log::info(' true; checkStatus for '.$vatId.' - '.$results);
+        return $results;
+      }
+    }
     public function resPerVatId($response, $vatId)
     {
       if($results =  (new SELF())->checkStatus($response))
       {
     //     Log::info(' true; checkStatus for '.$vatId.' - '.$results);
-        return;
+        return $results;
       }
   //       Log::info(' false; checkStatus for '.$vatId.'- '.$response);
-      return $results;   /// Array ???
+      return $response;   /// Array ???
     }
     public function resPerDates($response)
     {
@@ -194,7 +214,6 @@ class Search extends Model
               ->onQueue('extractJson')
               ->name($name)
               ->dispatch();
-
               /*
                 $JsonDataJob = ExtractJsonDataJob::dispatch($data)
                 ->onQueue('ExtractJson'); */ // toimii

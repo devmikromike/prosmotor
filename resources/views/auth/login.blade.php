@@ -22,9 +22,9 @@
             @csrf
 
             <div class="mt-2">
-                <label for="email" value="{{ __('auth.email') }}" />
+                <label for="username" value="{{ __('auth.username') }}" />
                 {{__('auth.email')}}
-                <input id="email" class="block mt-1 w-full rounded" type="email" name="email" :value="old('email')" required autofocus />
+                <input id="username" class="block mt-1 w-full rounded" type="username" name="username" :value="old('username')" required autofocus />
             </div>
 
             <div class="mt-4">

@@ -10,7 +10,9 @@ return [
 
     'passwords' => 'users',
 
-    'username' => 'email',
+    // 'username' => 'email',
+
+    'username' => 'username',
 
     'email' => 'email',
 

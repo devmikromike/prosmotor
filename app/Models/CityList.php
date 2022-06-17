@@ -30,6 +30,11 @@ class CityList extends Model
       ->orderBy('name')
       ->get();
     }
+    public function scopeCountCities($query)
+    {
+      return $query
+      ->count();
+    }
     public function saveCity($city)
     {
       $c = (new SELF())->firstOrCreate([

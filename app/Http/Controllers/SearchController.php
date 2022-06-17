@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Search;
+use App\Models\Prospect;
+use App\Models\Proscounter;
 
 class SearchController extends Controller
 {
@@ -43,5 +45,19 @@ class SearchController extends Controller
             return $response;
           }
         return "Server had bubuu!";
+    }
+    public function perPostalCodeWithBssCode($code, $bssCode)
+    {
+      if($response = (new Search())->perPostalCodeWithBssCode($code, $bssCode)){
+          return $response;
+        }else {
+          return $response;
+        }
+      return "Server had bubuu!";
+    }
+    public function howManyProspects()
+    {
+      $results = Prospect::CountPropects();
+      return $results;  // int
     }
 }

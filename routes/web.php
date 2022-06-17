@@ -40,7 +40,9 @@ Route::get('/SearchByVatID/{vatID}',[SearchController::class, 'perVatID'])->name
 Route::get('/SearchByName/{name}',[SearchController::class, 'perName'])->name('name');
 Route::get('/SearchByDates/{from}/{to}',[SearchController::class, 'perDates'])->name('dates');
 Route::get('/SearchByPostalCode/{code}',[SearchController::class, 'perPostalCode'])->name('postalcode');
-
+Route::get('/SearchByPostalCode/{code}/{bssCode}',[SearchController::class, 'perPostalCodeWithBssCode'])->name('postalandbsscode');
+Route::get('/countProspects',[SearchController::class, 'howManyProspects'])->name('howManyProspects');
+//howManyProspects
 /// Livewire component routes /////
 
 Route::get('/businesscard/{pros_id}', BusinessCard::class)->name('businesscard');

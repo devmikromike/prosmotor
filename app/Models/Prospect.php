@@ -45,6 +45,13 @@ class Prospect extends Model
 /************
 *  Start Scopes
 */
+    public function scopeCountPropects($query)
+    {
+      return $query
+      ->count();
+    }
+
+
     public function scopeProsAll($query)
     {
       return $query
@@ -87,7 +94,7 @@ class Prospect extends Model
     }
    public function collectCompanyData($company,$uri)
    {
-   
+
      $data = (new Prospect())->updateOrCreate($company);
      Log::info('step 35: Black sack process: [Propect Created]'.$company['vatId']);
 

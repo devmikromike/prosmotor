@@ -613,7 +613,6 @@ class ComposerStaticInit7c343cfa73389035367c07d392209df8
         'App\\Models\\BatchProcessing' => __DIR__ . '/../..' . '/app/Models/BatchProcessing.php',
         'App\\Models\\CategoryPros' => __DIR__ . '/../..' . '/app/Models/CategoryPros.php',
         'App\\Models\\CityList' => __DIR__ . '/../..' . '/app/Models/CityList.php',
-        'App\\Models\\CityListPostCodeList' => __DIR__ . '/../..' . '/app/Models/CityListPostCodeList.php',
         'App\\Models\\CompanyStatus' => __DIR__ . '/../..' . '/app/Models/CompanyStatus.php',
         'App\\Models\\Contact' => __DIR__ . '/../..' . '/app/Models/Contact.php',
         'App\\Models\\LastRow' => __DIR__ . '/../..' . '/app/Models/LastRow.php',
