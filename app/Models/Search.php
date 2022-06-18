@@ -41,6 +41,7 @@ class Search extends Model
 /*  Four API Call to Api Bridge. */
     public function perName($name)
     {
+
         Log::info(' 33: Send request to API Bridge per Vatid: '.$name);
         if($response = Http::get('http://api.mikromike.fi/api/SearchByName/'.$name)){
            Log::info(' 34: get response from API Bridge'.$name);
@@ -51,7 +52,8 @@ class Search extends Model
                        return $results;
                      }
 
-                        Log::info(' false; checkStatus for '.$name.' - '.$response->json());
+                       Log::info(' false; checkStatus for '.$name
+                        //Log::info(' false; checkStatus for '.$name.' - '.$response->json());
                      return $response->json();   /// Array or Object (JSON)
                    }
                    Log::error('false for response: '.$name);
