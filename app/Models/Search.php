@@ -52,7 +52,7 @@ class Search extends Model
                        return $results;
                      }
 
-                       Log::info(' false; checkStatus for '.$name
+                       Log::info(' false; checkStatus for '.$name);
                         //Log::info(' false; checkStatus for '.$name.' - '.$response->json());
                      return $response->json();   /// Array or Object (JSON)
                    }
