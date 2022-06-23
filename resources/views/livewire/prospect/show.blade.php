@@ -16,7 +16,10 @@
                                         font-medium text-gray-500 tracking-wider
                                         border border-blue-800 border-4 ">
             @if(!empty($prosmodel->name))
-                <a href="businesscard/{{$prosmodel->id}}" class="hover:shadow hover:text-gray-900">
+                <a href="businesscard/{{$prosmodel->id}}" class="
+                  {{ (Route::currentRouteName() == 'main') ? 'active' : '' }}
+                  hover:shadow hover:text-gray-900"
+                  data-toggle="tab">
                 {{$prosmodel->name}}</a>
             @endif
             @if(!empty($prosmodel->www)) {{('  /  ')}}

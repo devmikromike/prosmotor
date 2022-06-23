@@ -18,3 +18,4 @@
 </style>
  <livewire:styles />
    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+   <script src="{{ mix('js/app.js') }}" defer></script>

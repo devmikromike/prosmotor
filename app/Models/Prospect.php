@@ -12,6 +12,7 @@ use App\Models\ProsBlackListed;
 use App\Models\ProsBssLine;
 use App\Models\Contact;
 use App\Models\Location;
+use App\Models\Register;
 
 class Prospect extends Model
 {
@@ -36,6 +37,10 @@ class Prospect extends Model
     public function bssCodeField()
     {
       return $this->belongsToMany(ProsBssLine::class);
+    }
+    public function registers()
+    {
+      return $this->belongsToMany(Register::class);
     }
     public function codeField($id)
     {

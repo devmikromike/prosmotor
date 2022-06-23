@@ -12,6 +12,7 @@ use App\Models\ProsDetails;
 use App\Models\ProsBlackListed;
 use App\Models\Location;
 use App\Models\Contact;
+use App\Models\Register;
 use App\Models\Searchlist;
 use App\Models\TimeFrame;
 use App\Models\BatchProcessing;
@@ -252,7 +253,7 @@ class Search extends Model
         $liq =  Arr::exists($data, 'liquidations');
           //   $aux =  Arr::exists($data, 'auxiliaryNames');
       //     $changes =  Arr::exists($data, 'businessIdChanges');
-      //     $registers =  Arr::exists($data, 'registeredEntries');
+
 
       //  $data = $data['results'][0];
 
@@ -264,54 +265,66 @@ class Search extends Model
             $aux =  Arr::exists($data, 'auxiliaryNames');
             $changes =  Arr::exists($data, 'businessIdChanges');
             $registers =  Arr::exists($data, 'registeredEntries');
-               if($liq){
 
+               if($liq){
                  Log::error('BlackList: [STARTED] '.$data['businessId']);
                   (new ProsBlackListed())->liquidations($data);
                   return 1;
-               } else {
+               } else {  // liquidations flase -> continue ....
                    $company['name'] = $data['name'];
                    $company['vatId'] = $data['businessId'];
                    $uri = $data['detailsUri'];
                    $company['registrationDate'] = $data['registrationDate'];
                      Log::info('Extract: [STARTED] '.$data['businessId']);
                    if (empty($uri)){
-                     $uri === 'not availble';
-                   }else {}
+                       $uri === 'not availble';
+                     }
           if ($registers == 'true'){
-              if($changes)
-              {
-                $businessChanges = $data['businessIdChanges'];
-                 $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges);
-              }
+                  if($changes)
+                  {
+                    Log::info('Extract businessChanges: [STARTED] '.$data['businessId']);
+                    $businessChanges = $data['businessIdChanges'];
+                     $prosModelArray = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges);
+                  }else {
+                    //Log::info('step 33: Black sack extraction process: [CompanyName Check]');
+                    $businessChanges = null;
+                     Log::info('Extract businessChanges: [STARTED] '.$data['businessId']);
+                    $prosModelArray = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges );
 
-               }else {
-                 //Log::info('step 33: Black sack extraction process: [CompanyName Check]');
-                 $businessChanges = null;
-                  Log::info('Extract businessChanges: [STARTED] '.$data['businessId']);
-                 $prosModel = (new Prospect())->emptyCompanyName($company, $uri, $businessChanges );
+                  }
                }
-
-               foreach ($prosModel as $pros)
+               foreach ($prosModelArray as $pros)
                {
+
+
                   $results =  Arr::exists($pros, 'prospect');
 
                   if ($results)
                   {
                     $propectId = $pros['prospect']['id'];   // VatId = BusinessId
+                    $registers = $data['registeredEntries'];
+
+                  //  dd($pros['prospect']);
+                    $prosModel = $pros['prospect'];
+                    (new Register())->extractRegisters($registers, $prosModel);
+
                   // end of IF
                   }
                }
+
+
+
+
               if(is_array($data['businessLines'])){
                 $businessLines = $data['businessLines'];
                      //Log::info('step 36: Black sack process: [BusinessLine  Created]');
                 $bssModel = (new ProsBssLine())->saveBss($businessLines);
 
-                if(!empty($bssModel && $pros['prospect'])){
-                    $isok = $pros['prospect']->bssCodeField()->attach($bssModel->id);
-                }
+                  if(!empty($bssModel && $pros['prospect'])){
+                      $isok = $pros['prospect']->bssCodeField()->attach($bssModel->id);
+                  }
                   //    $isok = $prosCreated->bssCodeField()->attach($bssModel->id);
-                      }else{
+                }else{
                         // empty busines field code!
                         $bssLineEN = array();
                         $bssLineFI = array();

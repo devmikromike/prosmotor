@@ -868,11 +868,11 @@ select {
 .ml-2 {
 	margin-left: 0.5rem;
 }
-.mb-4 {
-	margin-bottom: 1rem;
-}
 .mr-2 {
 	margin-right: 0.5rem;
+}
+.mb-4 {
+	margin-bottom: 1rem;
 }
 .mt-3 {
 	margin-top: 0.75rem;
@@ -964,14 +964,14 @@ select {
 .list-disc {
 	list-style-type: disc;
 }
+.grid-cols-1 {
+	grid-template-columns: repeat(1, minmax(0, 1fr));
+}
 .grid-cols-3 {
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .grid-cols-5 {
 	grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-.grid-cols-1 {
-	grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 .grid-rows-1 {
 	grid-template-rows: repeat(1, minmax(0, 1fr));
@@ -984,6 +984,9 @@ select {
 }
 .items-center {
 	align-items: center;
+}
+.justify-start {
+	justify-content: flex-start;
 }
 .justify-end {
 	justify-content: flex-end;
@@ -1131,14 +1134,14 @@ select {
 .p-2 {
 	padding: 0.5rem;
 }
-.p-1 {
-	padding: 0.25rem;
-}
 .p-6 {
 	padding: 1.5rem;
 }
 .p-4 {
 	padding: 1rem;
+}
+.p-1 {
+	padding: 0.25rem;
 }
 .px-4 {
 	padding-left: 1rem;
@@ -1164,13 +1167,13 @@ select {
 	padding-left: 1.5rem;
 	padding-right: 1.5rem;
 }
-.py-1 {
-	padding-top: 0.25rem;
-	padding-bottom: 0.25rem;
-}
 .py-4 {
 	padding-top: 1rem;
 	padding-bottom: 1rem;
+}
+.py-1 {
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 }
 .pt-8 {
 	padding-top: 2rem;
@@ -1195,13 +1198,13 @@ select {
 	font-size: 1.25rem;
 	line-height: 1.75rem;
 }
-.text-xs {
-	font-size: 0.75rem;
-	line-height: 1rem;
-}
 .text-lg {
 	font-size: 1.125rem;
 	line-height: 1.75rem;
+}
+.text-xs {
+	font-size: 0.75rem;
+	line-height: 1rem;
 }
 .font-medium {
 	font-weight: 500;
@@ -1232,10 +1235,6 @@ select {
 .text-black {
 	--tw-text-opacity: 1;
 	color: rgba(0, 0, 0, var(--tw-text-opacity));
-}
-.text-blue-600 {
-	--tw-text-opacity: 1;
-	color: rgba(37, 99, 235, var(--tw-text-opacity));
 }
 .text-gray-200 {
 	--tw-text-opacity: 1;
@@ -1268,6 +1267,10 @@ select {
 .text-green-600 {
 	--tw-text-opacity: 1;
 	color: rgba(5, 150, 105, var(--tw-text-opacity));
+}
+.text-blue-600 {
+	--tw-text-opacity: 1;
+	color: rgba(37, 99, 235, var(--tw-text-opacity));
 }
 .underline {
 	text-decoration: underline;

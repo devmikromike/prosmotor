@@ -10,7 +10,7 @@ class BusinessCard extends Component
     public Prospect $prosmodel;
     public $name;
     public $pros_id;
-
+   
     public function mount($pros_id)
     {
         // $this->pros_id = $pros_id;
