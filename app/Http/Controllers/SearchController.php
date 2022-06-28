@@ -9,6 +9,12 @@ use App\Models\Proscounter;
 
 class SearchController extends Controller
 {
+/*
+  public function perPostalAndBss($postalCode, $bssCode)
+  {
+
+  }
+*/
     public function perVatID($vatID)
     {
       if($response = (new Search())->perVatID($vatID)){
@@ -48,6 +54,8 @@ class SearchController extends Controller
     }
     public function perPostalCodeWithBssCode($code, $bssCode)
     {
+      //        dd($code, $bssCode);
+
       if($response = (new Search())->perPostalCodeWithBssCode($code, $bssCode)){
           return $response;
         }else {

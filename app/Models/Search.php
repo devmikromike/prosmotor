@@ -96,15 +96,17 @@ class Search extends Model
         Log::info('step 27: Send request to API Bridge: '.$code.' : '.$bssCode);
       if($response = Http::get('http://api.mikromike.fi/api/SearchByPostalCode/'.$code.'/'.$bssCode)){
           Log::info('step 28: get response from API Bridge to perPostalCodeWithBssCode!' );
-          $results = (new SELF())->resPostalCodeWithBssCode($response);
-          return 1;
+            $results = (new SELF())->resPostalCodeWithBssCode($response);
+          return 'DONE reponse';
         }
         return 0;
     }
     public function resPostalCodeWithBssCode($response)
     {
+
       if($results =  (new SELF())->checkStatus($response))
       {
+       dd($results);
     //     Log::info(' true; checkStatus for '.$vatId.' - '.$results);
         return $results;
       }

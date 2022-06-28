@@ -23,6 +23,13 @@
                  <p class="mt-2">{{__('messages.subheader')}}</p>
                </span>
           </div>
+          <div class="mt-2 ml-2">
+            <form class="" action="index.html" method="post">
+                <input type="text" name="" value="">
+                <input type="text" name="" value="">
+            </form>
+
+          </div>
           <div class="container flex flex-row mx-auto bg-gray-200  ">
               <div class="mt-2  flex flex-1  ">
                    @livewire('search-by-vatid',

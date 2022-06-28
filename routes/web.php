@@ -19,6 +19,7 @@ if (env('APP_ENV') === 'production')  {
     URL::forceSchema('https');
 };
 */
+
 Route::get('dev-login', function () {
     abort_unless(app()->environment('local'), 403);
     auth()->loginUsingId(App\Models\User::first());
@@ -35,11 +36,15 @@ Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controller
 Route::post('/prospect',[ProspectController::class,'index'])->name('public.index');
 Route::post('/prospect/{$id}/show',[ProspectController::class,'show'])->name('pros.show');
 
+//Route::get('/SearchByPostal/{postalCode}/{bssCode}',[SearchController::class, 'perPostalAndBss'])->name('postalandbsscode');
+
 Route::get('/SearchByVatID/{vatID}',[SearchController::class, 'perVatID'])->name('vatid');
 Route::get('/SearchByName/{name}',[SearchController::class, 'perName'])->name('name');
 Route::get('/SearchByDates/{from}/{to}',[SearchController::class, 'perDates'])->name('dates');
 Route::get('/SearchByPostalCode/{code}',[SearchController::class, 'perPostalCode'])->name('postalcode');
+
 Route::get('/SearchByPostalCode/{code}/{bssCode}',[SearchController::class, 'perPostalCodeWithBssCode'])->name('postalandbsscode');
+
 Route::get('/countProspects',[SearchController::class, 'howManyProspects'])->name('howManyProspects');
 //howManyProspects
 /// Livewire component routes /////
