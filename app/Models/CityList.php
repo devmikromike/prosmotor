@@ -42,6 +42,10 @@ class CityList extends Model
       ]);
       return $c;
     }
+    public function loadCities()
+    {
+    //  (new SELF())->paganation(10)->get();
+    }
     public function prosCityList($cities)
     { // getting data from prospect.index component with $cities
 

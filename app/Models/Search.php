@@ -42,7 +42,6 @@ class Search extends Model
 /*  Four API Call to Api Bridge. */
     public function perName($name)
     {
-
         Log::info(' 33: Send request to API Bridge per Vatid: '.$name);
         if($response = Http::get('http://api.mikromike.fi/api/SearchByName/'.$name)){
            Log::info(' 34: get response from API Bridge'.$name);
@@ -103,11 +102,9 @@ class Search extends Model
     }
     public function resPostalCodeWithBssCode($response)
     {
-
       if($results =  (new SELF())->checkStatus($response))
       {
-       dd($results);
-    //     Log::info(' true; checkStatus for '.$vatId.' - '.$results);
+        Log::info(' true; checkStatus for '.$vatId.' - '.$results);
         return $results;
       }
     }

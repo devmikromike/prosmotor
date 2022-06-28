@@ -23,9 +23,9 @@ class Register extends Model
          if($register['language'] ==='EN')
          {
 
-           $authority =  (int) $register['authority'];
-           $reg =  (int) $register['register'];
-           $status =  (int) $register['status'];
+           $authority = $register['authority'];
+           $reg = $register['register'];
+           $status = $register['status'];
            $description =   $register['description'];
            $regDate =  $register['registrationDate'];
            $endDate =  $register['endDate'];
@@ -45,10 +45,9 @@ class Register extends Model
               $isok = $prosModel->registers()->attach($savedRegisters->id);
           }
 
-        //  $auth = SELF::authority($authority);
-        //  $retRegister = SELF::findRegister($reg);
-        //  $retStatus = SELF::findRegister($status);
-           dd('huhuu');
+          $auth = SELF::findAuthority($authority);
+          $retRegister = SELF::findRegister($reg);
+          $retStatus = SELF::findRegister($status);
          }
       }
     }
