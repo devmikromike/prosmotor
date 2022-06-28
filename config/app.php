@@ -3,7 +3,7 @@
 return [
     'name' => env('APP_NAME', 'Laravel'),
     'env' => env('APP_ENV', 'production'),
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', true),
     'url' => env('APP_URL', ''),
     'asset_url' => env('ASSET_URL', null),
     'timezone' => 'UTC',
@@ -15,10 +15,7 @@ return [
     'key' => env('APP_KEY'),
     'cipher' => 'AES-256-CBC',
 
-  
-
     'providers' => [
-
         /*
          * Laravel Framework Service Providers...
          */
@@ -49,6 +46,7 @@ return [
          * Package Service Providers...
          */
            App\Providers\FortifyServiceProvider::class,
+           Barryvdh\Debugbar\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -57,7 +55,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
     ],
 
     /*
@@ -86,6 +83,7 @@ return [
         'Crypt' => Illuminate\Support\Facades\Crypt::class,
         'Date' => Illuminate\Support\Facades\Date::class,
         'DB' => Illuminate\Support\Facades\DB::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Eloquent' => Illuminate\Database\Eloquent\Model::class,
         'Event' => Illuminate\Support\Facades\Event::class,
         'File' => Illuminate\Support\Facades\File::class,
@@ -111,7 +109,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
     ],
 
 ];

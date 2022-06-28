@@ -26,8 +26,9 @@ class DebugBarMiddleware
   {
     $local =  config('debugbar.local');
     $remote =  config('debugbar.remote');
-  //  $allowd_ips = array();
-    $allowd_ips = [];
+
+  //  $allowd_ips = ['127.0.0.1'];
+
 
     foreach ($local as $value) {
        $allowd_ips[] = $value;
@@ -35,24 +36,15 @@ class DebugBarMiddleware
     foreach ($remote as $value) {
        $allowd_ips[] = $value;
     }
+  if( in_array(request()->ip(), $allowd_ips) or (auth()->user()) ) {
+       config(['app.debug' => true]);
+     \Debugbar::enable();
+      \Artisan::call('cache:clear');
 
-    if((auth()->user()) or in_array(request()->ip(), $allowd_ips)) {
-      echo((request()->ip()));
-      dump($allowd_ips);
-      \Debugbar::enable();
-        dump('Debugbar enabled');
     } else {
-      echo((request()->ip()));
-        dump('Debugbar disabled');
-      \Debugbar::disable();
+       \Debugbar::disable();
     }
 
     return $next($request);
   }
-
-  /*
-    public function handle(Request $request, Closure $next)
-    {
-        return $next($request);
-    } */
 }
