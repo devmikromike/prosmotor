@@ -1,7 +1,7 @@
 <div class=" bg-blue-500 ">
  <div class="flex justify-between items-center">
    <span class="ml-4 mt-2 mb-4 text-lg text-white">
-     MikroMike ProspectMotor v.0.1.3.11-1(alpha)
+     MikroMike ProspectMotor v.0.1.3.11-2(alpha)
    </span>
    @auth
      <div class=" ml-4 mr-4  p-4">
