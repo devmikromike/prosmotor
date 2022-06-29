@@ -47,6 +47,7 @@
                   'placeholder' =>  __('messages.placeholder.name'),
                  ])
             </div>
+         @auth
             <div class="mt-2  flex flex-1   ">
                @livewire('search-by-timeframe',
                [
@@ -54,6 +55,7 @@
                 'placeholder2' =>  __('messages.placeholder.end'),
                ])
             </div>
+          @endauth
           </div>
           <div class="container mt-4 flex flex-col mx-auto bg-gray-200 ">
             <div class="flex mt-4 flex-1 mb-2 ml-2 ">

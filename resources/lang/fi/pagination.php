@@ -13,11 +13,10 @@ return [
     |
     */
 
-    'previous' => '&laquo; Previous',
-    'next' => 'Next &raquo;',
-    'showing' => 'showing',
-    'to' => 'to',
-    'of' => 'of',
-    'results' => 'results'
-
+    'previous' => '&laquo; Edellinen',
+    'next' => 'Seuraava &raquo;',
+    'showing' => 'Näyttä tuloksia',
+    'to' => '->',
+    'of' => 'Kokonaistuloksien määrä',
+    'results' => 'kpl'
 ];

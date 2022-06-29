@@ -10,7 +10,7 @@ class City extends Component
 {
    use WithPagination;
    public $city;
-   // public $citynames = array();
+   private $citynames;
 
     public function mount()
     {
@@ -22,8 +22,14 @@ class City extends Component
     }
     public function render()
     {
+        $cities = CityList::orderBy('name', 'asc');
+        $citynames = $cities->paginate(10);
+        //   $this->citynames = $citynames->toArray();
+        $this->citynames = $citynames;
+
+
         return view('livewire.search.city', [
-          'citynames' => CityList::paginate(10)
+          'citynames' => $this->citynames
         ]);
     }
 }
