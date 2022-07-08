@@ -16,17 +16,13 @@
                 </div>
                  @endif
               @endforeach
-              @auth
-                @env('local')
-                <p>You are currently in local dev environment as Logged User</p>
-                @endenv
-              @endauth
+           
               @guest
                 @env('local')
-                <p>You are currently in local dev environment as Guest User</p>
+                <p>  {{__('env.local')}} </p>
                 @endenv
                 @env('alpha')
-                <p>You are currently in alpha environment as Guest User</p>
+                <p>  {{__('env.alpha')}} </p>
                 @endenv
               @endguest
             </div>
