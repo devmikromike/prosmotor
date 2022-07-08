@@ -39,6 +39,7 @@ class Search extends Model
     public $counter = 1;
     public $lastRowId;
     public $lastRow;
+
 /*  Four API Call to Api Bridge. */
     public function perName($name)
     {
@@ -51,7 +52,6 @@ class Search extends Model
                         Log::info(' true; checkStatus for '.$name.' - '.$results);
                        return $results;
                      }
-
                        Log::info(' false; checkStatus for '.$name);
                         //Log::info(' false; checkStatus for '.$name.' - '.$response->json());
                      return $response->json();   /// Array or Object (JSON)
@@ -95,6 +95,9 @@ class Search extends Model
         Log::info('step 27: Send request to API Bridge: '.$code.' : '.$bssCode);
       if($response = Http::get('http://api.mikromike.fi/api/SearchByPostalCode/'.$code.'/'.$bssCode)){
           Log::info('step 28: get response from API Bridge to perPostalCodeWithBssCode!' );
+
+      //    dd($response['Response'] );
+
             $results = (new SELF())->resPostalCodeWithBssCode($response);
           return 'DONE reponse';
         }
@@ -102,8 +105,12 @@ class Search extends Model
     }
     public function resPostalCodeWithBssCode($response)
     {
+
+
+
       if($results =  (new SELF())->checkStatus($response))
       {
+
         Log::info(' true; checkStatus for '.$vatId.' - '.$results);
         return $results;
       }
@@ -151,16 +158,18 @@ class Search extends Model
         }
         return 1;
     }
-
      public function checkStatus($response)
      {
         Log::info('Checking response status...');
-
             $results = (new SELF())->statusData($response);
+
+
             $data = (new SELF())->dataResultExtraction($results);
+
           if($data)
           {
-            $resp = (new SELF())->dataExtraction($results);
+            // $resp = (new SELF())->dataExtraction($results);
+              $resp = (new SELF())->dataExtraction($data);
             $sum = (new SELF())->summaer($resp);
             $res = (new SELF())->singleOrList($sum, $resp);
               Log::info('Response status COMPLETED...');
@@ -170,10 +179,11 @@ class Search extends Model
          return $res ='';
        }
      }
-     public function dataExtraction($results)
+     public function dataExtraction($data)
      {
+      //$response = $results['Response']['Response'];
+      $response = $data['Response'];
 
-       $response = $results['Response']['Response'];
        return $response;
      }
      public function dataResultExtraction($results)
@@ -194,6 +204,8 @@ class Search extends Model
      }
     public function singleOrList($sum, $response)
     {
+      dump($sum, $response);
+
       if($sum === 1)
       {
       //   Log::info('Response Sum: '.$sum);
@@ -294,8 +306,6 @@ class Search extends Model
                }
                foreach ($prosModelArray as $pros)
                {
-
-
                   $results =  Arr::exists($pros, 'prospect');
 
                   if ($results)
@@ -310,9 +320,6 @@ class Search extends Model
                   // end of IF
                   }
                }
-
-
-
 
               if(is_array($data['businessLines'])){
                 $businessLines = $data['businessLines'];
@@ -346,6 +353,7 @@ class Search extends Model
                       }
                       //  if(is_array($data['addresses'])){
                        if(!empty($data['addresses'])){
+
                       $location = (new Location())->extractLocation($data, $propectId);
                      }
 
@@ -371,9 +379,9 @@ class Search extends Model
     }
     public function statusData($response)
     {
-       $statusMsg = $response->json('Status_message');
+       $statusMsg = $response->getReasonPhrase();
         // Get status code from Response.
-        $resCode = $response->json('Status');
+        $resCode = $response->getStatusCode();
 
         if($resCode === 200){
           Log::info('step 29:  response status: [OK]');
@@ -385,6 +393,7 @@ class Search extends Model
           );
         } else {
                 if($resCode === 404){
+
                   Log::info('*************');
                   Log::info('response status: [ERROR]');
                   Log::error('Error with response status: '.$resCode);
@@ -425,6 +434,8 @@ class Search extends Model
                $statusMsg = $response->json('Status_message');
                $errors =  Arr::exists($response, 'Errors');
                $response = '';
+               // 204 - " no content"
+
                if($errors){
                  foreach ($errors as $error)
                  {

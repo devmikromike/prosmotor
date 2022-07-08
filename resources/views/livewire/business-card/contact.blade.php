@@ -3,9 +3,10 @@
   @if($tab == 'contact')
     <div class="tab-pane fade show {{ (Route::currentRouteName() == 'contact') ? 'active' : '' }}"
       id="contact" role="tabpanel">
-      Contact
+      <p>   Tab Panel title: Contact </p>
+
       <div class="">
-        Huhuu
+        <p> inside component: Contact</p>
       </div>
     </div>
   @endif
