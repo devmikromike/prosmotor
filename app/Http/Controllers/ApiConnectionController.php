@@ -19,6 +19,11 @@ class ApiConnectionController extends Controller
         return ('Done');
     }
 
+    public function test()
+    {
+      // (new Search())->perVatID($vatId);
+        return ('Api connectio OK!');
+    }
     /**
      * Show the form for creating a new resource.
      *
