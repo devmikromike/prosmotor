@@ -25,9 +25,21 @@ Route::get('dev-login', function () {
     auth()->loginUsingId(App\Models\User::first());
     return redirect()->to('/');
 });
+Route::post('/contact', function (Request $request) {
+      $contact = $request->validate([
+        'name' => 'required',
+        'email' => 'required|email',
+        'phone' => 'required',
+        'message' => 'required',
+    ]);
+
+
+    return back()->with('success_message', 'We received your message successfully and will get back to you shortly!');
+});
+
 
 Route::get('/',[HomeController::class, 'index'])->name('public');
-
+Route::get('/landing',[HomeController::class, 'landing'])->name('landing');
 Route::get('/config',[HomeController::class, 'config'])->name('config');
 
 Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controllers\LanguageController@switchLang']);

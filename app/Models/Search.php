@@ -204,7 +204,7 @@ class Search extends Model
      }
     public function singleOrList($sum, $response)
     {
-      dump($sum, $response);
+      
 
       if($sum === 1)
       {

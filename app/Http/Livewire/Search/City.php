@@ -54,6 +54,8 @@ class City extends Component
     {
       return view('livewire.search.city', [
         'citynames' => $this->cities
-      ]);
+      ])
+      ->layout('landingpage.home')
+      ->slot('home');
     }
 }

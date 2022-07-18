@@ -1,37 +1,6 @@
  @extends('parts.app')
     @section ('body')
-          <div class="flex flex-col mt-4">
-              <div class="flex text-black ml-4 mr-4">
-                @foreach (Config::get('languages') as $lang => $language)
-                  @if ($lang != App::getLocale())
-                  {{  Config::get('languages')[App::getLocale()]['message']}}
-                 <div class="mr-4 ml-4  ">
-                      <a class="flex" href="{{ route('lang.switch', $lang) }}">
-                    {{ Config::get('languages')[App::getLocale()]['display'] }}
-                      <div class="mb-1">
-                      <img src="{{ asset('icon/'.Config::get('languages')[App::getLocale()]['flag-icon'].'.' .'svg') }}"
-                             width="10" height="10"/>
-                     </div>
-                     </a>
-                </div>
-                 @endif
-              @endforeach
-           
-              @guest
-                @env('local')
-                <p>  {{__('env.local')}} </p>
-                @endenv
-                @env('alpha')
-                <p>  {{__('env.alpha')}} </p>
-                @endenv
-              @endguest
-            </div>
-                <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto mb-3 " >
-                  {{__('messages.header')}} <br>
-                  {{__('messages.headerline2')}}<br>
-                   <p class="mt-2">{{__('messages.subheader')}}</p>
-                 </span>
-          </div>
+      
 
           @auth
           <div class=" container mx-auto text-center flex flex-row mt-4   bg-gray-200">
@@ -80,9 +49,14 @@
                     {{__('messages.title')}}</span>
               </div>
               <div class="">
+
                 @livewire('prospect.index')
               </div>
+
                 @livewire('prospect.searchlist')
             </div>
+        </div>
+        <div class="container mt-4 mx-auto ">
+          @livewire('contact-form')
         </div>
 @endsection

@@ -18,9 +18,12 @@
         {{--              @include('livewire.prospect.businessfields')  --}}
         {{--        </div>     --}}
             </div>
+            <p>SEARCHLIST</p>
+            <hr>
             @foreach($newproslist['proslist'] as $prospect)
               @if(!empty($prospect))
                     @include ('livewire.prospect.table')
+                     {{ dd($codelist); }}
               @endif
             @endforeach
       </div>

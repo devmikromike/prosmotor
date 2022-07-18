@@ -33,7 +33,8 @@
                                  {{  $pros['city']  }}
                                 @endif
                                 <span class ="text-right">
-                                    <a href="businesscard/{{ $pros['id'] }}"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                    <a href="businesscard/{{ $pros['id'] }}"
+                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                 </span>
                               </td>
                         </tr>

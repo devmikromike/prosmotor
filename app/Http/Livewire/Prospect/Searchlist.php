@@ -17,6 +17,7 @@ class Searchlist extends Component
      public array $citylists = [];
      public array $proslists;
      public array $proslist;
+     public array $codelist;
      public array $prospectarray = [];
      public array $pros = [];
      private $myindex;
@@ -34,11 +35,12 @@ class Searchlist extends Component
     public function proslistCreated($sendproslist)
     {
       $this->newproslist = $sendproslist;
-       
+
     }
     public function codelistCreated($sendcodelist)
     {
       $this->newcodelist = $sendcodelist;
+
     }
     public function citylistCreated($sendcitylist)
     {
@@ -56,6 +58,7 @@ class Searchlist extends Component
       $pros = [];
       $prospectlist = [];
 
+        dump($this->newcodelist );
 
       $step1 =  Arr::exists($this->newproslist, 'proslist'); //<- input
       foreach ($this->newproslist['proslist'] as $proslist) {
@@ -75,6 +78,9 @@ class Searchlist extends Component
                            if($city === $pros['city'])
                          {
                            $prospectlist[] = $pros; // Works ! -> output
+
+                             dump($this->newcodelist );
+
                          } else { }
 
                       }else {
@@ -91,6 +97,8 @@ class Searchlist extends Component
      session()->flash('message', 'Lista päivitetty!');
        $newproslist['proslist'] = $prospectlist;
        $this->newproslist =  $newproslist;
+       $codelist = $this->newcodelist;
+
        $this->refresh();
   //   return $newproslist;
   } // end of function

@@ -14,6 +14,10 @@ class HomeController extends Controller
    {
      return view('welcome');
    }
+   public function landing()
+   {
+     return view('landing');
+   }
    public function config()
    {
      Artisan::call('cache:clear');
