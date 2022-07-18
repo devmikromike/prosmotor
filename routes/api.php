@@ -15,7 +15,7 @@ use App\Http\Controllers\ApiConnectionController;
 |
 */
 
-Route::get('/',[ApiConnectionController::class,'index']);
+Route::get('/{$vatId}',[ApiConnectionController::class,'index']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

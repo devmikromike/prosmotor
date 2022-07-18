@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\apiConnection;
 use Illuminate\Http\Request;
+use App\Models\Search;
 
 class ApiConnectionController extends Controller
 {
@@ -12,9 +13,10 @@ class ApiConnectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($vatId)
     {
-      return ('Done');
+      (new Search())->perVatID($vatId);
+        return ('Done');
     }
 
     /**
