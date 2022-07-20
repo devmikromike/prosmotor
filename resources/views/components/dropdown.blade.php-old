@@ -1,8 +1,0 @@
-<div x-data ="{ open:false}" @click.away="open = false">
-  <div class="" @click="open = ! open">
-     {{ $trigger}}
-  </div>
-  <div class="bg-white rounded shadow-md py-2 " x-show="open">
-     {{ $slot }}
-  </div>
-</div>

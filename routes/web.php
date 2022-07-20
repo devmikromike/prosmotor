@@ -7,6 +7,7 @@ use App\Http\Controllers\ProspectController;
 
 //  Livevire Components
 use App\Http\Livewire\BusinessCard;
+use App\Http\Livewire\SearchByVatid;
 //
 // use
 /*
@@ -59,6 +60,7 @@ Route::get('/SearchByPostalCode/{code}/{bssCode}',[SearchController::class, 'per
 
 Route::get('/countProspects',[SearchController::class, 'howManyProspects'])->name('howManyProspects');
 //howManyProspects
-/// Livewire component routes /////
 
+/// Livewire component routes /////
+Route::get('/search-by-id', SearchByVatid::class)->name('byVatId');
 Route::get('/businesscard/{pros_id}', BusinessCard::class)->name('businesscard');
