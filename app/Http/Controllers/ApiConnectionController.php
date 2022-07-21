@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\apiConnection;
 use Illuminate\Http\Request;
 use App\Models\Search;
+use App\Models\ProsByVatId;
 
 class ApiConnectionController extends Controller
 {
