@@ -8,6 +8,7 @@ use App\Http\Controllers\ProspectController;
 //  Livevire Components
 use App\Http\Livewire\BusinessCard;
 use App\Http\Livewire\SearchByVatid;
+use App\Http\Livewire\Landingpage;
 //
 // use
 /*
@@ -33,14 +34,12 @@ Route::post('/contact', function (Request $request) {
         'phone' => 'required',
         'message' => 'required',
     ]);
-
-
     return back()->with('success_message', 'We received your message successfully and will get back to you shortly!');
 });
 
 
 Route::get('/',[HomeController::class, 'index'])->name('public');
-Route::get('/landing',[HomeController::class, 'landing'])->name('landing');
+Route::get('/landing',[HomeController::class, 'landing'])->name('landingpage');
 Route::get('/config',[HomeController::class, 'config'])->name('config');
 
 Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controllers\LanguageController@switchLang']);

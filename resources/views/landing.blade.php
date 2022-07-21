@@ -11,9 +11,9 @@
      </x-landingpage.header>
      <div class="flex flex-row ">
        <div class="basis-1/4">
-         <aside id="sidebar" class="px-6 py-2 bordr border-2 border-blue-200
+         <aside id="sidebar" aria-label="Sidebar" class="px-3 py-2 bordr border-2 border-blue-200
                                    bg-blue-300">
-          <x-sidebar></x-sidebar>
+               <x-sidebar></x-sidebar>
          </aside>
        </div>
        <div class="px-6 py-2 mx-4 text-center font-semibold text-xl basis-1/2">
