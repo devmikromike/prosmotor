@@ -39,7 +39,7 @@ class ProsBlackListed extends Model
       return $errors = array(
         'message' => 'Company blacklisted',
         'vatId' => $business['vatId'],
-        'reason' => 'Company has' .$business['description']
+        'reason' => 'Company has ' .$business['description']
       );
     }
     public function liquidations($data)
@@ -72,7 +72,6 @@ class ProsBlackListed extends Model
             Log::info(' Process Response  Status for!  '.$model->status);
           return 0;
         }
-
       return 0;
     }
     public function checkLastType()

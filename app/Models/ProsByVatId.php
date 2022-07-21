@@ -36,7 +36,7 @@ class ProsByVatId extends Model
         Log::info('  VatId not found from  Prospect - Continue with API request: '.$vatId);
         return $response;
       }
-        Log::info('Done, no Vat Id Found');
+        Log::info('Done, no Vat Id Found: '.$vatId);
       return 'Done, no Vat Id Found';
     }
 }

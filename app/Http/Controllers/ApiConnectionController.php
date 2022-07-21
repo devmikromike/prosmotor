@@ -16,7 +16,8 @@ class ApiConnectionController extends Controller
     public function index($vatId)
     {
       // dd($vatId);
-      (new Search())->perVatID($vatId);
+      (new ProsByVatId())->search($vatId);
+    //  (new Search())->perVatID($vatId);
         return ('Done');
     }
 
