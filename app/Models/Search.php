@@ -384,8 +384,8 @@ class Search extends Model
         $resCode = $response->status();
 
 
-
-        if($resCode['status'] ===  200){
+        //   if($resCode['status'] ===  200){
+        if($resCode ===  200){
           Log::info('step 29:  response status: [OK]');
 
           return $results = array(

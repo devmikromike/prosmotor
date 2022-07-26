@@ -21,7 +21,8 @@
        </div>
        <div class="px-6 py-2 mx-4 text-center font-semibold text-xl basis-1/2">
           <div class="">
-               @livewire('tables.table')
+          {{--   @livewire('tables.table') --}}
+                @livewire('propect.show-pros')
           </div>
        </div>
    </div>

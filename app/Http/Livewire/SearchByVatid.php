@@ -4,7 +4,8 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 // use App\Http\Livewire\Prospect\Show;
-use App\Http\Livewire\Prospect\Table;
+//use App\Http\Livewire\Prospect\Table;
+use App\Http\Livewire\Prospect\ShowPros;
 use App\Models\Search;
 use App\Models\ProsByVatId;
 use Illuminate\Support\Facades\Http;
@@ -28,6 +29,8 @@ class SearchByVatid extends Component
     public $results = array();
     public $statusMessage;
     public $nameLink;
+    public $pros  = array();
+
 
     protected $rules = [
     'vatId' => 'required'
@@ -53,16 +56,27 @@ class SearchByVatid extends Component
       {
          $httpRes = (new Search())->statusData($this->response);
 
-         if($httpRes['Status']['status'] === 200)
+         if($httpRes['Status'] === 200)
          {
            $data = $this->response;
+
+            if(!empty($data['Response']['results']))
+            {
+
+            $pros = $data['Response']['results'];
+        //    dd($pros);
+
+          //   return $pros = $data['Response']['results']->json();
+          // $this->emit('byVatId', $this->vatId, $data);     // sent to show component
+             return $pros;
+            }
+
 
            // if(is_array($dataresult))
           //   if(is_array($data['results']))
             // {
             //   $resultsExist =  Arr::exists($data, 'results');
 
-               $this->emit('byVatId', $data->id, $data);     // sent to show component
                return session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
           //   }
 

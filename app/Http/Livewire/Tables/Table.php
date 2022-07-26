@@ -22,6 +22,9 @@ class Table extends Component
 
     public function  byVatId($id, $prosmodel = null )
     {
+
+      dd($id);
+
        if(!empty($prosmodel)){
            $prosmodel['process_status'] = 'OK';
            $bssField = Prospect::find($id)->bssCodeField()->first();
@@ -41,7 +44,7 @@ class Table extends Component
 
            $this->prosmodel =  $prosmodel;
            $this->refresh();
-            
+
            return $prosmodel;
          }else {
            $this->vatId = $vatId;

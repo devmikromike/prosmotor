@@ -14,21 +14,21 @@ use App\Http\Livewire\Landingpage;
 
 if (env('APP_ENV') === 'alpha')  {
   Route::get('/', function () {
-    Route::get('/landing',[HomeController::class, 'landing'])->name('landingpage');
+
       return view('welcome');
   });
 };
-/*
-Route::get('/', function () {
-
-    return view('welcome');
-}); */
 
 if (env('APP_ENV') === 'local')  {
  Route::get('/',[HomeController::class, 'landing'])->name('landingpage');
   //  URL::forceSchema('https');
 };
 
+/*
+Route::get('/', function () {
+
+    return view('welcome');
+}); */
 
 Route::get('dev-login', function () {
     abort_unless(app()->environment('local'), 403);
