@@ -14,7 +14,7 @@ use App\Http\Livewire\Landingpage;
 
 if (env('APP_ENV') === 'alpha')  {
   Route::get('/', function () {
-
+    Route::get('/landing',[HomeController::class, 'landing'])->name('landingpage');
       return view('welcome');
   });
 };
