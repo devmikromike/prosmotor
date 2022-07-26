@@ -3,5 +3,8 @@
 return [
   'vatid' => 'Vat Id:',
   'name' => 'Company name',
-  'city' => 'city',
+  'city' => 'City',
+  'registerDate' => 'Registration Date',
+  'postal' => 'Postal address',
+  'visit' => 'Visit address',
  ];

@@ -11,11 +11,11 @@ use App\Http\Livewire\SearchByVatid;
 use App\Http\Livewire\Landingpage;
 //
 // use
-/*
+
 Route::get('/', function () {
 
     return view('welcome');
-}); */
+});
  /*
 if (env('APP_ENV') === 'production')  {
     URL::forceSchema('https');
@@ -38,8 +38,8 @@ Route::post('/contact', function (Request $request) {
 });
 
 
-Route::get('/',[HomeController::class, 'index'])->name('public');
-Route::get('/landing',[HomeController::class, 'landing'])->name('landingpage');
+Route::get('/public',[HomeController::class, 'index'])->name('public');
+// Route::get('/',[HomeController::class, 'landing'])->name('landingpage');
 Route::get('/config',[HomeController::class, 'config'])->name('config');
 
 Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controllers\LanguageController@switchLang']);
@@ -62,4 +62,4 @@ Route::get('/countProspects',[SearchController::class, 'howManyProspects'])->nam
 
 /// Livewire component routes /////
 Route::get('/search-by-id', SearchByVatid::class)->name('byVatId');
-Route::get('/businesscard/{pros_id}', BusinessCard::class)->name('businesscard');
+//Route::get('/businesscard/{pros_id}', BusinessCard::class)->name('businesscard');

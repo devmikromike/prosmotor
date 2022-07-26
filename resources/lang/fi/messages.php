@@ -17,4 +17,5 @@ return [
     'placeholder.name' => 'Nimellä tai osa-nimellä.',
     'placeholder.start' => 'Aloituspäivä 2014-01-01.',
     'placeholder.end' => 'Päättymispäivä 2022-01-01.',
+    
 ];

@@ -2,5 +2,9 @@
 
 return [
 'title' => 'Hae Tietoja seuraavasti:',
-'vatid' => 'Y-tunnuksella:'
+'vatid' => 'Y-tunnuksella.',
+'name' =>  'Nimellä tai osa nimellä.',
+'timeFrame' =>  'Aika välillä.',
+'city' =>  'Kaupunki kohtaisesti.',
+
  ];

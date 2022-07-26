@@ -1,6 +1,6 @@
  @extends('parts.app')
     @section ('body')
-      
+
 
           @auth
           <div class=" container mx-auto text-center flex flex-row mt-4   bg-gray-200">
@@ -56,7 +56,5 @@
                 @livewire('prospect.searchlist')
             </div>
         </div>
-        <div class="container mt-4 mx-auto ">
-          @livewire('contact-form')
-        </div>
+      
 @endsection

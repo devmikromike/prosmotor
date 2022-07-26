@@ -26,6 +26,7 @@ class ProsByVatId extends Model
       if($response = (new Prospect())->getId($vatId))
        {
           Log::info(' VatId has found from  Prospect  '.$vatId);
+          $response['status'] = 200;
           return $response;
        }
         Log::info('  VatId not found from  Prospect '.$vatId);

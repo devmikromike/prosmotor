@@ -19,6 +19,6 @@ return [
     'email' => 'Please Login with Your Email address.',
     'username' => 'Please Login with Your Username.',
     'password' => 'Please enter Your valid password.',
-    'submit' => 'Submit',
+    'submit' => 'Login',
     'logout' => 'Log Out'
 ];

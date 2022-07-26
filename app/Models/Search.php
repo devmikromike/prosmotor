@@ -66,7 +66,8 @@ class Search extends Model
          if($response = Http::get('http://api.mikromike.fi/api/SearchVatID/'.$vatId)){
              Log::info(' 34: get response from API Bridge: '.$vatId);
              (new SELF())->resPerVatId($response, $vatId);
-          return 1;
+
+          return $response;
         }
       return 0;
     }
@@ -105,9 +106,6 @@ class Search extends Model
     }
     public function resPostalCodeWithBssCode($response)
     {
-
-
-
       if($results =  (new SELF())->checkStatus($response))
       {
 
@@ -204,7 +202,7 @@ class Search extends Model
      }
     public function singleOrList($sum, $response)
     {
-      
+
 
       if($sum === 1)
       {
@@ -379,20 +377,24 @@ class Search extends Model
     }
     public function statusData($response)
     {
-       $statusMsg = $response->getReasonPhrase();
+       // $statusMsg = $response->getReasonPhrase();
         // Get status code from Response.
-        $resCode = $response->getStatusCode();
 
-        if($resCode === 200){
+
+        $resCode = $response->status();
+
+
+
+        if($resCode['status'] ===  200){
           Log::info('step 29:  response status: [OK]');
 
           return $results = array(
             'Status' => $resCode,
-            'Status_message' => $statusMsg,
+            'Status_message' => 'OK',
             'Response' => $response
           );
         } else {
-                if($resCode === 404){
+                if($resCode['status'] === 404){
 
                   Log::info('*************');
                   Log::info('response status: [ERROR]');
@@ -401,11 +403,11 @@ class Search extends Model
 
                   return $results = array(
                     'Status' => $resCode,
-                    'Status_message' => $statusMsg,
+                    'Status_message' => 'Not Found',
                     'Response' => $response
                   );
                 }
-                if($resCode === 422){
+                if($resCode['status'] === 422){
                   Log::info('*************');
                   Log::info('response status: [ERROR]');
                   Log::error('Error with response status: '.$resCode);
@@ -413,11 +415,11 @@ class Search extends Model
 
                   return $results = array(
                     'Status' => $resCode,
-                    'Status_message' => $statusMsg,
+                    'Status_message' => 'Too many Resquest',
                     'Response' => $response
                   );
                 }
-                if($resCode === 500){
+                if($resCode['status'] === 500){
                   Log::info('*************');
                   Log::info('response status: [ERROR]');
                   Log::error('Error with response status: '.$resCode);
@@ -425,15 +427,17 @@ class Search extends Model
 
                   return $results = array(
                     'Status' => $resCode,
-                    'Status_message' => $statusMsg,
+                    'Status_message' => 'External Server Error: Not Response! ',
                     'Response' => $response
                   );
                 }
                 /// http error code other than 200
-               $resCode = $response->json('Status');
-               $statusMsg = $response->json('Status_message');
-               $errors =  Arr::exists($response, 'Errors');
-               $response = '';
+// dd($resCode['status']);
+
+      //         $resCode = $response->json('Status');
+      //         $statusMsg = $response->json('Status_message');
+      //         $errors =  Arr::exists($response, 'Errors');
+      //         $response = '';
                // 204 - " no content"
 
                if($errors){
@@ -444,7 +448,7 @@ class Search extends Model
                }
                return $results = array(
                  'Status' => $resCode,
-                 'Status_message' => $statusMsg,
+                 'Status_message' => 'Unknow Error !, Server made Bubuu',
                  'Response' => $response
                );
        }

@@ -3,7 +3,8 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Http\Livewire\Prospect\Show;
+// use App\Http\Livewire\Prospect\Show;
+use App\Http\Livewire\Prospect\Table;
 use App\Models\Search;
 use App\Models\ProsByVatId;
 use Illuminate\Support\Facades\Http;
@@ -22,25 +23,16 @@ class SearchByVatid extends Component
     public $vatId;
     public $vatID;
     public $SearchByVatId;
-    public $response;
+    private $response;
     public $data = array();
     public $results = array();
     public $statusMessage;
+    public $nameLink;
 
     protected $rules = [
     'vatId' => 'required'
     ];
-    public function emptyResponse()
-    {
-      if(!empty( $this->response['Response']))
-      {
-        return $statusMessage = '';
-      }else {
 
-         $statusMessage = $this->response['Status_message'];
-      return  $statusMessage = $this->response['Status_message'];
-      }
-    }
     public function mount()
     {
       //  $this->search = new Search(); // Move to UP
@@ -54,17 +46,44 @@ class SearchByVatid extends Component
       $this->validate();
         // (new Search())->perVatID($this->vatId);
            Log::info(' Send Vat id to Process! '.$this->vatId);
-        $response = (new ProsByVatId())->search($this->vatId);
-          Log::info(' Response from Process SearchByVatid-Component =  '.$response);
+      $this->response = (new ProsByVatId())->search($this->vatId);   // new  process search
+          Log::info(' Response from Process SearchByVatid-Component =  '.$this->response);
 
-        if(!Empty($response))    // Model not empty!?
+        if(!empty($this->response))    // Model not empty!?
       {
-          $this->emit('byVatId', $this->vatId);     // sent to show component
+         $httpRes = (new Search())->statusData($this->response);
+
+         if($httpRes['Status']['status'] === 200)
+         {
+           $data = $this->response;
+
+           // if(is_array($dataresult))
+          //   if(is_array($data['results']))
+            // {
+            //   $resultsExist =  Arr::exists($data, 'results');
+
+               $this->emit('byVatId', $data->id, $data);     // sent to show component
+               return session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
+          //   }
+
+
+         }
+      //     dd($httpRes['Status']);
+           // dd($this->response['Response']['results']);
+
       }
       session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
     }
+    /*
       public function render()
       {
           return view('livewire.search-by-vatid');
+      } */
+      public function render()
+      {
+          return view('livewire.search-by-vatid');
+      //     ->extends('components.landingpage')
+         // ->layout('landing');
+          //  ->slot('home');
       }
 }

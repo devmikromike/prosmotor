@@ -23,7 +23,8 @@ class Prospect extends Model
     public $latest;
 
     protected $fillable = [
-      'name', 'vatId', 'bssCode','www','registrationDate'
+      'name', 'vatId', 'bssCode','www','registrationDate',
+      'status'
     ];
 
     public function contacts()
@@ -144,13 +145,17 @@ class Prospect extends Model
           ]);
        }
    }
+   public function status()
+   {  // retun status = 200
+     $response['status'] = 200;
+     return $response;
+   }
 
    public function getId($vatId)
    {
-      $pros = (new SELF())->where('vatId', $vatId )->first();
-      $save = $pros;
 
-      return $save;
+      $pros = (new SELF())->where('vatId', $vatId )->first();
+      return $pros;
    }
    public function getVatId($propectId)
    {

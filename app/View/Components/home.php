@@ -5,7 +5,7 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 
 
-class landingpage extends Component
+class home extends Component
 {
   //  public $cityList;
     public $nameLink = '';
@@ -31,6 +31,6 @@ class landingpage extends Component
     public function render()
     {
 
-        return view('components.landingpage');
+        return view('components.home');
     }
 }
