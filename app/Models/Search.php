@@ -382,7 +382,7 @@ class Search extends Model
        // $statusMsg = $response->getReasonPhrase();
         // Get status code from Response.
 
-dd($response->status());
+         
         $resCode = $response->status();
 
 
