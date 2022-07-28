@@ -44,7 +44,7 @@ Route::post('/contact', function (Request $request) {
     ]);
     return back()->with('success_message', 'We received your message successfully and will get back to you shortly!');
 });
-Route::get('start/{vatID}',[SearchController::class, 'perVatID'])->name('start');
+Route::get('start/{$vatID}',[SearchController::class, 'perVatID'])->name('start');
 
 Route::get('/public',[HomeController::class, 'index'])->name('public');
 // Route::get('/',[HomeController::class, 'landing'])->name('landingpage');
