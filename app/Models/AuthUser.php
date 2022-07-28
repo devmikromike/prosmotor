@@ -4,13 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
-class Company extends Model
+class AuthUser extends Model
 {
     use HasFactory;
-
-    public function Users()
-  { // Many to many.
-
-  }
+    protected $fillable=['last_login_time', 'last_login_ip', 'user_id'];
 }
