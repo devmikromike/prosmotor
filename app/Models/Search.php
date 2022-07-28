@@ -16,6 +16,7 @@ use App\Models\Register;
 use App\Models\Searchlist;
 use App\Models\TimeFrame;
 use App\Models\BatchProcessing;
+use App\Models\SearchByVatId;
 use App\Jobs\TimeFrameJob;
 use App\Jobs\SearchListJob;
 use App\Jobs\ApiBridgeJob;

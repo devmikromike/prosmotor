@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Search;
+use App\Models\SearchByVatId;
 use App\Models\Prospect;
 use App\Models\Proscounter;
 
@@ -11,7 +12,7 @@ class SearchController extends Controller
 {
     public function perVatID($vatID)
     {
-      dd($vatID);
+
 
       if($response = (new prosByVatId())->search($vatID)){
           return $response;
