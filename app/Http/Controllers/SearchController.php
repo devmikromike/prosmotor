@@ -11,7 +11,7 @@ class SearchController extends Controller
 {
     public function perVatID($vatID)
     {
-      dump($vatID);
+      dd($vatID);
 
       if($response = (new prosByVatId())->search($vatID)){
           return $response;
