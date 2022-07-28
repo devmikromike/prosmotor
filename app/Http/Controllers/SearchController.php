@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Search;
 use App\Models\SearchByVatId;
+use App\Models\ProsByVatId;
 use App\Models\Prospect;
 use App\Models\Proscounter;
 
