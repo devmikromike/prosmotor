@@ -14,7 +14,7 @@ class ProsByVatId extends Model
 
     public function search($vatId)
     {
-      dump($vatId);
+       
 
       // Search from Blacklist
          Log::info(' ProsByVatId Process! '.$vatId);
