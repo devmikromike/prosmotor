@@ -13,8 +13,7 @@ class ProsByVatId extends Model
     use HasFactory;
 
     public function search($vatId)
-    {
-       
+    {      
 
       // Search from Blacklist
          Log::info(' ProsByVatId Process! '.$vatId);
