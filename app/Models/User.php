@@ -21,26 +21,13 @@ class User extends Authenticatable
         'last_login_ip',
         'last_login_time'
     ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
     public function Roles()
   {
 
@@ -49,5 +36,19 @@ class User extends Authenticatable
   { // Many to many.
 
   }
- 
+  public function LoggedIn($user)
+  {
+   // Return Company_id
+  }
+  public function LoggedInUser($company_id)
+  {
+   // Return Firm_id
+   // Firm_id  Return tenant_id
+   // -> Firm_list [] -> // Return AuxCompanies []
+  }
+  public function is_ActiveUser($user)
+  {
+   // Return tinyInt 0 / 1
+  }
+
 }
