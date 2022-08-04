@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserProfilesTable extends Migration
+class CreateCompanyLisensesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateUserProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_profiles', function (Blueprint $table) {
+        Schema::create('company_lisenses', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->nullable();
-            $table->string('profile_id')->nullable();
-            $table->timestamps();           
+            $table->string('company_id')->nullable();
+            $table->string('lisense_id')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -28,6 +28,6 @@ class CreateUserProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_profiles');
+        Schema::dropIfExists('company_lisenses');
     }
 }

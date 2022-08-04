@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Models\Lisense;
+use App\Models\CompanyLisense;
 
 class Company extends Model
 {
@@ -17,10 +19,20 @@ class Company extends Model
       'marketing_name','tenant_id'
     ];
 
-    public function Users()
+    public function users()
   { // Many to many.
-    return hasMany(User::class);
+    return $this->hasMany(User::class);
   }
+
+    public function lisenses()
+  { // returns Collection
+    return $this->hasMany(CompanyLisense::class);
+  }
+  public function lisense()
+  { // return One Lisense 
+    return $this->hasOne(Lisense::class);
+  }
+
   public function firmId($query, $tenantId)
   {  /* Return firmId */
     // return hasMany(User::class);

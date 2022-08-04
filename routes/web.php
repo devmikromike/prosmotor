@@ -15,12 +15,12 @@ use App\Http\Livewire\Landingpage;
 if (env('APP_ENV') === 'alpha')  {
   Route::get('/', function () {
 
-      return view('welcome');
+      return view('welcome')->name('welcome');
   });
 };
 
 if (env('APP_ENV') === 'local')  {
- Route::get('/',[HomeController::class, 'landing'])->name('landingpage');
+ Route::get('/',[HomeController::class, 'landing'])->name('welcome');
   //  URL::forceSchema('https');
 };
 

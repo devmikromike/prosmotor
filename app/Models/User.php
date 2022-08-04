@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\AuthUser;
+use App\Models\Profile;
 
 class User extends Authenticatable
 {
@@ -28,6 +29,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    protected $dates = ['last_login_time'];
+
     public function Roles()
   {
 
@@ -49,6 +52,10 @@ class User extends Authenticatable
   public function is_ActiveUser($user)
   {
    // Return tinyInt 0 / 1
+  }
+  public function profile()
+  {
+    return $this->hasMany(Profile::class);
   }
 
 }

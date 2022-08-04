@@ -19,12 +19,14 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 
-
 use App\Models\User;
-
+use App\Models\AuthUser;
 
 class FortifyServiceProvider extends ServiceProvider
 {
+
+    public $validLisense;
+
     /**
      * Register any application services.
      *
@@ -41,16 +43,9 @@ class FortifyServiceProvider extends ServiceProvider
       });
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
     public function boot()
     {
-      Fortify::loginView(function () {
-        return view('auth.login');
-      });
+  //      Fortify::ignoreRoutes();
 
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
@@ -63,29 +58,62 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($email.$request->ip());
         });
 
-        RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        Fortify::loginView(function () {
+          return view('auth.login');
         });
-
-        Fortify::authenticateThrough(function (Request $request) {
-          return array_filter([
-            config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
-            Features::enabled(Features::twoFactorAuthentication()) ? RedirectIfTwoFactorAuthenticatable::class : null,
-            AttemptToAuthenticate::class,
-            PrepareAuthenticatedSession::class,
-          ]);
-        });
-
 
         Fortify::authenticateUsing(function (Request $request) {
         $user = User::where('email', $request->username)
                     ->orWhere('username', $request->username)
                     ->first();
 
-        if ($user &&
-            Hash::check($request->password, $user->password)) {
-            return $user;
-        }
-      });
-    }
+          if ($user  &&
+              Hash::check($request->password, $user->password) &&
+              $user->enabled == 1){
+
+               (new AuthUser())->saveLoginDetails($user, $request);
+               $login = (new AuthUser())->loginProcess($user);
+              //
+              //   $profileCollection = $user->profile;
+              //
+              //   foreach ($profileCollection as $profile )
+              //   {
+              //     // search lisenses from company_id
+              //     // match lisense for user _id
+              //     $companyId = $profile->company_id;
+              //     $company = Company::where('id', $companyId)->first();
+              //
+              //     $lisenses = $company->lisenses()->get();
+              //       foreach ($lisenses as $key => $lisense) {
+              //
+              //         $lisenseId = $lisense->lisense_id;
+              //         $validLisense = Lisense::where('id', $lisenseId)
+              //
+              //         ->where('status', 'active')
+              //         ->where('user_id', $user->id)
+              //         ->first();
+              //
+              //           if(!empty($validLisense))
+              //           {
+              //             return $user;
+              //           }
+              //
+              //    } // // end of Lisese validation check!
+              //    return false;
+              // }
+                if(!empty($login))
+                {
+                  return $user;
+                } else {
+                return false;
+              }
+
+          }   // end of login validation check!
+            else {
+            return false;
+          }
+        }); // end of Fortify::authenticateUsing check!
+
+
+ }
 }

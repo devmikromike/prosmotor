@@ -17,6 +17,7 @@ class AddLoginDataToUsersTable extends Migration
           $table->timestamp('last_login_time')->nullable();
           $table->string('last_login_ip')->nullable();
           $table->tinyInteger('enabled')->default(1);   // Boolean = Enabled.
+             
         });
     }
 

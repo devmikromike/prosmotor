@@ -7,7 +7,7 @@ return [
     'url' => env('APP_URL', ''),
     'asset_url' => env('ASSET_URL', null),
     'timezone' => 'UTC',
-    'locale' => 'fi',
+    'locale' => 'en',
   //  'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
