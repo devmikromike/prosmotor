@@ -35,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
         return $this->->where($attribute,  'LIKE', "%{$searchTerm}%");
       }); */
 
+      $this->app->singleton(
+             \App\Responses\LoginResponse::class
+         );
+
       Builder::mixin(new SearchMacros);
    }
 

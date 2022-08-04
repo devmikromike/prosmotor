@@ -3,7 +3,7 @@
   <ul>
     @guest
     <li  class="px-4 py-4 text-purple-100 bg-purple-500">
-      <a href="/login">{{__('auth.submit')}}</a>
+      <a href="/auth/login">{{__('auth.submit')}}</a>
     </li>
     <hr>
 

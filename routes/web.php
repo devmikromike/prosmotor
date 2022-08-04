@@ -24,6 +24,10 @@ if (env('APP_ENV') === 'local')  {
   //  URL::forceSchema('https');
 };
 
+ // $this->loadRoutesFrom(__DIR__.'auth/fortify.php'); 
+
+
+
 /*
 Route::get('/', function () {
 
