@@ -5,29 +5,47 @@ namespace App\Responses;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Illuminate\Support\Facades\Log;
+use App\Models\Company;
+use App\Models\User;
+use App\Models\AuthUser;
+use App\Models\Profile;
+use App\Models\Lisense;
 
 
 class LoginResponse implements LoginResponseContract
 {
 
+  public $company = [];
     /**
      * @param  $request
      * @return mixed
      */
     public function toResponse($request)
     {
-        // replace this with your own code
-        // the user can be located with Auth facade
+        // Log::info('step 4: Login Response');
+        $user = Auth::user();
+        $profileCollection = $user->profile;
+        foreach ($profileCollection as $profile )
+        {
 
-    //    $home = Auth::user()->is_admin ? config('fortify.dashboard') : config('fortify.home');
-        //$home = Auth::user()->is_admin ? config('fortify.dashboard') : config('fortify.home');
-  Log::info('step 4');
-        dd('hit');
-            Log::info('step 4');
+          $company = Company::where('id', $profile->company_id)->first();
+            $request->session()->put('user.companyName' ,
+                                      $company->name);
+            $request->session()->put('user.ProfileId' ,
+                                      $profile->id);
+
+
+            // dd($company->name);
+
+        }
+    //    $request->session()->push('user.companyId' , $companyId);
+
 
         return $request->wantsJson()
             ? response()->json(['two_factor' => false])
-            : redirect($home);
+            : redirect()->route('welcome');
+        //    : redirect('/');
+    //          : redirect($home);
     }
 
 }

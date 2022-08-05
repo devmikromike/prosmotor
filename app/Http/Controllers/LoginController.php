@@ -12,7 +12,10 @@ use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Illuminate\Routing\Pipeline;
 use App\Http\Controllers\AuthController as Controller;
 use App\Responses\LoginResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
 use App\Http\Requests\Login;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -43,4 +46,22 @@ class LoginController extends Controller
            PrepareAuthenticatedSession::class,
        ]));
    }
+
+   /**
+ * Destroy an authenticated session.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @return \Laravel\Fortify\Contracts\LogoutResponse
+ */
+    public function destroy(Request $request): LogoutResponse
+    {
+        Auth::guard()->logout();
+          $request->session()->forget('applocale');
+          $request->session()->flush();
+          $request->session()->invalidate();
+          $data = $request->session()->all();
+  //      dd($data);
+
+              return app(LogoutResponse::class);
+    }
 }

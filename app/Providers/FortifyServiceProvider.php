@@ -72,15 +72,15 @@ class FortifyServiceProvider extends ServiceProvider
           if ($user  &&
               Hash::check($request->password, $user->password) &&
               $user->enabled == 1){
-                  Log::info('************** step 1 ****************************');
+              //    Log::info('************** step 1 ****************************');
                  (new AuthUser())->saveLoginDetails($user, $request);
-                   Log::info('************** step 2 ****************************');
+              //     Log::info('************** step 2 ****************************');
                   $login = (new AuthUser())->loginProcess($user);
 
                 //    (new AuthUser())->saveLoginDetails($user, $request);
                   if(!empty($login))
                   {
-                  Log::info('Step 3: reading service provider for Fortify');
+              //    Log::info('Step 3: reading service provider for Fortify');
 
                     return $user;
                   } else {

@@ -16,7 +16,7 @@ class AuthUser extends Model
     protected $fillable =
     ['last_login_time', 'last_login_ip', 'user_id'];
 
-    public function  saveLoginDetails($user, $request)
+    public function saveLoginDetails($user, $request)
     {
         $user['last_login_ip'] =   $request->ip();
         $user['last_login_time'] = \Carbon\Carbon::now();

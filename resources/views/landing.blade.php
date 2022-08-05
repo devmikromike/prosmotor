@@ -1,9 +1,12 @@
 
+
  <x-landingpage>
+
    @include('parts.header')
    @include('parts.message')
-     <x-landingpage.header>
 
+     <x-landingpage.header>
+       
                <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto mb-3 " >
                  {{__('messages.header')}} <br>
                  {{__('messages.headerline2')}}<br>
@@ -11,6 +14,7 @@
                 </span>
 
      </x-landingpage.header>
+
      <div class="flex flex-row ">
        <div class="basis-1/4">
          <aside id="sidebar" aria-label="Sidebar"
@@ -22,7 +26,7 @@
        <div class="px-6 py-2 mx-4 text-center font-semibold text-xl basis-1/2">
           <div class="">
           {{--   @livewire('tables.table') --}}
-               
+
           </div>
        </div>
    </div>

@@ -7,10 +7,11 @@
          (Local) -
          @endenv
          (alpha)
+         -        {{ session()->get('applocale') }} - {{ App::getLocale() }}
        </span>
        <div class="flex text-lg text-white mt-2 ml-4 mr-4 mb-4">
              @foreach (Config::get('languages') as $lang => $language)
-               @if ($lang != App::getLocale())
+               @if ($lang  != App::getLocale())
                {{  Config::get('languages')[App::getLocale()]['message']}}
               <div class="mr-4 ml-4  ">
                    <a class="flex" href="{{ route('lang.switch', $lang) }}">
@@ -41,7 +42,17 @@
         </div>
      </div>
      @auth
-       <div class=" ml-4 mr-4  mb-4 p-4">
+     <div class="text-white">
+       @if(Auth::user()->username ===  env('ADMIN_USER') )
+        {{  Auth::user()->username }}
+        @else
+        {{  Auth::user()->username }}
+
+        Company Name :  {{ session()->get('user.companyName') }}
+       @endif
+       <br>
+     </div>
+       <div class=" ml-4 mr-4 mb-4 p-4">
          <!-- Authentication -->
          <a href="{{ route('logout') }}" class="text-lg text-white mr-4"
             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
