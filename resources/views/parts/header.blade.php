@@ -7,24 +7,9 @@
          (Local) -
          @endenv
          (alpha)
-         -        {{ session()->get('applocale') }} - {{ App::getLocale() }}
+
        </span>
-       <div class="flex text-lg text-white mt-2 ml-4 mr-4 mb-4">
-             @foreach (Config::get('languages') as $lang => $language)
-               @if ($lang  != App::getLocale())
-               {{  Config::get('languages')[App::getLocale()]['message']}}
-              <div class="mr-4 ml-4  ">
-                   <a class="flex" href="{{ route('lang.switch', $lang) }}">
-                 {{ Config::get('languages')[App::getLocale()]['display'] }}
-                   <div class="mb-1">
-                   <img src="{{ asset('icon/'.Config::get('languages')[App::getLocale()]['flag-icon'].'.' .'svg') }}"
-                          width="10" height="10"/>
-                  </div>
-                  </a>
-             </div>
-              @endif
-           @endforeach
-        </div>
+  
         <div class="">
           @auth
             @env('local')

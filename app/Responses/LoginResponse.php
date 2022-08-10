@@ -21,7 +21,7 @@ class LoginResponse implements LoginResponseContract
      * @return mixed
      */
     public function toResponse($request)
-    {
+    {       
         // Log::info('step 4: Login Response');
         $user = Auth::user();
         $profileCollection = $user->profile;

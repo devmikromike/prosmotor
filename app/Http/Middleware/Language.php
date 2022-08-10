@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\App;
 
 class Language
@@ -17,12 +18,33 @@ class Language
      */
     public function handle(Request $request, Closure $next)
     {
-      if (Session()->has('applocale') AND array_key_exists(Session()->get('applocale'), config('languages'))) {
-            App::setLocale(Session()->get('applocale'));
+       if(Session()->get('applocale') == App::getLocale())
+        {
+         return $next($request);
         }
-        else { // This is optional as Laravel will automatically set the fallback language if there is none specified
-            App::setLocale(config('app.fallback_locale'));
-        }
+          if($request->locale !== null   ){
+            if(Session()->has('applocale') && Session()->get('applocale')  !== $request->locale){
+             App::setLocale(Session()->get('applocale'));
+               return $next($request);
+                 }else {
+                   App::setLocale( ($request->locale));
+                   Log::info('message request has  '.$request->locale );
+                        return $next($request);
+                 }
+
+          }else {
+            if (  Session()->has('applocale') AND array_key_exists(Session()->get('applocale'), config('languages')))
+                 {
+                   $locale =   App::setLocale(Session()->get('applocale'));
+                     Log::info('message session set '.$locale );
+                          return $next($request);
+               }else {
+                 Log::info('message outside range both failed!');
+                   App::setLocale( 'fi');
+                   Session(['applocale']);
+               Log::info('both set!');
+               }
+          }
         return $next($request);
     }
 }

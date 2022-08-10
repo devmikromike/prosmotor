@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
-    public function store(Login  $request)
-    {
+    public function store(Login $request)
+    {    
+
       return $this->loginPipeline($request)->then(function ($request){
         return app(LoginResponse::class);
          });
