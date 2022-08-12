@@ -8,6 +8,8 @@ use App\Models\Setting;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Database\Query\Builder;
+Use App\Models\Role;
+Use App\Models\User;
 use App\Macros\SearchMacros;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,13 +25,20 @@ class AppServiceProvider extends ServiceProvider
     }
      public function boot()
    {
-     /*
-       Blade::if('admin', function () {
-          if (auth()->user() && auth()->user()->admin) {
-              return 1;
+       Blade::directive('role', function ($value) {
+
+      // $user = User::findRole($value, auth()->user()->id);
+
+          if(auth()->check()){
+            $userId = auth()->user()->id;
+            $user = User::findRole($value, $userId);
+              return $user;
           }
-          return 0;
-      });    */
+      });
+
+      Blade::directive('endrole', function () {
+
+      });
 /*
       Builder::macro('search', function(){
         return $this->->where($attribute,  'LIKE', "%{$searchTerm}%");

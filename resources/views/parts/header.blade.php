@@ -9,7 +9,7 @@
          (alpha)
 
        </span>
-  
+
         <div class="">
           @auth
             @env('local')
@@ -30,13 +30,15 @@
      <div class="text-white">
        @if(Auth::user()->username ===  env('ADMIN_USER') )
         {{  Auth::user()->username }}
-        @else
-        {{  Auth::user()->username }}
-
         Company Name :  {{ session()->get('user.companyName') }}
        @endif
        <br>
      </div>
+     @if(session('login-success'))
+      <div class="alert alert-success" role="alert">
+          {{ session('login-success') }}
+      </div>
+    @endif
        <div class=" ml-4 mr-4 mb-4 p-4">
          <!-- Authentication -->
          <a href="{{ route('logout') }}" class="text-lg text-white mr-4"

@@ -19,8 +19,10 @@ class CreateRoleUsersTable extends Migration
 
           $table->bigInteger('role_id')->unsigned();
           $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+
+          $table->bigInteger('company_id')->unsigned();
             //SETTING THE PRIMARY KEYS
-            $table->primary(['user_id','role_id']);
+          //  $table->primary(['user_id','role_id']);
             $table->timestamps();
         });
     }

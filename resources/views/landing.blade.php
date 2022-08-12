@@ -6,13 +6,16 @@
    @include('parts.message')
 
      <x-landingpage.header>
-       
+       @guest
                <span class="container text-center font-semibold text-xl bg-gray-300 mx-auto mb-3 " >
                  {{__('messages.header')}} <br>
                  {{__('messages.headerline2')}}<br>
                   <p class="mt-2">{{__('messages.subheader')}}</p>
                 </span>
-
+       @endguest
+       @auth
+        @include('auth.header')
+       @endauth
      </x-landingpage.header>
 
      <div class="flex flex-row ">

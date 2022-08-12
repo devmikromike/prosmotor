@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
            'name' => 'Mikromike',
            'email' => env('ADMIN_EMAIL'),
            'password' => bcrypt(env('ADMIN_PASSWORD')),
-           'username' => 'Mikromike'
-       ]);   
+           'username' => 'MikroMike'
+       ]);
    }
 }

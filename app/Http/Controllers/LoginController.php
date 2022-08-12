@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 class LoginController extends Controller
 {
     public function store(Login $request)
-    {    
+    {
 
       return $this->loginPipeline($request)->then(function ($request){
         return app(LoginResponse::class);
@@ -58,8 +58,9 @@ class LoginController extends Controller
     {
         Auth::guard()->logout();
           $request->session()->forget('applocale');
-          $request->session()->flush();
           $request->session()->invalidate();
+          $request->session()->flush();
+
           $data = $request->session()->all();
   //      dd($data);
 

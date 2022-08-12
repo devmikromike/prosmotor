@@ -16,26 +16,27 @@ class LoginResponse implements LoginResponseContract
 {
 
   public $company = [];
-    /**
-     * @param  $request
-     * @return mixed
-     */
+
     public function toResponse($request)
-    {       
+    {
         // Log::info('step 4: Login Response');
         $user = Auth::user();
         $profileCollection = $user->profile;
+
         foreach ($profileCollection as $profile )
         {
 
           $company = Company::where('id', $profile->company_id)->first();
             $request->session()->put('user.companyName' ,
                                       $company->name);
+            $request->session()->put('user.companyId' ,
+                                      $company->id);
             $request->session()->put('user.ProfileId' ,
                                       $profile->id);
 
-
-            // dd($company->name);
+          if (Auth::check()) {
+             Log::info('logged in!');
+           }
 
         }
     //    $request->session()->push('user.companyId' , $companyId);

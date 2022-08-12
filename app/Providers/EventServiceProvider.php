@@ -6,12 +6,13 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use lluminate\Auth\Events\Login;
+use App\Events\LoginEvent;
 use App\Events\ExtractTimeFrameEvent;
 use App\Listeners\TimeFrameBatch;
 use App\Events\TimeFrameFinalEvent;
 use App\Listeners\TimeFrameListener;
 use App\Listeners\LogSuccessfulLogin;
+use App\Listeners\LoggedInSuccessful;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -31,8 +32,9 @@ class EventServiceProvider extends ServiceProvider
         TimeFrameFinalEvent::class => [
             TimeFrameListener::class,
         ],
-        Login::class => [
+        LoginEvent::class => [
           LogSuccessfulLogin::class,
+
       ],
     ];
 
