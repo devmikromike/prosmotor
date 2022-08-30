@@ -9,7 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\AuthUser;
 use App\Models\Profile;
-use App\Models\Role;
+use App\Models\RoleUser;
+use App\Models\Company;
 
 class User extends Authenticatable
 {
@@ -32,14 +33,13 @@ class User extends Authenticatable
     ];
     protected $dates = ['last_login_time'];
 
- 
-    public function Roles()
+  public function role()
   {
-    return $this->hasToMany(Role::class,'users_roles');
+    return $this->belongTo(RoleUser::class,'role_id','user_id');
   }
-    public function Companies()
+    public function companies()
   { // Many to many.
-
+    return $this->hasMany(Company::class);
   }
     public function LoggedIn($user)
   {
@@ -55,7 +55,7 @@ class User extends Authenticatable
   {
    // Return tinyInt 0 / 1
   }
-    public function profile()
+    public function profiles()
   {
     return $this->hasMany(Profile::class);
   }

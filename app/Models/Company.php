@@ -29,7 +29,7 @@ class Company extends Model
     return $this->hasMany(CompanyLisense::class);
   }
   public function lisense()
-  { // return One Lisense 
+  { // return One Lisense
     return $this->hasOne(Lisense::class);
   }
 
@@ -42,4 +42,15 @@ class Company extends Model
   {  /* Return firmId */
     // return hasMany(User::class);
    /* } */
+
+   public function companyName($id)
+   {
+      $collection_name  = SELF::where('id', $id)
+                   ->select('name')
+                   ->get();
+
+      foreach ($collection_name as $key => $value) {
+        return($value->name);
+      }
+   }
 }

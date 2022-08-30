@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use Illuminate\Auth\Events\Login;
+use App\Events\LoginEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -10,26 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginSuccessful
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         //
     }
 
-    /**
-     * Handle the event.
-     *
-     * @param  \Illuminate\Auth\Events\Login  $event
-     * @return void
-     */
-    public function handle(Login $event)
+    public function handle(LoginEvent $event)
     {
-      if (Auth::check()) {
-          Log::info('am I logged in!');
+      // Log::info('am I logged in!');
+      if ($event->user->auth()) {
+
         }
     }
 }

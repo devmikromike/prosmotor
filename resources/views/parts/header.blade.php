@@ -30,9 +30,11 @@
      <div class="text-white">
        @if(Auth::user()->username ===  env('ADMIN_USER') )
         {{  Auth::user()->username }}
-        Company Name :  {{ session()->get('user.companyName') }}
+
        @endif
        <br>
+       Company Name :  {{ session()->get('user.companyName') }}
+       Profile id :  {{ session()->get('user.profileId') }}
      </div>
      @if(session('login-success'))
       <div class="alert alert-success" role="alert">
@@ -48,6 +50,7 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST">
              @csrf
             </form>
+             <!-- Authentication -->
        </div>
      @endauth
    </div>

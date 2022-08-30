@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Company;
 use App\Models\User;
-use App\Models\AuthUser;
+use App\Models\RoleUser;
 use App\Models\Profile;
 use App\Models\Lisense;
 
@@ -29,39 +29,28 @@ class AuthUser extends Model
         $validLisense = Lisense::where('user_id', $user->id)
                       ->where('status', 'active')
                         ->first();
+
         if(!empty($validLisense))
         {
+          $user_profiles  = User::where('id', $user->id)
+                        ->where('enabled', 1)
+                        ->with('profiles')
+                        ->get();
+
+          foreach ($user_profiles as $key => $relation_profile) {
+            foreach ($relation_profile->profiles as $key => $profile) {
+              $user['profileId'] = $profile->id;
+              $user['companyId'] = $profile->company_id;
+              $user['companyName'] = (new Company())->companyName($user['companyId']);
+            }
+          }
+          $role =  RoleUser::where('user_id', $user->id)
+                ->select('role_id')
+                ->get();
+
+          $user['roleId'] = RoleUser::roleId($role);        
+
          return $user;
         } else {  return false; }
-
-      /*
-          $profileCollection = $user->profile;
-
-          foreach ($profileCollection as $profile )
-          {
-            // search lisenses from company_id
-            // match lisense for user _id
-            $companyId = $profile->company_id;
-            $company = Company::where('id', $companyId)->first();
-
-            $lisenses = $company->lisenses()->get();
-              foreach ($lisenses as $key => $lisense) {
-
-                $lisenseId = $lisense->lisense_id;
-                $validLisense = Lisense::where('user_id', $user->id)
-                //where('id', $lisenseId)
-
-                ->where('status', 'active')
-            //    ->where('user_id', $user->id)
-                ->first();
-
-                  if(!empty($validLisense))
-                  {
-                    return $user;
-                  }
-
-           } // // end of Lisese validation check!
-           return false;
-        }   */
     }
 }

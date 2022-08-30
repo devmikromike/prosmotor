@@ -12,10 +12,12 @@ class UserSeeder extends Seeder
 
    {
        User::create([
+           'id' => 99,
            'name' => 'Mikromike',
            'email' => env('ADMIN_EMAIL'),
            'password' => bcrypt(env('ADMIN_PASSWORD')),
-           'username' => 'MikroMike'
+           'username' => 'MikroMike',
+           'enabled' => 1
        ]);
    }
 }

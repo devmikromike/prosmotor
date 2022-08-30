@@ -12,20 +12,17 @@ class ProsByName extends Model
 
     public function search($name)
     {
-      // Search from Prospects
+      // Search from Prospects  table
       if($response = (new Prospect())->getName($name))
        {
           Log::info(' Prospect Process = true '.$name);
           return $response;
        }else
        {
+         /* Search per Single name */
             Log::info(' Prospect Process = false '.$name);
-          $response =  (new Search())->perName($name);
-          
+           $response =  (new Search())->perName($name);
           return $response;
        }
-
-
-
     }
 }

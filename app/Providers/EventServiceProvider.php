@@ -12,7 +12,7 @@ use App\Listeners\TimeFrameBatch;
 use App\Events\TimeFrameFinalEvent;
 use App\Listeners\TimeFrameListener;
 use App\Listeners\LogSuccessfulLogin;
-use App\Listeners\LoggedInSuccessful;
+use App\Listeners\LoginSuccessful;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -34,7 +34,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         LoginEvent::class => [
           LogSuccessfulLogin::class,
-
+          LoginSuccessful::class,
       ],
     ];
 

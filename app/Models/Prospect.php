@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Session;
 use App\Models\ProsBlackListed;
 use App\Models\ProsBssLine;
 use App\Models\Contact;
@@ -100,7 +101,6 @@ class Prospect extends Model
     }
    public function collectCompanyData($company,$uri)
    {
-
      $data = (new Prospect())->updateOrCreate($company);
      Log::info('step 35: Black sack process: [Propect Created]'.$company['vatId']);
 
@@ -174,22 +174,40 @@ class Prospect extends Model
    public function getName($name)
    {
       $names = array();
-      $prospects =  (new SELF())->where('name', $name )->get();
+      $prospects =  (new SELF())->where('name', 'LIKE', "%{$name}%" )->get();
 
-      $sum = (new Search())->counter($prospects);
-
+       $sum = (new Search())->counter($prospects);
+      if($sum == 1){
         foreach ($prospects as $pros)
         {
-            $names[] = $pros['name'];
-        }
-          return $names;
+              $response['id'] = $pros['id'];
+              $response['name'] = $pros['name'];
+              $response['vatId'] = $pros['vatId'];
+              $response['www'] = $pros['www'];
+              $response['registrationDate'] = $pros['registrationDate'];
+              $response['sum'] = $sum;
+                session()->put('message', 'Search in progress.....');
+            return $response;
+         }
+       }else {
+         if($sum > 1){
+              $prospects['sum'] = $sum;
+             session()->put('message', 'Search in progress,..'.$name. ' found multiable times '.$sum);
+             return $prospects;
+         }
+         /* Failed, Sum is zero!*/
+          $response['sum'] = $sum;
+          session()->put('message', 'Search in progress,..'.$name. ' not found ');
+
+         return $response;
+       }
    }
-   public function saveWww($www_value,$vatId)
+   public function saveWww($www_value, $vatId)
    {
      $pros = (new SELF())->getId($vatId);
-     $id = $pros['vatId'];
-     $pros['www'] = $www_value;
-     $pros->save();
+       $id = $pros['vatId'];
+       $pros['www'] = $www_value;
+       $pros->save();
      return $id;
    }
 }
