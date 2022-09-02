@@ -41,6 +41,7 @@ class Search extends Model
     public $counter = 1;
     public $lastRowId;
     public $lastRow;
+    public $errors = [];
 
 /*  Four API Call to Api Bridge. */
     public function perName($name)
@@ -382,7 +383,7 @@ class Search extends Model
        // $statusMsg = $response->getReasonPhrase();
         // Get status code from Response.
 
-         
+
         $resCode = $response->status();
 
 
@@ -438,7 +439,7 @@ class Search extends Model
 
       //         $resCode = $response->json('Status');
       //         $statusMsg = $response->json('Status_message');
-      //         $errors =  Arr::exists($response, 'Errors');
+            $errors =  Arr::exists($response, 'Errors');
       //         $response = '';
                // 204 - " no content"
 

@@ -50,7 +50,7 @@ class ProspectController extends Controller
              'citylist' => $request->cityList,
            ]);
          } else {
-           dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');
+        //   dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');
          }
            // *********
           //  $perCity = Proscounter::countProsPerCity($results);
@@ -126,7 +126,7 @@ class ProspectController extends Controller
 
     public function show(Request $request, $id)
     {
-      dd($id);
+    //  dd($id);
 
       //  Prospect Model
     //  $prospect = Prospect::find($id);

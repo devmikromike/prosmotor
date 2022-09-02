@@ -16,7 +16,7 @@ class ShowPros extends Component
 
     public function  byVatId(Response $response, $pros)
     {
-      dd($pros);
+      // dd($pros);
     }
     public function render()
     {

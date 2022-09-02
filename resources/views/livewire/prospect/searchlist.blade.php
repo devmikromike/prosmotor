@@ -23,7 +23,7 @@
             @foreach($newproslist['proslist'] as $prospect)
               @if(!empty($prospect))
                     @include ('livewire.prospect.table')
-                     {{ dd($codelist); }}
+                     {{-- dd($codelist); --}}
               @endif
             @endforeach
       </div>

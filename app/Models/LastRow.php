@@ -47,7 +47,7 @@ class LastRow extends Model
       // $newId = SELF::find($id)->increment('last_id');
 
       Log::info('Go next row :  '.$newId);
-   dd($newId);
+   // dd($newId);
       return $newId;
     }    */
 

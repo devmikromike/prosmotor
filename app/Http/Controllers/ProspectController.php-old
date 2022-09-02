@@ -110,8 +110,8 @@ class ProspectController extends Controller
                      'city' => $city,
                    );
               //      $total[] = array_merge($countsum, $counter);
-                    dump('new');
-                  dump($total);
+                //    dump('new');
+              //    dump($total);
                  }
                }else {}
              }
@@ -125,7 +125,7 @@ class ProspectController extends Controller
             'citylist' => $request->cityList,
           ]);
         } else {
-          dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');
+        //  dd('miniminä pitää valita yksi kaupunki ja yksi toimiala');
         }
     }
 

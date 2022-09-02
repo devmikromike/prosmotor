@@ -23,7 +23,7 @@ class Table extends Component
     public function  byVatId($id, $prosmodel = null )
     {
 
-      dd($id);
+      // dd($id);
 
        if(!empty($prosmodel)){
            $prosmodel['process_status'] = 'OK';

@@ -28,6 +28,7 @@ class Prospect extends Model
       'status'
     ];
 
+
     public function contacts()
     {
       return $this->belongsToMany(Contact::class);
@@ -148,18 +149,19 @@ class Prospect extends Model
    public function status()
    {  // retun status = 200
      $response['status'] = 200;
-     return $response;
+      return $response;
    }
 
    public function getId($vatId)
    {
-
       $pros = (new SELF())->where('vatId', $vatId )->first();
+      Log::info(' [Return Propect model]');
       return $pros;
    }
    public function getVatId($propectId)
    {
       $vatId =  (new SELF())->where('id', $propectId )->first();
+      Log::info(' [Return Propect model]');
       return $vatId;
    }
 
@@ -168,6 +170,7 @@ class Prospect extends Model
       $pros =  (new SELF())->where('vatId', $vatId )->first();
       if(!empty($pros['name'])){
         $name = $pros['name'];
+        Log::info(' [Return Propect model]');
         return $name;
       }
    }

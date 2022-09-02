@@ -13,7 +13,7 @@
   @endif
 </div>
 ***************
-dd($cityList);
+// dd($cityList);
 
 <x-dropdown :cityList =" $cityList ">
   <p>Pickup City(es) from CityList, Max 5.</p>

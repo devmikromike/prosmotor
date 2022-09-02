@@ -13,7 +13,7 @@ class ProsByVatId extends Model
     use HasFactory;
 
     public function search($vatId)
-    {      
+    {
 
       // Search from Blacklist
          Log::info(' ProsByVatId Process! '.$vatId);
@@ -28,6 +28,7 @@ class ProsByVatId extends Model
        {
           Log::info(' VatId has found from  Prospect  '.$vatId);
           $response['status'] = 200;
+          $response['prospect_status'] = 'OK';
           return $response;
        }
         Log::info('  VatId not found from  Prospect '.$vatId);

@@ -24,7 +24,7 @@ class SearchByVatid extends Component
     public $vatId;
     public $vatID;
     public $SearchByVatId;
-    private $response;
+    public $response;
     public $data = array();
     public $results = array();
     public $statusMessage;
@@ -36,11 +36,6 @@ class SearchByVatid extends Component
     'vatId' => 'required'
     ];
 
-    public function mount()
-    {
-      //  $this->search = new Search(); // Move to UP
-    }
-
       public function submit( )
      {
         /* vat: 0858510-3   */
@@ -50,49 +45,35 @@ class SearchByVatid extends Component
         // (new Search())->perVatID($this->vatId);
            Log::info(' Send Vat id to Process! '.$this->vatId);
       $this->response = (new ProsByVatId())->search($this->vatId);   // new  process search
-          Log::info(' Response from Process SearchByVatid-Component =  '.$this->response);
-
-        if(!empty($this->response))    // Model not empty!?
-      {
-         $httpRes = (new Search())->statusData($this->response);
-
-         if($httpRes['Status'] === 200)
-         {
-           $data = $this->response;
-
-            if(!empty($data['Response']['results']))
-            {
-
-            $pros = $data['Response']['results'];
-        //    dd($pros);
-
-          //   return $pros = $data['Response']['results']->json();
-          // $this->emit('byVatId', $this->vatId, $data);     // sent to show component
-             return $pros;
-            }
-
-
-           // if(is_array($dataresult))
-          //   if(is_array($data['results']))
-            // {
-            //   $resultsExist =  Arr::exists($data, 'results');
-
-               return session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
-          //   }
-
-
-         }
-      //     dd($httpRes['Status']);
-           // dd($this->response['Response']['results']);
-
-      }
+        Log::info(' Return response from Process! '.$this->vatId);
+      $this->updatedSubmit();
       session()->flash('message', 'haku y-tunnuksella on käynnistynyt! , olehan kärsivällinen ;-D ');
     }
-    /*
-      public function render()
-      {
-          return view('livewire.search-by-vatid');
-      } */
+    public function updatedSubmit()
+    {
+          if(!empty($this->response))    // Model not empty!?
+        {
+           $httpRes = (new Search())->statusData($this->response);
+
+              Log::info(' checking http status! '.$this->vatId);
+
+           if($httpRes['Status']['status'] === 200)
+           {
+            Log::info('http status checked is 200 ');
+
+             $this->data = $this->response;
+               $this->emit('updatedData',[
+                 'data' => $this->response
+               ]);
+
+             Log::info('emit trigged.... ');
+              return view('livewire.search-by-vatid');
+           }
+
+          Log::info(' no http status! '.$httpRes['Status']['status']);
+        }
+    }
+
       public function render()
       {
           return view('livewire.search-by-vatid');

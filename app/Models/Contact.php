@@ -23,7 +23,7 @@ class Contact extends Model
 
     public function prospects()
     {
-      return $this->belongsToMany( Prospect::class);
+      return $this->hasMany(Prospect::class);
     }
 
     public function extractContact($contacts, $vatId)
