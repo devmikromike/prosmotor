@@ -27,18 +27,19 @@ class DataTables extends Component
     public function updatedData($data)
     {
        //    $this->refresh();
+    //   dd($data);
         $this->data = $data;
-         Log::info('receiving data from emit....! ');
-
-      return view('livewire.tables.data-tables');
-       //      return view('livewire.tables.data-tables',['$data' => $data]);
+         Log::info('receiving data from emit....SearchByVatid! ');
+          $this->refresh();
+    return view('livewire.tables.data-tables');
+        //     return view('livewire.tables.data-tables',['$data' => $data]);
     }
 
     public function notification($prospect)
     {
       $this->prospect = $prospect;
 
-    
+
 
       $this->refresh();
 

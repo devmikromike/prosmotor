@@ -3,8 +3,12 @@
 ])
 <div class="">
   <td>
-    <p>
-         {{ $prospect }}
-    </p>
+@dd($prospect)
+      @foreach ($prospect['Contacts'] as $contact)
+
+        @dd($contact)
+
+      @endforeach
+
   </td>
 </div>

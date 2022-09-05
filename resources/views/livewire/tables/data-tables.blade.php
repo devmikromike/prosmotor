@@ -8,7 +8,8 @@
    </div>
 
    @if(!empty($data))
-      {{-- <x-business-card.index :data="['data' => $data]"/>  --}}
+    <p> recevived data</p>
+        <x-business-card.index :data="['data' => $data]"/>   
         @else
           <p> Here will be data</p>
     @endif

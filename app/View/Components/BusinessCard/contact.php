@@ -3,32 +3,26 @@
 namespace App\View\Components\BusinessCard;
 
 use Illuminate\View\Component;
-use App\Models\Prospect;
+use Illuminate\Support\Facades\Log;
+
 use App\Models\Contact as Contacts;
 
 class contact extends Component
 {
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
      public $prospect;
      public $contacts;
+     public $contact;
+     public $name;
 
-    public function __construct(Prospect $prospect, Contact $contacts  )
+    public function __construct()
     {
-       $this->prospect = $prospect;
-       $this->contacts = $prospect->contacts()->get();
+     // $this->prospect = $prospect;
+      // $this->contacts = $prospect->contacts()->get();
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|\Closure|string
-     */
     public function render()
     {
+  //    dump($prospect);
       Log::info('Contact component render ');
         return view('components.business-card.contact');
     }

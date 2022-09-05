@@ -39,7 +39,11 @@
         </td>
     @endforeach
       <tr class="border px-8 py-4 bg-blue-100">
-          <x-business-card.contact :data="['prospect' =>$prospect]"/>
+
+      {{--  <x-business-card.contact /> --}}
+      {{--  <x-business-card.contact :data="['prospect' =>$prospect]"/>  --}}
+       <x-business-card.contact :prospect="$prospect"/>
+
      </tr>
 
 

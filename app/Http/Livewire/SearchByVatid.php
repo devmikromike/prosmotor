@@ -8,6 +8,8 @@ use Livewire\Component;
 use App\Http\Livewire\Prospect\ShowPros;
 use App\Models\Search;
 use App\Models\ProsByVatId;
+use App\Models\Prospect;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Http;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Illuminate\Database\Eloquent\Model;
@@ -62,6 +64,8 @@ class SearchByVatid extends Component
             Log::info('http status checked is 200 ');
 
              $this->data = $this->response;
+             $this->response['Contacts'] = $this->data->contacts()->get();
+
                $this->emit('updatedData',[
                  'data' => $this->response
                ]);

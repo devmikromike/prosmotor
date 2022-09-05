@@ -8,25 +8,22 @@ use Illuminate\Support\Facades\Log;
 class Index extends Component
 {
   public $data;
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
+  public $prospect;
+  
     public function __construct($data)
     {
         $this->data = $data;
+      //  $this->logging();
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|\Closure|string
-     */
+   public function logging()
+   {
+     Log::info('Index component logging ');
+
+   }
     public function render()
     {
-      Log::info('Index component render ');
-      
+       Log::info('Index component logging ');
         return view('components.business-card.index');
     }
 }
