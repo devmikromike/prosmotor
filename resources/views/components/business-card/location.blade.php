@@ -1,6 +1,6 @@
 <div>
    @if(!empty($prospect['Locations']))
-  @foreach ($prospect['Locations'] as $key => $location)
+    @foreach ($prospect['Locations'] as $key => $location)
         @if($key > 1 ) @break @endif
       <thead>
         <th class=" bg-blue-100 border text-left px-8 py-4">
