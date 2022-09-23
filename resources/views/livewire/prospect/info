@@ -1,0 +1,84 @@
+@if(!empty($newproslist))
+    <div class="flex flex-col bg-gray-200 dark:bg-gray-900 py-4 sm:pt-0 ">
+      <div class="flex flex-row mt-4 mb-4">
+    {{--        <div class="">  --}}
+    {{--            @include('livewire.prospect.citydropdown')  --}}
+    {{--        </div>  --}}
+    {{--        <div class="">  --}}
+    {{--              @include('livewire.prospect.businessfields')  --}}
+    {{--        </div>     --}}
+        </div>
+        <p>SEARCHLIST</p>
+        <hr>
+        @foreach($newproslist['proslist'] as $prospect)
+          @if(!empty($prospect))
+                @include ('livewire.prospect.table')
+                 {{-- dd($codelist); --}}
+          @endif
+        @endforeach
+  </div>
+@endif
+**************
+public function refresh() {
+  $this->update = !$this->update;
+}
+public function updatedSelectedCity($value)
+{
+
+
+
+  // if(trim($pros['city']) == trim($value))
+  $city = str_replace(' ', '', $value); // deleted extra space.
+  $prospect = [];
+  $pros = [];
+  $prospectlist = [];
+
+    dump($this->newcodelist );
+
+  $step1 =  Arr::exists($this->newproslist, 'proslist'); //<- input
+  foreach ($this->newproslist['proslist'] as $proslist) {
+
+      if($step1 === true)
+     {
+        if(is_array($proslist)){
+           foreach($proslist as $key => $pros)
+            {
+             if(is_array($pros))
+
+                 {
+                   session()->flash('message', 'Pieni hetki! ');
+
+                     // " Invalid argument supplied for foreach() " // FIX: if(is_array)
+
+                       if($city === $pros['city'])
+                     {
+                       $prospectlist[] = $pros; // Works ! -> output
+
+                         dump($this->newcodelist );
+
+                     } else { }
+
+                  }else {
+                      /*    $pros = 'Ei yritystietoja';
+                          $prospectlist[] = $pros;
+                          $newproslist['proslist'] = $prospectlist;  */
+                    // dd($prospectlist);
+                          session()->flash('message', 'Haetussa kaupungissa ei ole vielä yhtään Prospektia! ');
+                }
+             }  // end of foreach ($proslist as $key => $prospectarray)
+          } // end of if(!empty($proslist)
+        } // end of if($step1 === true)
+} // end of first foreach.
+ session()->flash('message', 'Lista päivitetty!');
+   $newproslist['proslist'] = $prospectlist;
+   $this->newproslist =  $newproslist;
+   $codelist = $this->newcodelist;
+
+   $this->refresh();
+//   return $newproslist;
+} // end of function
+public function mount(Index $index)
+{
+  $this->myindex =  $index;
+
+}

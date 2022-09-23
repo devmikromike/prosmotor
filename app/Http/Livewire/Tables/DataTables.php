@@ -12,40 +12,26 @@ use Illuminate\Support\Facades\Log;
 
 class DataTables extends Component
 {
-    public $prospect;
     public $update;
     public $message;
     public $data;
+    public $prospect;
 
     protected $listeners = [
-      'notification', 'updatedData'
+       'updatedData'
     ];
 
     public function refresh() {
       $this->update = !$this->update;
     }
+  
     public function updatedData($data)
     {
-       //    $this->refresh();
-    //   dd($data);
-        $this->data = $data;
+      $this->data = $data;
          Log::info('receiving data from emit....SearchByVatid! ');
           $this->refresh();
-    return view('livewire.tables.data-tables');
-        //     return view('livewire.tables.data-tables',['$data' => $data]);
+       return view('livewire.tables.data-tables');
     }
-
-    public function notification($prospect)
-    {
-      $this->prospect = $prospect;
-
-
-
-      $this->refresh();
-
-        session()->put('message', '');
-    }
-
     public function render(): View
     {
         return view('livewire.tables.data-tables');

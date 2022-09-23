@@ -26,9 +26,11 @@
            @livewire('sidebar')
          </aside>
        </div>
+
        <div class="px-6 py-2 mx-4 text-center font-semibold text-xl basis-1/2">
-          <div class="">
-             @livewire('tables.data-tables') 
+      
+          <div class="mt-2 border border-2">
+             @livewire('tables.data-tables')
           </div>
        </div>
    </div>

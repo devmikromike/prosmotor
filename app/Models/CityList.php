@@ -56,8 +56,8 @@ class CityList extends Model
         foreach ($cities as $city)
         {
            $res = (new Location())
-            ->with('prospects')
             ->city($city)
+            ->with('prospects')
             ->endDate()
             ->VisitAddress()
             ->get();
@@ -70,7 +70,7 @@ class CityList extends Model
             'proslist' => $results,
             'citylist' => $citylist,
         );
-      //dd($response['citylist']);
+
          return  $response;
     }
 }

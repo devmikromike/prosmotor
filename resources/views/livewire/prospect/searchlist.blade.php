@@ -7,25 +7,43 @@
       {{ session('message') }}
     </div>
     @endif
+      @if($proslists['proslist'])
+          <table>
+            <thead>
+              <tr>
+                <th class="  bg-blue-200 border text-left px-8 py-4">
+                  ID / VatId:
+                </th>
+                <th class="  bg-blue-200 border text-left px-8 py-4">
+                  Name / www:
+                </th>
+                <th class="  bg-blue-200 border text-left px-8 py-4">
+                  Street / Postcode / City
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            @foreach ($proslists['proslist'] as $prospects)
+              @foreach($prospects as $pros)
+                <tr>
+                  <td class="  bg-blue-100 border text-left px-8 py-4">
+                    {{ $pros['prospects'][0]['id'] }} {{ ' / '}} {{ $pros['prospects'][0]['vatId'] }}
+                  </td>
+                  <td class="  bg-blue-100 border text-left px-8 py-4">
+                    {{ $pros['prospects'][0]['name'] }}
+                     @if($pros['prospects'][0]['www']) {{ ' / '}}{{ $pros['prospects'][0]['www'] }} @endif
+                  </td>
+                  <td class="  bg-blue-100 border text-left px-8 py-4">
+                    {{ $pros['street']  }} {{ ' / '}} {{ $pros['postCode']  }}
+                    {{ ' / '}} {{ $pros['city']  }}
 
-    @if(!empty($newproslist))
-        <div class="flex flex-col bg-gray-200 dark:bg-gray-900 py-4 sm:pt-0 ">
-          <div class="flex flex-row mt-4 mb-4">
-        {{--        <div class="">  --}}
-        {{--            @include('livewire.prospect.citydropdown')  --}}
-        {{--        </div>  --}}
-        {{--        <div class="">  --}}
-        {{--              @include('livewire.prospect.businessfields')  --}}
-        {{--        </div>     --}}
-            </div>
-            <p>SEARCHLIST</p>
-            <hr>
-            @foreach($newproslist['proslist'] as $prospect)
-              @if(!empty($prospect))
-                    @include ('livewire.prospect.table')
-                     {{-- dd($codelist); --}}
-              @endif
-            @endforeach
-      </div>
+                  </td>
+                </tr>
+              @endforeach
+          @endforeach
+        </tbody>
+      </table>
+      @else
+      <p> {{__('No company found, business field which you have chosen!')}} </p>
     @endif
 </div>

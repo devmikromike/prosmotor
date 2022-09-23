@@ -22,30 +22,26 @@
     </thead>
 
     @foreach($data['data'] as $prospect)
-        <td class="border text-left px-8 py-4 mr-4">
-          {{ $prospect['vatId'] }}
-        </td>
-        <td class="border text-left px-8 py-4 mr-4">
-          {{ $prospect['name'] }}
-        </td>
-        <td class="border text-left px-8 py-4 mr-4">
-          {{ $prospect['www'] }}
-        </td>
-        <td class="border text-left px-8 py-4 mr-4">
-          {{ $prospect['registrationDate'] }}
-        </td>
-        <td>
+        <tr>
+          <td class="border text-left px-8 py-4 mr-4">
+            {{ $prospect['vatId'] }}
+          </td>
+          <td class="border text-left px-8 py-4 mr-4">
+            {{ $prospect['name'] }}
+          </td>
+          <td class="border text-left px-8 py-4 mr-4">
+            {{ $prospect['www'] }}
+          </td>
+          <td class="border text-left px-8 py-4 mr-4">
+            {{ $prospect['registrationDate'] }}
+          </td>
+          <td>
             {{ $prospect['prospect_status'] }}
-        </td>
+          </td>
+        </tr>
+          <x-business-card.contact :prospect="$prospect"/>
+           <x-business-card.location :prospect="$prospect"/> 
     @endforeach
-      <tr class="border px-8 py-4 bg-blue-100">
-
-      {{--  <x-business-card.contact /> --}}
-      {{--  <x-business-card.contact :data="['prospect' =>$prospect]"/>  --}}
-       <x-business-card.contact :prospect="$prospect"/>
-
-     </tr>
-
 
   </table>
 </div>

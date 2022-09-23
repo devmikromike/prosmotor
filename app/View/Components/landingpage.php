@@ -5,10 +5,11 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 
 
-class landingpage extends Component
+class Landingpage extends Component
 {
   //  public $cityList;
     public $nameLink = '';
+    public $huhuu = null;
 
     /**
      * Create a new component instance.
@@ -16,11 +17,9 @@ class landingpage extends Component
      * @return void
      */
     // public function __construct( $cityList )
-      public function __construct( )
+      public function __construct($huhuu = null )
     {
-    //     $this->cityList = $cityList;
-
-
+          $this->huhuu = $huhuu;
     }
 
     /**
@@ -30,7 +29,7 @@ class landingpage extends Component
      */
     public function render()
     {
-
+     
         return view('components.landingpage');
     }
 }

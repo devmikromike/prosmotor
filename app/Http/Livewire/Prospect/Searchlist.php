@@ -10,113 +10,37 @@ use Illuminate\Support\Str;
 
 class Searchlist extends Component
 {
-     public array $newproslist = [];
-     public array $prospectlist = [];
-     public array $newcodelist = [];
-     public array $newcitylist = [];
-     public array $citylists = [];
-     public array $proslists;
-     public array $proslist;
-     public array $codelist;
-     public array $prospectarray = [];
-     public array $pros = [];
-     private $myindex;
-     public $sendproslist;
-     public $sendcodelist;
-     public $sendcitylist;
-     public $selectedCity;
-     public $city;
-     public $update;
+      public array $newproslist = [];
+      public array $newcodelist = [];
 
      protected $listeners = [
        'proslistCreated', 'codelistCreated','citylistCreated' ];
-       // 'refreshSearchList' => $refresh
+        //'refreshSearchList' => $refresh
 
     public function proslistCreated($sendproslist)
     {
       $this->newproslist = $sendproslist;
-
     }
     public function codelistCreated($sendcodelist)
     {
       $this->newcodelist = $sendcodelist;
-
     }
     public function citylistCreated($sendcitylist)
     {
       $this->newcitylist = $sendcitylist;
     }
 
-    public function refresh() {
-      $this->update = !$this->update;
-    }
-    public function updatedSelectedCity($value)
-    {
-      // if(trim($pros['city']) == trim($value))
-      $city = str_replace(' ', '', $value); // deleted extra space.
-      $prospect = [];
-      $pros = [];
-      $prospectlist = [];
-
-        dump($this->newcodelist );
-
-      $step1 =  Arr::exists($this->newproslist, 'proslist'); //<- input
-      foreach ($this->newproslist['proslist'] as $proslist) {
-
-          if($step1 === true)
-         {
-            if(is_array($proslist)){
-               foreach($proslist as $key => $pros)
-                {
-                 if(is_array($pros))
-
-                     {
-                       session()->flash('message', 'Pieni hetki! ');
-
-                         // " Invalid argument supplied for foreach() " // FIX: if(is_array)
-
-                           if($city === $pros['city'])
-                         {
-                           $prospectlist[] = $pros; // Works ! -> output
-
-                             dump($this->newcodelist );
-
-                         } else { }
-
-                      }else {
-                          /*    $pros = 'Ei yritystietoja';
-                              $prospectlist[] = $pros;
-                              $newproslist['proslist'] = $prospectlist;  */
-                        // dd($prospectlist);
-                              session()->flash('message', 'Haetussa kaupungissa ei ole vielä yhtään Prospektia! ');
-                    }
-                 }  // end of foreach ($proslist as $key => $prospectarray)
-              } // end of if(!empty($proslist)
-            } // end of if($step1 === true)
-    } // end of first foreach.
-     session()->flash('message', 'Lista päivitetty!');
-       $newproslist['proslist'] = $prospectlist;
-       $this->newproslist =  $newproslist;
-       $codelist = $this->newcodelist;
-
-       $this->refresh();
-  //   return $newproslist;
-  } // end of function
-    public function mount(Index $index)
-    {
-      $this->myindex =  $index;
-
-    }
     public function render( )
     {
+
+
        $newproslist = $this->newproslist;  // Total Prospects per city(is) and business field(s)
        $newcodelist = $this->newcodelist;
-       $newcitylist = $this->newcitylist;
-        return view('livewire.prospect.searchlist',
+
+       return view('livewire.prospect.searchlist',
           [
-            'proslists' => $newproslist,
-            'newcodelist' => $newcodelist,
-            'newcitylist'=> $newcitylist
+              'proslists' => $newproslist,
+              'newcodelist' => $newcodelist
           ]);
-   }
+    }
 }

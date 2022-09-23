@@ -65,6 +65,7 @@ class SearchByVatid extends Component
 
              $this->data = $this->response;
              $this->response['Contacts'] = $this->data->contacts()->get();
+             $this->response['Locations'] = $this->data->locations()->get();
 
                $this->emit('updatedData',[
                  'data' => $this->response

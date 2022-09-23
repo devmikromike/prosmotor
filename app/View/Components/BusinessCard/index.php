@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Log;
 class Index extends Component
 {
   public $data;
-  public $prospect;
-  
+  public $prospect = null;
+
     public function __construct($data)
     {
         $this->data = $data;
+
       //  $this->logging();
     }
 

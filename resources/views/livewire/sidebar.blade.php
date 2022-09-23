@@ -16,8 +16,6 @@
     </li>
     @if ($showVatid)
         <div>
-
-
             @livewire('search-by-vatid',
             [
                 'placeholder' =>  __('messages.placeholder.vatid'),

@@ -25,6 +25,7 @@ class Index extends Component
     public $citylist;    // model
     public $codelist;  // model
     public $sendproslist;
+    public $proslists;
     public $codes;
     public $city;
     public $nameFI, $nameEN, $value;
@@ -35,8 +36,8 @@ class Index extends Component
     {
         $this->citylist = new CityList();
         $this->prosBssLine = new ProsBssLine();
-      //  $this->proslist = new Prospect(); // Not needed
-        $value = session('applocale', 'en');
+
+        $value = session('applocale', 'fi');
         $this->value = $value;
     }
      protected function rules()
@@ -46,15 +47,17 @@ class Index extends Component
         ];
         return $array;
      }
-    public function updatingSubmit($sendproslist, $codes )
+    public function newList($sendproslist, $codes )
     {
-      // data ok.
+
        $sendcodelist = $codes;
-       $sendcitylist = $this->citynames;
+
+      // dd($sendproslist); // data ok.
+
 
        $this->emit('proslistCreated', $sendproslist);  // sent data to searchlist component
        $this->emit('codelistCreated', $sendcodelist);  // sent data to searchlist component
-       $this->emit('citylistCreated', $sendcitylist);  // sent data to searchlist component
+    //   $this->emit('citylistCreated', $sendcitylist);  // sent data to searchlist component
     }
     public function saveJsonData($sendproslist, $codes, $fileName = false)
     {
@@ -90,26 +93,18 @@ class Index extends Component
     }
     public function submit()
     {
-        session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
-        $sendproslist =  (new CityList())->prosCityList($this->citynames);
-        //  dump($sendproslist['citylist']);
-          //  Log::info('Response from Process! '.$sendproslist);
-          $codes = (new ProsBssLine())->codeList($this->codeIds);
-          /* */
-          // $data['templateName'] = 'Default';
-          // $data['citylist'] = $sendproslist['citylist'];
-          // $file['token'] = time();
-          // $data['codelist'] = $codes;
-          //
-          // $test['data'] = json_encode($data);
-          // $fileName = $file['token']. '_datafile.json';
-          //  File::put(public_path('/upload/'.$fileName),$test);
 
-    //      dump($test['data']);
-          /* */
-      //  $codes = (new ProsBssLine())->codeList($this->codeIds);
-          //  Log::info('Response from Process! '.$codes);
-        //  dump($codes);
+    //  dd($this->citynames);
+
+    //    session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
+        $sendproslist =  (new CityList())->prosCityList($this->citynames);
+        $this->proslists = $sendproslist;
+      //  dd($sendproslist);
+
+         $codes = (new ProsBssLine())->codeList($this->codeIds);
+         $this->newList($sendproslist, $codes );
+  //       session()->flash('message', 'haku on käynnistynyt! , olehan kärsivällinen ;-D ');
+/*
         if ($this->fileName)
         {
            $this->saveJsonData($sendproslist, $codes, $this->fileName);
@@ -120,7 +115,7 @@ class Index extends Component
           $fileName = $this->saveJsonData($sendproslist, $codes);
           $this->updatingSubmit($sendproslist, $codes);
           session()->flash('message', 'Search saved by default template.');
-        }
+        }     */
 
     }
     public function render()
@@ -131,7 +126,7 @@ class Index extends Component
 
       $this->citylists = $citylists;
       $this->codelists = $codelists;
-  //    $this->proslists = $proslists;  // Not needed
+    //  $this->proslists = $proslists;  // Not needed
       $value = $this->value;
 
       return view('livewire.prospect.index',
