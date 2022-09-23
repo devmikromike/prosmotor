@@ -2,7 +2,7 @@
    <div class="flex justify-between items-center">
      <div class="flex justify-left items-center">
        <span class="ml-4 mr-4 mt-2 mb-4 text-lg text-white items-center ">
-         MikroMike ProspectMotor v.0.1.3.11-5
+         MikroMike ProspectMotor v.0.1.3.11-7
          @env('local')
          (Local) -
          @endenv
