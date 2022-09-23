@@ -50,7 +50,7 @@ class RouteServiceProvider extends ServiceProvider
           Route::prefix('auth')
               ->middleware('web')
               ->namespace($this->namespace)
-              ->group(base_path('routes/auth/Fortify.php'));
+              ->group(base_path('routes/auth/fortify.php'));
         });
     }
 
