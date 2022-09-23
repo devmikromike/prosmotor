@@ -10,27 +10,29 @@ use App\Http\Livewire\BusinessCard;
 use App\Http\Livewire\SearchByVatid;
 use App\Http\Livewire\Landingpage;
 //
-// use
 
+/*
 if (env('APP_ENV') === 'alpha')  {
   Route::get('/', function () {
 
       return view('welcome')->name('welcome');
   });
-};
+};   */
 
 if (env('APP_ENV') === 'local')  {
  Route::get('/',[HomeController::class, 'landing'])->name('welcome');
   //  URL::forceSchema('https');
 };
 
+
+
+if (env('APP_ENV') === 'alpha')  {
+  Route::get('/',[HomeController::class, 'landing'])->name('welcome');
+};
+
 // $path = base_path();
 
 
-Route::prefix('auth')->group(function () {
-       base_path('routes\auth\fortify.php');
-});
- 
 
 
 
@@ -85,3 +87,7 @@ Route::get('/countProspects',[SearchController::class, 'howManyProspects'])->nam
 /// Livewire component routes /////
 Route::get('/search-by-id', SearchByVatid::class)->name('byVatId');
 //Route::get('/businesscard/{pros_id}', BusinessCard::class)->name('businesscard');
+
+Route::prefix('auth')->group(function () {
+       base_path('routes\auth\fortify.php');
+});
