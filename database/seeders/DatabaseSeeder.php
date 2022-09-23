@@ -9,7 +9,7 @@ class DatabaseSeeder extends Seeder
     {
       $this->call(LisenseTypeSeeder::class);
       $this->call(RoleSeeder::class);
-         \App\Models\User::factory(10)->create();
+      //   \App\Models\User::factory(10)->create();
           \App\Models\Company::factory(20)->create();
             $this->call(UserSeeder::class);
               $this->call(LisenseSeeder::class);
